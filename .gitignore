@@ -9,8 +9,9 @@
 # Игнорировать все файлы в каталоге Debug/
 Debug/
 
-# Игнорировать все файлы в каталоге Release/
+# Игнорировать все файлы в каталоге Release/ и temp/
 Release/
+temp/
 
 # Игнорировать все файлы .suo и .user
 *.suo
@@ -47,3 +48,8 @@ Release/
 # Игнорировать все файлы .db и .jfm
 *.db
 *.jfm
+
+# Игнорировать все файлы .api и .orig и Makefile
+*.api
+*.orig
+*Makefile
