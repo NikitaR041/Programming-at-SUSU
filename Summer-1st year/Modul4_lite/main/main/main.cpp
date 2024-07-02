@@ -174,6 +174,7 @@ int main() {
 }*/
 
 //Дубль 2
+/*
 int main() {
     int N;
     cin >> N;
@@ -197,5 +198,179 @@ int main() {
     }
 
     cout << device.size() << '\n';
+    return 0;
+}*/
+
+//Пещера 
+/*
+В пещере на Марсе необходимо проложить канал для связи между поселениями. 
+За миллионы лет на потолке пещеры выросли сталактиты, а на полу - сталагмиты. Чтобы проложить канал связи, нужно пробить на некоторой высоте эти образования. 
+Высота туннеля для канала равна 1.
+
+Напишите программу, вычисляющую минимальное количество сталактитов и сталагмитов, которые нужно пробить при прокладке канала.
+
+Первая строка ввода содержит два целых числа - высота пещеры H (2<=H<=500000) и количество сталактитов и сталагмитов N (1<=N<=500000). 
+Вторая строка ввода содержит N целых чисел - длины сталактитов от 1 до H−1. 
+Третья строка ввода содержит N целых чисел - длины сталагмитов от 1 до H−1.
+
+Вывести два целых числа - минимальное количество пробиваемых при прокладке канала сталактитов и сталагмитов и количество уровней (целых значений высот), на которых данный минимум достигается.
+Пример ввода:
+5 7
+3 2 4 4 3 2 3
+1 4 2 3 3 3 3
+
+Пример вывода:
+7 2
+*/
+
+//Первая попытка - неудачна
+/*
+int main() {
+    int H, N, count = 0;
+    int max_stalaktits = 0, max_stalagmits = 0;
+    cin >> H >> N;
+    vector<int> mass_count(N);
+    vector<int> stalaktits(N), stalagmits(N);
+    for (int i = 0; i < N; i++) {
+        cin >> stalaktits[i];
+    }
+    for (int j = 0; j < N; j++) {
+        cin >> stalagmits[j];
+    }
+    //Остортируем оба вектора для нахождения максимальной высоты сталактита и сталагмита
+    sort(stalaktits.begin(), stalaktits.end());
+    sort(stalagmits.begin(), stalagmits.end());
+    max_stalaktits = stalaktits[N - 1];
+    max_stalagmits = stalagmits[N - 1];
+
+    //max_stalaktits = *(max_element(stalaktits.begin(), stalaktits.end()));
+    //max_stalagmits = *(max_element(stalagmits.begin(), stalagmits.end()));
+
+    for (int level = 0; level < H; level++) {
+        //Гарантируется, что количество сталактитов и сталагмитов не менее 1 и высота пещеры не менее 2
+        //Проверяем в массиве сталагмитов, что максимальная высота совпадала с условием, то делаем -1, что означает, как пробили этот камень
+        if (H == max_stalagmits) {
+            H--; //Понижаем уровень
+            int i = 0;
+            while (H == max_stalagmits && i != N - 1) {
+                if (stalagmits[i] == H) {
+                    stalagmits[i]--;
+                    i++;
+                    count++;
+                }
+                else {
+                    break;
+                }
+            }
+        }
+
+        if (max_stalaktits != 0) {
+            H--; //Понижаем уровень
+            int i = 0;
+            while (max_stalaktits <= H && i != N - 1) {
+                if (max_stalaktits == 0) break;
+                else {
+                    stalaktits[i]--;
+                    i++;
+                    count++;
+                }
+            }
+        }
+    }
+
+    cout << count << '\n';
+    return 0;
+}*/
+
+//Вторая попытка - нет
+//Важно, что нужно изобразить этот процесс на бумаге и станет ясно
+/*
+int main() {
+    int H, N;
+    cin >> H >> N;
+    int min_stounes = N * 2, level = 0;
+    //В векторах будем хранить количество встречающихся сталактитов и сталагмитов в 5 уровнях
+    vector<int> stalaktits(H), stalagmits(H);
+    //Для сталактита
+    for (int i = 0; i < N; i++) {
+        int chislo;
+        cin >> chislo;
+        stalaktits[chislo]++;
+    }
+
+    //Для сталагмита
+    for (int i = 0; i < N; i++) {
+        int chislo;
+        cin >> chislo;
+        stalagmits[chislo]++;
+    }
+
+    //Потом мы должны накопить количество встречающихся сталактитов и сталагмитов
+    for (int i = 1; i < H; i++) {
+        stalaktits[i] += stalaktits[i - 1];
+    }
+    for (int i = H - 2; i >= 0; i--) {
+        stalagmits[i] += stalagmits[i + 1];
+    }
+
+    //Здесь мы должны проверять на минимальное бурение камней и количество уровней
+    for (int i = 0; i < H; i++) {
+        //Обязательно должны сложить количество сталактитов и сталагмитов
+        int stounes = stalaktits[i] + stalagmits[i];
+        if (stounes < min_stounes) {
+            min_stounes = stounes;
+            level = 1;
+        }
+        else if(stounes == min_stounes){
+            level++;
+        }
+    }
+
+    cout << min_stounes << ' ' << level << '\n';
+    return 0;
+}*/
+
+//Разбор этого задания преподавателем
+bool cmp(const pair<int, int>& a, const pair<int, int>& b) {
+    if (a.first != b.first) {
+        return a.first < b.first;
+    }
+    return a.second > b.second;
+}
+
+int main() {
+    int h, n, t;
+    cin >> h >> n;
+    int cnt = n, mincnt = 1e9, levels = 0;
+    vector<pair<int, int>> events(2 * n + 2);
+
+    for (int i = 0; i < n; i++) {
+        cin >> t;
+        events[i].first = h - t;
+        events[i].second = 1;
+    }
+    for (int i = 0; i < n; i++) {
+        cin >> t;
+        events[n + i].first = t;
+        events[n + i].second = -1;
+    }
+    events[2 * n].first = 0;
+    events[2 * n].second = 1;
+    events[2 * n + 1].first = h;
+    events[2 * n + 1].second = -1;
+    sort(events.begin(), events.end(), cmp);
+
+    for (size_t i = 0; i < events.size() - 1; i++) {
+        cnt += events[i].second;
+
+        if (cnt < mincnt) {
+            mincnt = cnt;
+            levels = events[i + 1].first - events[i].first;
+        }
+        else if (cnt == mincnt) {
+            levels += events[i + 1].first - events[i].first;
+        }
+    }
+    cout << (mincnt - 1) << ' ' << levels << '\n';
     return 0;
 }
