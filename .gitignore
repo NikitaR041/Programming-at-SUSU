@@ -52,7 +52,9 @@ obj/
 *.db
 *.jfm
 
-# Игнорировать все файлы .api и .orig и Makefile
+# Игнорировать все файлы .api и .orig, Makefile, docx, doc
 *.api
 *.orig
 *Makefile
+*doc
+*docx
