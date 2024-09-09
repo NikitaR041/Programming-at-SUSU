@@ -1,7 +1,8 @@
-# Игнорировать все файлы .exe, .dll и .lib
+# Игнорировать все файлы .exe, .dll, .lib, csproj
 *.exe
 *.dll
 *.lib
+*.csproj
 
 # Игнорировать все файлы .log
 *.log
@@ -9,9 +10,11 @@
 # Игнорировать все файлы в каталоге Debug/
 Debug/
 
-# Игнорировать все файлы в каталоге Release/ и temp/
+# Игнорировать все файлы в каталоге Release/, temp/, bin/, obj
 Release/
 temp/
+bin/
+obj/
 
 # Игнорировать все файлы .suo и .user
 *.suo
