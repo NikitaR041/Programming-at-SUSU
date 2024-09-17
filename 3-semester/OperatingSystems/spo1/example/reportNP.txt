@@ -1,0 +1,3 @@
+16.09.2024 12:54:23,74 - Notepad found 
+16.09.2024 12:54:47,52 - Notepad found 
+16.09.2024 12:54:58,40 - Notepad found 
