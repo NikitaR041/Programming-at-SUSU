@@ -16,14 +16,14 @@ class NIM{
       int nheap; //Количество кучек для камешек
       int *heaps; //Указатель на создание одномерного массива
    public:
-      NIM(int nheap = 10) : nheap(nheap), heaps(new int [nheap]){}
-      ~NIM(){ delete [] heaps;}// Удаление объекта
+      NIM(int nheap = 10) : nheap(nheap), heaps(new int [nheap]){} //Конструктор
+      ~NIM(){ delete [] heaps;}//Деструктор
       void setheap(int i, int nmatch); //Задать количество спичек в i кучке
       void take(int i, int nmatch); //Взять из i кучки nmatch спичек
-      int amount(int i) const; //Количество спичек в кучке i
-      int count() const; //Количество кучек
-      bool iswin() const; //Все кучки пусты
-      void print() const; //Распечатать состояние объекта
+      int amount(int i); //Количество спичек в кучке i
+      int count(); //Количество кучек
+      bool iswin(); //Все кучки пусты
+      void print(); //Распечатать состояние объекта
 };
 
 //Реализация задания количество спичек в i кучке
@@ -41,11 +41,9 @@ void NIM::take(int i,int nmatch){
    }
 }
 
-//Далее пойдут реализации методов для класса NIM
-
 //Реализация распечати количество спичек в кучке i
 //Количество спичек в кучке i
-int NIM::amount(int i) const{
+int NIM::amount(int i){
    if(i >= 0){
       return heaps[i];
    }
@@ -53,12 +51,12 @@ int NIM::amount(int i) const{
 }
 
 //Реализация распечати количество кучек
-int NIM::count() const{
+int NIM::count(){
    return nheap;
 }
 
 //Реализация метода на проверку, что все кучки пусты или не пусты
-bool NIM::iswin() const{
+bool NIM::iswin(){
    for(int i = 0; i < nheap; i++){
       // Непустая куча
       if(heaps[i] > 0){
@@ -70,7 +68,7 @@ bool NIM::iswin() const{
 }
 
 //Реализация  печати состояния объекта
-void NIM::print() const{
+void NIM::print(){
    for(int i = 0; i < nheap; i++){
       cout << "Куча: " << i + 1 << " Количество камешек в этой куче: " << heaps[i] << '\n';
    }
@@ -80,12 +78,12 @@ void NIM::print() const{
 int main(){
    cout << "Игра в камешки началась!" << '\n'; 
    //Создаем объект с 3-мя кучами (индексами)
-   NIM games(3); // Задали 3 кучки
+   NIM games(4); // Задали 3 кучки
    //Задаем для каждой кучи n камешек
    games.setheap(0,5); // Первая куча с 5-ью камешками
    games.setheap(1,3); //Вторая куча с 3-мя камешками
    games.setheap(2,6); //Третья куча с 6-ью камешками
-
+   games.setheap(3,0); //Четвертая куча пуста (0 камешек)
    cout << "Просмотр количество камешек в каждой куче:" << '\n';
    games.print(); //Распечатывает содержания массива
    
@@ -95,11 +93,13 @@ int main(){
    //функция take - пробуем забрать из n кучи, m камешек
    games.take(2, 4); //Забираем из 3-ьей кучи 4 камешка
    cout << "Количество оставшихся камешек в третьей куче: "<< games.amount(2) << '\n';
+   cout << "Пробуем забрать из последней кучи несколько камешек" << '\n';
+   cout << "Количество оставшихся камешек в последней куче остается неизменным, его количество также равна: " << games.amount(3) << '\n';
    
    cout << endl;
       
    cout << "Узнаем количество кучек при помощи метода .count()" << '\n';
-   cout << games.count() << '\n'; //Метод .count() выводит количество кучек
+   cout << "Количество куч: " << games.count() << '\n'; //Метод .count() выводит количество кучек
    
    cout << endl;
    
