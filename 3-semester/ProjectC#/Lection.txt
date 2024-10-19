@@ -170,3 +170,246 @@ namespace MyApp {
     
     }
 }
+
+
+
+!!! 08.10.2024
+Наследование - Inheritance.
+Наследование - вид взаимоотношений между классами, при котором:
+1 класс - это Потомок(Дочерний, Производный, Подкласс) - [Child, Derived, Subclass],
+1 класс - перенимает все поля и методы у другого класса, но [ИСКЛЮЧАЯ: Приватные-private, конструкторы, статические методы и статические поля]
+
+2 класс - это Предок(Родительский, Базовый, Суперкласс)[Parent, Base, Superclass]
++ А также: потомок может добавлять свои новые поля и методы!
+
+Синтаксис одинаковый, как в С# и С++
+class Parent{ поля и методы};
+class Child : Parent { добавляет свои поля};
+
+?Какая польза от наследования ?
+
+1)Экономия времени и кода при написании классов на основе существующих. [иногда]
+2)Наследование - создание "ПЛАТФОРМЫ" для выпуска различных сущностей, у которой есть базовый функционал.
+!Как раз "ПЛАТФОРМА" - это есть Framework!
+3)Платформа наследования позволяет провести быструю МОДЕРНИЗАЦИЮ существующих классов.
+Меняем в платформе - а выгоду получают классы созданные на базе.
+4)Во всех языках программирования (ЯП) потомок можно привести к типу предка. (работает неявное приведение). КИЛЛЕР-ФИЧА наследование.
+
+Важно!
+Существует ДВА вида наследования!
+1)Одиночная - строго один ПРЕДОК(РОДИТЕЛЬ)
+Такое работает в языках С#, Java, TypeScript, PHP
+2)Множественное - более одного ПРЕДКА(РОДИТЕЛЯ)
+Такое работает в языках С++, Python, ObjectPascal.
+
+Когда говорят о наследовании, то говорят об "Дерево классов", выделяют три типа классов:
+1)Корень (root) - класс, у которой нет Предков
+2)Листья (Leafs) - класс, у которой нет потомков, но есть предки
+3)Узлы (nodes)- класс, у которой есть и предки и потомки
+
+В дереве есть 2 НАПРАВЛЕНИЯ:
+1)От корня к листьям - "СПЕЦИАЛИЗАЦИЯ", чем дальше от корня тем классы более специфичные - specialization
+2)Обратное - "ОБОБЩЕНИЕ" - GENERALIZATION
+
+
+Также связано с наследованием - "ПОЛИМОРФИЗМ"
+Есть несколько разных видов полиморфизма!
+-При наследовании класс может иметь несколько методов с одинаковым именем, одинаковой сигнатурой, но разной реализацией.
+
+Полиморфизм:
+Это получается, что потомок имеет возможность "переопределить/заменить" унаследованный метод предка своей версией. (Главное, что сохраняется название метода, параметры, но работает по другому!)
+
+В С# при наследовании есть 2 вида полиморфизма 
+1)Ранее связывание - связь происходит при компиляции. - Быстро работает
+2)Позднее связывание - связь происходит rin-time при выполнении кода: - чуть медленее работает
+Для включения позденго связывания:
+Два слова:
+В классе предок для метода virtual 
+В классе потомки для метода override
+
+Разница между ними в скорости работе
+
+Пример 1: 
+основной файл класса:
+namespace ConsoleApp1{
+   public class Human{
+      //Поля - нарушение "Инкапсуляции"
+      protected int _age;
+      protected string _name; 
+      //Конструктор
+      public Human(string name, int age){
+         _age = age;
+         _name = name;
+      }
+      public void PrintInfo(){
+         Console.WriteLine("Человек, имя {0}, {1} лет", _name, _age);
+      }
+   }
+}
+
+Основной класс в main
+namespace ConsoleApp1{
+    class Programm{
+        Human h1 = new Human("Вася", 10);
+        h1.PrintInfo(); 
+    }
+}
+
+//Вывод: Вася 10 лет.
+
+
+//Пример 2
+namespace ConsoleApp1{
+   public class Human{
+      //Поля - нарушение "Инкапсуляции"
+      protected int _age;
+      protected string _name; 
+      //Конструктор
+      public Human(string name, int age){
+         _age = age;
+         _name = name;
+      }
+      public void PrintInfo(){
+         Console.WriteLine("Человек, имя {0}, {1} лет", _name, _age);
+      }
+   }
+}
+
+//Новый файл класса
+namespace ConsoleApp1{
+   public class Student : Human{
+      public Student(sting name, int age, string university): base(name, age){ //Где base(name,age)- вызов констру предка
+         //_age = age; - не нужно писать, так как унаследовали класс от Human
+         //_name = name; - не нужно писать, так как унаследовали класс от Human
+         _university = university;
+      }
+      protected string _university;
+   }
+}
+
+Основной класс в main
+namespace ConsoleApp1{
+    class Programm{
+        Human h1 = new Human("Вася", 10);
+        h1.PrintInfo(); 
+        Student s1 = new Student("Коля", 19, "ЮУрГУ");
+	s1.PrintInfo();
+    }
+}
+
+//Вывод: Вася 10 лет. Коля 19 лет ЮУрГУ.
+
+Пример 3 с Полиморфизмом. Ранее связывание
+
+namespace ConsoleApp1{
+   public class Human{
+      //Поля - нарушение "Инкапсуляции"
+      protected int _age;
+      protected string _name; 
+      //Конструктор
+      public Human(string name, int age){
+         _age = age;
+         _name = name;
+      }
+      public void PrintInfo(){
+         Console.WriteLine("Человек, имя {0}, {1} лет", _name, _age);
+      }
+   }
+}
+
+//Новый файл класса
+namespace ConsoleApp1{
+   public class Student : Human{
+      public Student(sting name, int age, string university): base(name, age){ //Где base(name,age)- вызов констру предка
+         //_age = age; - не нужно писать, так как унаследовали класс от Human
+         //_name = name; - не нужно писать, так как унаследовали класс от Human
+         _university = university;
+      }
+      protected string _university;
+      
+      //Полиморфизм - ранее связывание
+      public (new) void PrintInfo(){ //PrintInfo - зеленое подчеркивание
+         int stage = _age - 16;
+         Console.WriteLine("Студент {0} {1} курса и учится в {2}", _name, _age, _university);
+      }
+   }
+}
+
+Основной класс в main
+namespace ConsoleApp1{
+    class Programm{
+        Human h1 = new Human("Вася", 10);
+        h1.PrintInfo(); 
+        Student s1 = new Student("Коля", 19, "ЮУрГУ");
+	s1.PrintInfo();
+
+        Console.WriteLine("-------------");
+        Human[] people = {h1, s1};
+        foreach in people{
+           //Вовод, но здесь мы увидем, что Вася стал человеком из-за ранее связывание - это фича, а не баг
+           p.PrintInfo();
+           //Связывание означает, что мы связываем объекты с методами, так как метод находится в одной части памяти, а объекты в другой части памяти
+           //Следовательно нужно применить позднее связывание
+        }
+    }
+}
+//Вывод: Вася 10 лет. Коля 19 лет 1 курса и учится в ЮУрГУ.
+
+
+Пример 4 С позднем связывании
+
+namespace ConsoleApp1{
+   public class Human{
+      //Поля - нарушение "Инкапсуляции"
+      protected int _age;
+      protected string _name; 
+      //Конструктор
+      public Human(string name, int age){
+         _age = age;
+         _name = name;
+      }
+      public void PrintInfo(){
+         Console.WriteLine("Человек, имя {0}, {1} лет", _name, _age);
+      }
+   }
+}
+
+//Новый файл класса
+namespace ConsoleApp1{
+   public class Student : Human{
+      public Student(sting name, int age, string university): base(name, age){ //Где base(name,age)- вызов констру предка
+         //_age = age; - не нужно писать, так как унаследовали класс от Human
+         //_name = name; - не нужно писать, так как унаследовали класс от Human
+         _university = university;
+      }
+      protected string _university;
+      
+      //Полиморфизм - ранее связывание
+      public (new) void PrintInfo(){ //PrintInfo - зеленое подчеркивание
+         int stage = _age - 16;
+         Console.WriteLine("Студент {0} {1} курса и учится в {2}", _name, _age, _university);
+      }
+   }
+}
+
+Основной класс в main
+namespace ConsoleApp1{
+    class Programm{
+        Human h1 = new Human("Вася", 10);
+        h1.PrintInfo(); 
+        Student s1 = new Student("Коля", 19, "ЮУрГУ");
+	s1.PrintInfo();
+
+        Console.WriteLine("-------------");
+        Human[] people = {h1, s1};
+        foreach (var in people){
+           //Вовод, но здесь мы увидем, что Вася стал человеком из-за ранее связывание - это фича, а не баг
+           p.PrintInfo();
+           //Связывание означает, что мы связываем объекты с методами, так как метод находится в одной части памяти, а объекты в другой части памяти
+           //Следовательно нужно применить позднее связывание
+        }
+    }
+}
+//Вывод: Вася 10 лет. Коля 19 лет 1 курса и учится в ЮУрГУ.
+
+//Где то написали виртуал
