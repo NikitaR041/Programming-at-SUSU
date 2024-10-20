@@ -152,7 +152,7 @@ namespace AIS
                     Console.WriteLine("Спасибо за Вашу покупку! Вот Ваш чек!");
                     GetElemPrice();
                     PrintTank(50, 10, elem, 0);
-                    info = Console.ReadKey(); // ???
+                    info = Console.ReadKey(); 
                     active_while = false;
                     return;
                 }
@@ -183,9 +183,8 @@ namespace AIS
                     Console.WriteLine("Извините, но вам нечего удалять!");
                     Console.SetCursorPosition(35, 8);
                     Console.WriteLine("Для выхода нажмите на любую кнопку!");
-                    info = Console.ReadKey(); // ???
+                    info = Console.ReadKey(); 
                     active_while = false;
-                    Console.WriteLine("Привет! я ТУтытвдлыдпл");
                     return;
                 }
                 else if (elem.Count > 0 && info.Key != ConsoleKey.Escape)
@@ -199,135 +198,9 @@ namespace AIS
                     active_while = true;
                     flag_text = false;
                     flag = false;
-                    Console.WriteLine("sdgsdgsdgsdgsdfsdf");
                     return;
                 }
             }
         }
-
-        /*
-        public void ShowElemInBasket() {
-            Console.ForegroundColor = ConsoleColor.Green;
-            Menu.DrawLine();
-
-            //Первое событие - пустая корзина
-            if (IsEmpty == false) {
-                Console.SetCursorPosition(50, 9);
-                Console.WriteLine("Ваша Корзина пуста!");
-                Console.Clear();
-                return;
-            }
-
-            bool active_while = true;
-            bool flag = false;
-            TypeTank? obj = null;
-
-            Console.SetCursorPosition(45, 9);
-            Console.WriteLine("Ваша корзина:");
-            Console.SetCursorPosition(1, 15);
-            Console.WriteLine("Для подтверждения заказа нажмите Tab");
-            GetElemPrice();
-
-            //Второе событие - подтверждение заказа
-            Console.SetCursorPosition(20, 7);
-            Console.WriteLine("Вы сейчас находитесь в событии подтверждения заказа...");
-            Console.SetCursorPosition(20, 8);
-            Console.WriteLine(" Для выхода нажмите на любую кнопку!");
-            PrintTank(50, 10, elem, 0);
-            ConsoleKeyInfo info = Console.ReadKey();
-            if (info.Key == ConsoleKey.Tab) {
-                Console.Clear();
-                Menu.DrawLine();
-                flag = true;
-                Console.SetCursorPosition(50, 8);
-                Console.WriteLine("Спасибо за Вашу покупку! Ваш чек:");
-                GetElemPrice();
-                PrintTank(50, 10, elem, 0);
-            }
-
-            //Третье событие - редактирование
-            
-            //while (active_while && flag == false){
-
-            //}
-            
-        }*/
-
-        //Просмотр выбранного танка ... немного ещё переделать!
-        /*public void ShowElemInBasket() { 
-            TypeTank? obj = null;
-            bool active_while = true;
-            bool flag = false;
-
-            Console.Clear();
-            Menu.DrawLine();
-
-            ConsoleKeyInfo info;
-
-            //Console.WriteLine("Для выхода из корзины нажмите Tab!\nИначе прокручивайте список стрелками!");
-
-            while (active_while == true) {
-                if (IsEmpty == false && flag == false)
-                {
-                    Console.SetCursorPosition(30, 15);
-                    Console.WriteLine("Ваша корзина пуста! Нажмите на Escape для выхода!");
-                }
-                else if (IsEmpty == true && flag == false)
-                {
-                    Console.SetCursorPosition(50, 9);
-                    Console.WriteLine("Ваша корзина:");
-                    Console.SetCursorPosition(1, 15);
-                    GetElemPrice();
-                    PrintTank(50, 10, elem, 0);
-
-                    //--------------------------1 событие---------------------
-                    Console.SetCursorPosition(1, 15);
-                    Console.WriteLine("Внимание! Вы сейчас просматриваете список выбранных танков для выхода нажмите Escape!");
-                    Console.SetCursorPosition(1, 16);
-                    Console.WriteLine("Чтобы начать редактировать список нажмите на любую кнопку");
-                    info = Console.ReadKey(); // Если пользователь смотрит, что он выбрал
-                    if (info.Key == ConsoleKey.Escape) {
-                        active_while = false;
-                        flag = false;
-                        return;
-                    }
-
-                    //--------------------------2 событие---------------------
-                    Console.Clear();
-                    Console.SetCursorPosition(50, 9);
-                    Console.WriteLine("Ваша корзина:");
-                    Console.SetCursorPosition(1, 15);
-                    GetElemPrice();
-                    PrintTank(50, 10, elem, 0);
-                    obj = SelectTankItem(50, 10, elem);
-
-                    //Первое условие на проверку того, что пользователь хочет удалить элемент
-                    if (obj != null){
-                        DeleteInBasket(obj);
-                    }
-                    else { //Иначе происходит заказ элементов
-                        Console.Clear();
-                        Menu.DrawLine();
-                        Console.SetCursorPosition(50, 9);
-                        GetElemPrice();
-                        PrintTank(50, 10, elem, 0);
-                        //for (byte i = 0; i < )
-                        //foreach (TypeTank i in elem) {
-                        //    Console.SetCursorPosition(50, i);
-                        //    Console.WriteLine($"Танк {i.Name} - Страна {i.Country} - Цена {i.Price}");
-                        //}
-                    }
-                }
-
-                info = Console.ReadKey(); // Читаем нажатую клавишу
-                if (info.Key == ConsoleKey.Escape)
-                {
-                    active_while = false;
-                    flag = false; 
-                    return;
-                }
-            }
-        }*/
-
     }
 }
