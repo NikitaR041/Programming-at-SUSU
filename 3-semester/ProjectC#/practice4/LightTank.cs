@@ -32,7 +32,7 @@ namespace AIS
 
             int top = Console.WindowHeight / 2 - lines.Length / 2;
 
-            for (int i = 0; i < lines.Length; i++)
+            for (byte i = 0; i < lines.Length; i++)
             {
                 int left = (Console.WindowWidth - lines[i].Length) / 2;
                 Console.SetCursorPosition(left, top + i);

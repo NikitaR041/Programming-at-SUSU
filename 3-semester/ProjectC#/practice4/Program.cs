@@ -7,13 +7,6 @@ using System.Runtime.InteropServices;
 Разработка АИС "Онлайн-заказ" с использованием ООП.
 
 Моя предметная область этой л/р 4 - продажа различных запчастей танков, а также самих танков.
-
-Здесь будет находится основной цикл по обработке 
-
-Если что активных состояний может быть много
-active = -1 - Меню 
-active = -2 - Корзина
-active = -3 - Выход
 */
 
 namespace AIS
@@ -24,27 +17,32 @@ namespace AIS
         {
             string[] m = { "Пойти за покупками!", "Смотреть корзину!", "История танков!" };
 
+            Menu.PrintManual(1);
+            Basket basket = new Basket();
+
             bool isWorking = true; //Означает, что цикл будет работать до тех пор, когда мы не выйдем
-            int active = -1; // Означает, что мы будем смотреть на главное меню
-            int is_clear_window = 0;
+            byte active = 255; // Означает, что мы будем смотреть на главное меню
+            byte is_clear_window = 0;
 
             DrawLine();
+            Menu.PrintManual(3);
             while (isWorking) {
                 if (is_clear_window == 1) {
                     Console.Clear();
                     DrawLine();
+                    Menu.PrintManual(1);
+                    Menu.PrintManual(3);
                     is_clear_window = 0;
-                    Console.WriteLine("Hellp1313231");
                 }
                 active = SelectMenuItem(50,10,m);
                 switch (active) {
                     case 0:
                         KatalogTypeTanks();
                         is_clear_window = 1;
-
                         break;
                     case 1:
-                        //Console.Clear();
+                        basket.ShowElemInBasket();
+                        is_clear_window = 1;
                         break;
                     case 2:
                         //Console.Clear()

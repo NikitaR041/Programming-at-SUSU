@@ -1,5 +1,4 @@
-﻿//using practice4;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
@@ -10,8 +9,44 @@ namespace AIS
 {
     internal class Menu
     {
+        private static string[] lines1 = { "Escape - вернуться домой", "Enter - перейти в каталог" };
+        private static string[] lines2 = { "Вы хотите добавить этот танк в свою корзину?", "Нажмите на Spacebar / Escape, чтобы подтвердить / отменить соотвественно: " };
+        private static string[] lines3 = { "    ___", " __(   )====::", "/~~~~~~~~~\\", "\\O.O.O.O.O/", "%%%%%%%%%%%%%%%" };
+        public static void PrintManual(byte flag) {
+            switch (flag) {
+                case 1:
+                    for (byte i = 0; i < lines1.Length; i++)
+                    {
+                        Console.SetCursorPosition(1, 10 + i);
+                        Console.WriteLine(lines1[i]);
+                    }
+                    break;
+                case 2:
+                    for (byte i = 0; i < lines2.Length; i++) {
+                        Console.SetCursorPosition(35, 20 + i);
+                        Console.WriteLine(lines2[i]);
+                    }
+                    break;
+                case 3:
+                    Console.SetCursorPosition(47, 8);
+                    Console.WriteLine("Добро пожаловать в магазин танков!");
+
+                    byte j = 1;
+                    while (j != 7) {
+                        for (byte i = 0; i < lines3.Length; i++)
+                        {
+                            Console.SetCursorPosition(15*j, 2 + i);
+                            Console.WriteLine(lines3[i]);
+                        }
+                        j++;
+                    }
+                    
+                    break;
+            }
+        }
+
         //метод отвечает за вывод меню на экран
-        public static void PrintMenu(int x, int y, string[] menu, int active_ind)
+        public static void PrintMenu(int x, int y, string[] menu, byte active_ind)
         {
             Console.BackgroundColor = ConsoleColor.Magenta;
             Console.ForegroundColor = ConsoleColor.Green;
@@ -45,7 +80,6 @@ namespace AIS
                         isWorking = false;
                         //Console.Clear();
                         return activ_ind; 
-                        break;
                     case ConsoleKey.UpArrow:
                         // защита от выхода
                         if (activ_ind > 0) activ_ind--;
@@ -56,14 +90,15 @@ namespace AIS
                         break;
                     case ConsoleKey.Escape:
                         return 255; // 255 означает выход из выбора
-                    case ConsoleKey.Tab:
-                        return 254; // 254 означает выход к каталогу типов танков
+                    //case ConsoleKey.Tab:
+                    //    return 254; // 254 означает выход к каталогу типов танков
                     default:
+                        isWorking = false;
                         break;
                 }
             }
             Console.CursorVisible = true;
-            return 253; //Но не факт
+            return 253; //Возвращение значения, что ничего не произошло
         }
 
 
@@ -74,12 +109,14 @@ namespace AIS
 
             Console.Clear();
             DrawLine();
+            PrintManual(1);
 
             bool active_while = true;
             while (active_while == true) {
                 type_id = SelectMenuItem(50, 10, types_tanks);
                 Console.Clear();
                 DrawLine();
+                PrintManual(1);
                 switch (type_id)
                 {
                     case 0:
@@ -111,7 +148,6 @@ namespace AIS
         static void LightTank() {
             //В любом случае нужно выводить текст для выхода из конкретного окна
             string[] m1_lighttanks = { "T-50-2", "AMX 13 75", "Type 62" };
-
             LightTank[] m2_lighttanks = new LightTank[3];
 
             m2_lighttanks[0] = new LightTank("T-50-2", "57 mm ZiS-4", "СССР", 60, 1000000, "Green");
@@ -122,6 +158,7 @@ namespace AIS
             bool active_while = true;
             bool flag = false;
             while (active_while) {
+                PrintManual(1);
                 if (flag == false) { // flag == false нужна проверка на то, чтобы не запускать 100 одно и тоже сообщение
                     byte name_tank_id = SelectMenuItem(50,10, m1_lighttanks);
                     Console.Clear();
@@ -130,14 +167,29 @@ namespace AIS
                     {
                         case 0:
                             m2_lighttanks[name_tank_id].AboutTank();
+                            
+                            PrintManual(2);   
+                            info = Console.ReadKey();
+                            if (info.Key == ConsoleKey.Spacebar) { Basket.AddInBasket(m2_lighttanks[0]); }
+                            
                             flag = true;
                             break;
                         case 1:
                             m2_lighttanks[name_tank_id].AboutTank();
+                            
+                            PrintManual(2);
+                            info = Console.ReadKey();
+                            if (info.Key == ConsoleKey.Spacebar) { Basket.AddInBasket(m2_lighttanks[1]); }
+                            
                             flag = true;
                             break;
                         case 2:
                             m2_lighttanks[name_tank_id].AboutTank();
+
+                            PrintManual(2);
+                            info = Console.ReadKey();
+                            if (info.Key == ConsoleKey.Spacebar) { Basket.AddInBasket(m2_lighttanks[2]); }
+                            
                             flag = true;
                             break;
                         default:
@@ -150,17 +202,11 @@ namespace AIS
 
                 //По идеи здесь сообщение об выходе, чтобы выбрать другой танк
                 info = Console.ReadKey(); // Читаем нажатую клавишу
-                if (info.Key == ConsoleKey.Tab) // Проверяем на Escape
-                {
-                    flag = false;
-                    Console.Clear();
-                    DrawLine();
-                }
-                else if (info.Key == ConsoleKey.Escape) {
-                    Console.WriteLine("Ты нажал на ESC");
+                if (info.Key == ConsoleKey.Escape) {
                     active_while = false;
                     flag = false;
                     Console.Clear();
+                    PrintManual(1);
                     DrawLine();
                     return;
                 }
@@ -182,6 +228,7 @@ namespace AIS
             bool flag = false;
             while (active_while)
             {
+                PrintManual(1);
                 if (flag == false)
                 { // flag == false нужна проверка на то, чтобы не запускать 100 одно и тоже сообщение
                     byte name_tank_id = SelectMenuItem(50, 10, m1_medtanks);
@@ -191,10 +238,20 @@ namespace AIS
                     {
                         case 0:
                             m2_medtanks[name_tank_id].AboutTank();
+
+                            PrintManual(2);
+                            info = Console.ReadKey();
+                            if (info.Key == ConsoleKey.Spacebar) { Basket.AddInBasket(m2_medtanks[0]); }
+
                             flag = true;
                             break;
                         case 1:
                             m2_medtanks[name_tank_id].AboutTank();
+
+                            PrintManual(2);
+                            info = Console.ReadKey();
+                            if (info.Key == ConsoleKey.Spacebar) { Basket.AddInBasket(m2_medtanks[1]); }
+
                             flag = true;
                             break;
                         default:
@@ -207,19 +264,13 @@ namespace AIS
 
                 //По идеи здесь сообщение об выходе, чтобы выбрать другой танк
                 info = Console.ReadKey(); // Читаем нажатую клавишу
-                if (info.Key == ConsoleKey.Tab) // Проверяем на Escape
+                if (info.Key == ConsoleKey.Escape)
                 {
-                    flag = false;
-                    Console.Clear();
-                    DrawLine();
-                }
-                else if (info.Key == ConsoleKey.Escape)
-                {
-                    Console.WriteLine("Ты нажал на ESC");
                     active_while = false;
                     flag = false;
                     Console.Clear();
                     DrawLine();
+                    PrintManual(1);
                     return;
                 }
             }
@@ -241,6 +292,7 @@ namespace AIS
             bool flag = false;
             while (active_while)
             {
+                PrintManual(1);
                 if (flag == false)
                 { // flag == false нужна проверка на то, чтобы не запускать 100 одно и тоже сообщение
                     byte name_tank_id = SelectMenuItem(50, 10, m1_hevtanks);
@@ -250,14 +302,29 @@ namespace AIS
                     {
                         case 0:
                             m2_hevtanks[name_tank_id].AboutTank();
+                            
+                            PrintManual(2);
+                            info = Console.ReadKey();
+                            if (info.Key == ConsoleKey.Spacebar) { Basket.AddInBasket(m2_hevtanks[0]); }
+
                             flag = true;
                             break;
                         case 1:
                             m2_hevtanks[name_tank_id].AboutTank();
+
+                            PrintManual(2);
+                            info = Console.ReadKey();
+                            if (info.Key == ConsoleKey.Spacebar) { Basket.AddInBasket(m2_hevtanks[1]); }
+
                             flag = true;
                             break;
                         case 2:
                             m2_hevtanks[name_tank_id].AboutTank();
+
+                            PrintManual(2);
+                            info = Console.ReadKey();
+                            if (info.Key == ConsoleKey.Spacebar) { Basket.AddInBasket(m2_hevtanks[2]); }
+
                             flag = true;
                             break;
                         default:
@@ -270,19 +337,13 @@ namespace AIS
 
                 //По идеи здесь сообщение об выходе, чтобы выбрать другой танк
                 info = Console.ReadKey(); // Читаем нажатую клавишу
-                if (info.Key == ConsoleKey.Tab) // Проверяем на Escape
+                if (info.Key == ConsoleKey.Escape)
                 {
-                    flag = false;
-                    Console.Clear();
-                    DrawLine();
-                }
-                else if (info.Key == ConsoleKey.Escape)
-                {
-                    Console.WriteLine("Ты нажал на ESC");
                     active_while = false;
                     flag = false;
                     Console.Clear();
                     DrawLine();
+                    PrintManual(1);
                     return;
                 }
             }
@@ -303,6 +364,7 @@ namespace AIS
             bool flag = false;
             while (active_while)
             {
+                PrintManual(1);
                 if (flag == false)
                 { // flag == false нужна проверка на то, чтобы не запускать 100 одно и тоже сообщение
                     byte name_tank_id = SelectMenuItem(50, 10, m1_destanks);
@@ -312,14 +374,29 @@ namespace AIS
                     {
                         case 0:
                             m2_destanks[name_tank_id].AboutTank();
+
+                            PrintManual(2);
+                            info = Console.ReadKey();
+                            if (info.Key == ConsoleKey.Spacebar) { Basket.AddInBasket(m2_destanks[0]); }
+
                             flag = true;
                             break;
                         case 1:
                             m2_destanks[name_tank_id].AboutTank();
+
+                            PrintManual(2);
+                            info = Console.ReadKey();
+                            if (info.Key == ConsoleKey.Spacebar) { Basket.AddInBasket(m2_destanks[1]); }
+
                             flag = true;
                             break;
                         case 2:
                             m2_destanks[name_tank_id].AboutTank();
+
+                            PrintManual(2);
+                            info = Console.ReadKey();
+                            if (info.Key == ConsoleKey.Spacebar) { Basket.AddInBasket(m2_destanks[2]); }
+
                             flag = true;
                             break;
                         default:
@@ -332,19 +409,13 @@ namespace AIS
 
                 //По идеи здесь сообщение об выходе, чтобы выбрать другой танк
                 info = Console.ReadKey(); // Читаем нажатую клавишу
-                if (info.Key == ConsoleKey.Tab) // Проверяем на Escape
+                if (info.Key == ConsoleKey.Escape)
                 {
-                    flag = false;
-                    Console.Clear();
-                    DrawLine();
-                }
-                else if (info.Key == ConsoleKey.Escape)
-                {
-                    Console.WriteLine("Ты нажал на ESC");
                     active_while = false;
                     flag = false;
                     Console.Clear();
                     DrawLine();
+                    PrintManual(1);
                     return;
                 }
             }
@@ -365,6 +436,7 @@ namespace AIS
             bool flag = false;
             while (active_while)
             {
+                PrintManual(1);
                 if (flag == false)
                 { // flag == false нужна проверка на то, чтобы не запускать 100 одно и тоже сообщение
                     byte name_tank_id = SelectMenuItem(50, 10, m1_SAVtanks);
@@ -374,14 +446,29 @@ namespace AIS
                     {
                         case 0:
                             m2_SAVtanks[name_tank_id].AboutTank();
+                            
+                            PrintManual(2);
+                            info = Console.ReadKey();
+                            if (info.Key == ConsoleKey.Spacebar) { Basket.AddInBasket(m2_SAVtanks[0]); }
+
                             flag = true;
                             break;
                         case 1:
                             m2_SAVtanks[name_tank_id].AboutTank();
+
+                            PrintManual(2);
+                            info = Console.ReadKey();
+                            if (info.Key == ConsoleKey.Spacebar) { Basket.AddInBasket(m2_SAVtanks[1]); }
+
                             flag = true;
                             break;
                         case 2:
                             m2_SAVtanks[name_tank_id].AboutTank();
+
+                            PrintManual(2);
+                            info = Console.ReadKey();
+                            if (info.Key == ConsoleKey.Spacebar) { Basket.AddInBasket(m2_SAVtanks[2]); }
+
                             flag = true;
                             break;
                         default:
@@ -394,18 +481,12 @@ namespace AIS
 
                 //По идеи здесь сообщение об выходе, чтобы выбрать другой танк
                 info = Console.ReadKey(); // Читаем нажатую клавишу
-                if (info.Key == ConsoleKey.Tab) // Проверяем на Escape
+                if (info.Key == ConsoleKey.Escape)
                 {
-                    flag = false;
-                    Console.Clear();
-                    DrawLine();
-                }
-                else if (info.Key == ConsoleKey.Escape)
-                {
-                    Console.WriteLine("Ты нажал на ESC");
                     active_while = false;
                     flag = false;
                     Console.Clear();
+                    PrintManual(1);
                     DrawLine();
                     return;
                 }
