@@ -71,10 +71,13 @@ namespace AIS
             //В любом случае нужно выводить текст для выхода из конкретного окна
             string[] types_tanks = { "Легкие танки", "Средние танки", "Тяжелые танки", "ПТ-САУ", "САУ" };
             byte type_id;
-            
+
+            Console.Clear();
+            DrawLine();
+
             bool active_while = true;
             while (active_while == true) {
-                type_id = SelectMenuItem(50, 5, types_tanks);
+                type_id = SelectMenuItem(50, 10, types_tanks);
                 Console.Clear();
                 DrawLine();
                 switch (type_id)
@@ -120,7 +123,7 @@ namespace AIS
             bool flag = false;
             while (active_while) {
                 if (flag == false) { // flag == false нужна проверка на то, чтобы не запускать 100 одно и тоже сообщение
-                    byte name_tank_id = SelectMenuItem(50, 2, m1_lighttanks);
+                    byte name_tank_id = SelectMenuItem(50,10, m1_lighttanks);
                     Console.Clear();
                     DrawLine();
                     switch (name_tank_id)
@@ -181,7 +184,7 @@ namespace AIS
             {
                 if (flag == false)
                 { // flag == false нужна проверка на то, чтобы не запускать 100 одно и тоже сообщение
-                    byte name_tank_id = SelectMenuItem(50, 2, m1_medtanks);
+                    byte name_tank_id = SelectMenuItem(50, 10, m1_medtanks);
                     Console.Clear();
                     DrawLine();
                     switch (name_tank_id)
@@ -240,7 +243,7 @@ namespace AIS
             {
                 if (flag == false)
                 { // flag == false нужна проверка на то, чтобы не запускать 100 одно и тоже сообщение
-                    byte name_tank_id = SelectMenuItem(50, 2, m1_hevtanks);
+                    byte name_tank_id = SelectMenuItem(50, 10, m1_hevtanks);
                     Console.Clear();
                     DrawLine();
                     switch (name_tank_id)
@@ -302,7 +305,7 @@ namespace AIS
             {
                 if (flag == false)
                 { // flag == false нужна проверка на то, чтобы не запускать 100 одно и тоже сообщение
-                    byte name_tank_id = SelectMenuItem(50, 2, m1_destanks);
+                    byte name_tank_id = SelectMenuItem(50, 10, m1_destanks);
                     Console.Clear();
                     DrawLine();
                     switch (name_tank_id)
@@ -364,7 +367,7 @@ namespace AIS
             {
                 if (flag == false)
                 { // flag == false нужна проверка на то, чтобы не запускать 100 одно и тоже сообщение
-                    byte name_tank_id = SelectMenuItem(50, 2, m1_SAVtanks);
+                    byte name_tank_id = SelectMenuItem(50, 10, m1_SAVtanks);
                     Console.Clear();
                     DrawLine();
                     switch (name_tank_id)
