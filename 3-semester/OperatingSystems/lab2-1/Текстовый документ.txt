@@ -1,0 +1,81 @@
+$StartTimeHour = (Get-Date).Hour #Запоминаем когда запустилась задача
+$Day_of_week = [int]((Get-Date).DayofWeek) #текущий день недели
+if ((($Day_of_week -eq 2)-or($Day_of_week -eq 4)-or($Day_of_week -eq 6))-and($StartTimeHour -eq 11)) {
+#старт копирования если сейчас вторник, среда, суббота и при этом 11 часов
+ $StartTime = Get-Date -Format "yyyy.MM.dd HH:mm:ss" #время старта копирования 
+ $Free_Space_Start = Get-WMIObject Win32_LogicalDisk -Filter "DeviceID='D:'" | ForEach-Object {[math]::truncate($_.freespace / 1GB)} #свободное место до бекапа
+ $Free_Space_Start_Bytes = Get-WMIObject Win32_LogicalDisk -Filter "DeviceID='D:'" | ForEach-Object {$_.freespace} #свободное место до бекапа
+ $log_file = "D:\Backups\log.txt" #лог файл скрипта, можно понять на каком этапе работа скрипта
+ $date = "{0:yyyy-MM-dd}" -f (get-date) #текущая дата для имени папки
+ $path = "D:\Backups\" + $date + "\" #имя папки
+ if (-not(Test-Path $path)) { #если папка не существует
+ write-host "создаем папку: " + $path 
+ $result = New-Item -ItemType directory -Path $path #создаем папку
+ }
+ #копируем резервные копии медка
+ $time = "{0:yyyy-MM-dd HH:mm:ss}" -f (get-date)
+ $string = $time + " Start Copy \\172.16.13.1\Backups\Medoc"
+ "##################################################" | Out-File -Append $log_file -Encoding UTF8
+ $string | Out-File -Append $log_file -Encoding UTF8 
+ & robocopy \\172.16.13.1\Backups\Medoc D:\Backups\Medoc /e /log:"D:\Backups\robocopy_log.txt"
+ #копируем резервные копии разных устройств и ПО
+ $time = "{0:yyyy-MM-dd HH:mm:ss}" -f (get-date)
+ $string = $time + " Start Copy \\172.16.13.1\Backups\Other"
+ $string | Out-File -Append $log_file -Encoding UTF8
+ & robocopy \\172.16.13.1\Backups\Other D:\Backups\Other /e /log:"D:\Backups\robocopy_log.txt"
+ #копируем резервные копии Windows с 1-го сервера
+ $path = $path + "WindowsImageBackup"
+ $time = "{0:yyyy-MM-dd HH:mm:ss}" -f (get-date)
+ $string = $time + " Start Copy \\172.16.13.1\Backups\WindowsImageBackup"
+ $string | Out-File -Append $log_file -Encoding UTF8
+ & robocopy \\172.16.13.1\Backups\WindowsImageBackup $path /e /log:"D:\Backups\robocopy_log.txt"
+ #копируем резервные копии Windows с 2-го сервера
+ $time = "{0:yyyy-MM-dd HH:mm:ss}" -f (get-date)
+ $string = $time + " Start Copy \\172.16.13.2\Backups\WindowsImageBackup"
+ $string | Out-File -Append $log_file -Encoding UTF8
+ & robocopy \\172.16.13.2\Backups\WindowsImageBackup $path /e /log:"D:\Backups\robocopy_log.txt"
+ #запись в лог-файл окончания работы
+ $time = "{0:yyyy-MM-dd HH:mm:ss}" -f (get-date)
+ $string = $time + " Finish Backup"
+ $string | Out-File -Append $log_file -Encoding UTF8
+ "##################################################" | Out-File -Append $log_file -Encoding UTF8
+ #Формируем данные для письма
+ $EndTime = Get-Date -Format "yyyy.MM.dd HH:mm:ss"
+ $Free_Space_End = Get-WMIObject Win32_LogicalDisk -Filter "DeviceID='D:'" | ForEach-Object {[math]::truncate($_.freespace / 1GB)} #свободное место после бекапа
+ $Free_Space_End_Bytes = Get-WMIObject Win32_LogicalDisk -Filter "DeviceID='D:'" | ForEach-Object {$_.freespace} #свободное место до бекапа 
+ $backup_Size = $Free_Space_Start-$Free_Space_End
+ $backup_Size_Bytes = $Free_Space_Start_Bytes-$Free_Space_End_Bytes
+ $Work_time = $(NEW-TIMESPAN –Start $StartTime –End $EndTime)
+ $Work_time_seconds = $Work_time.TotalSeconds
+ $NetworkSpeed = '{0:N1}' -f ((($backup_Size_Bytes / $Work_time_seconds) / (1024*1024)) * 8)
+ $Mail_String = "Свободное место до бекапа: " + $Free_Space_Start + " ГБ | `r`n"
+ $Mail_String = $Mail_String + "Свободное место после бекапа:" + $Free_Space_End + " ГБ | `r`n"
+ $Mail_String = $Mail_String + "Размер бекапа: " + $backup_Size + " ГБ | `r`n"
+ $Mail_String = $Mail_String + "Старт бекапа: " + $StartTime + " | `r`n"
+ $Mail_String = $Mail_String + "Конец бекапа: " + $EndTime + " | `r`n"
+ $Mail_String = $Mail_String + "Время выполнения: " + $Work_time + " | `r`n"
+ $Mail_String = $Mail_String + "Средняя скорость копирования: " + $NetworkSpeed + " Мбит в секунду `r`n" 
+ Write-host $Mail_String 
+ #Заголовки письма и данные почтового ящика
+ $From = "admin-notify@домен.com.ua"
+ $To = "admin@домен.ком.ua"
+ $SMTPServer = "адрес.сервера.com.ua"
+ $SMTPPort = "25"
+ $Username = "admin-notify@домен.ком.ua"
+ $Password = "тут_пароль"
+ $subject = "Copy Backups to ReserveServer" 
+ $body = $Mail_String 
+ #формируем сообщение в формате html:
+ $message = New-Object System.Net.Mail.MailMessage $From, $To
+ $message.Subject = $subject
+ $message.IsBodyHTML = $true
+ $message.Body = $body
+ #Отправляем:
+ Write-host "Отправляем письмо"
+ $smtp = New-Object System.Net.Mail.SmtpClient($SMTPServer, $SMTPPort)
+ $smtp.EnableSSL = $true
+ $smtp.Credentials = New-Object System.Net.NetworkCredential($Username, $Password)
+ $smtp.Send($message)
+ Write-host "Письмо отправленно"
+ & shutdown -s -t 300 #выключаем компьютер через 5 минут
+}
