@@ -15,6 +15,7 @@ Release/
 temp/
 bin/
 obj/
+venv/
 
 # Игнорировать все файлы .suo и .user
 *.suo
