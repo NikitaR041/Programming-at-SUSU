@@ -1,0 +1,31 @@
+.text-head{
+    justify-content: center;
+    text-align: center;
+}
+
+.news-card{
+    background: #4CAF50; /* Зелёный цвет в HEX */
+    border: 5px solid rgba(128, 128, 128, 0.5); /* Полупрозрачный серый */
+    margin: 8px;
+	align-content:center;
+	justify-content: center;
+    text-align: center;
+}
+
+.mini-text{
+	display:flex;
+	align-items: center;
+    justify-content: center;
+    text-align: center;
+	padding: 10px; 
+}
+
+img{
+	width: 50px;
+	text-align: center;
+	height: auto;
+}
+
+.news-card a {
+    color: blue; 
+}

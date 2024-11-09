@@ -1,0 +1,27 @@
+.photo-container{
+	display:flex;
+	justify-content:center;
+	gap: 20px;
+}
+
+.photo{
+	text-align: center;
+	width: 200px;
+}
+
+.photo img{
+	width: 100%;
+	height: auto;
+}
+
+.photo-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%; 
+    padding: 0 20px; 
+}
+.photo-head img {
+    width: 100px;
+    height: auto; 
+}
