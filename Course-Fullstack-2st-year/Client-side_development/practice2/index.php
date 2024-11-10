@@ -5,7 +5,25 @@
     <link href="/style.css" rel="stylesheet" />
 </head>
 <body>   
-    <div class="grid-container">
+    <header>
+        <div class="container">
+            <div class="header">
+                <div class="logo-container">
+                    <img class="logo" src="/images/tank(1).png" alr="logotank"/>
+                </div>
+                <div class="info"> 
+                        Информация о танков
+                    </div>
+                <div>
+                    Машины
+                </div>
+                <div>
+                    Какашки
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- <div class="grid-container">
         <div class="content">
             <header>
                 <div class="container">
@@ -18,10 +36,7 @@
                 </div>
             </header>
         </div>
-    </div>
-
-
-
+    </div> -->
     <main>
 
     </main>
