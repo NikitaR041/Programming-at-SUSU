@@ -1,7 +1,9 @@
 #include <iostream>
 #include <graphics.h>
+#include <math.h>
 using namespace std;
-/*Задание 3 | Романов Никита ЕТ-212 | Вариант 21
+/*
+Задание 3 | Романов Никита ЕТ-212 | Вариант 21
 Тема: Виртуальные методы, наследования
 */
 
@@ -65,30 +67,28 @@ void Figure::show(){
 class HalfCircle : public Figure{
    protected:
       int angle; //Угол поворота
-      int end_angle; //Конец угла поворота
       int radius; //Радиус
       void draw() override;
       void area (int &x1, int &y1, int &x2, int &y2) const override final; //Не будет дальнейшего переопределения
    public:
-      HalfCircle(int c, int x, int y,  int angle, int end_angle, int radius) : Figure(c, x, y), angle(angle), end_angle(end_angle), radius(radius){}
+      HalfCircle(int c, int x, int y,  int angle,  int radius) : Figure(c, x, y), angle(angle), radius(radius){}
       ~HalfCircle() { hide(); }
-      void setsizes(int angle, int end_angle, int radius); //Метод для изменения размеров фигуры
+      void setsizes(int angle, int radius); //Метод для изменения размеров фигуры
 };
 
-void HalfCircle::setsizes(int angle, int end_angle, int radius){
+void HalfCircle::setsizes(int angle, int radius){
    bool F = isvisible();
    if(F) hide();
    this->angle = angle;
-   this->end_angle = end_angle;
    this->radius =radius;
    if(F) show();
 }
 
 //Метод, который рисует  полукруг
 void HalfCircle::draw(){
-   //cout << "Drawing HalfCircle..." << endl; // Для отладки
-   ::setcolor(getcolor()); //?
-   arc(x, y, angle, end_angle, radius);
+   ::setcolor(getcolor()); 
+   arc(x, y, angle, angle + 180, radius);
+   line(x - radius, y, x + radius, y);
 }
 
 //Получение прямоугольника
@@ -100,12 +100,12 @@ void HalfCircle::area(int &x1, int &y1, int &x2, int &y2) const {
 }
 
 class FillHalfCircle : public HalfCircle{
-   int Fillcolor;
+   int Fillcolor; //Сплошной цвет заливки фигуры
    void draw() override final; //Не будет дальнейшего переопределения
    public:
-      FillHalfCircle(int c, int x, int y,  int angle, int end_angle, int radius, int Fillcolor) : HalfCircle(c, x,  y, angle, end_angle, radius), Fillcolor(Fillcolor) {}
+      FillHalfCircle(int c, int x, int y,  int angle, int radius, int Fillcolor) : HalfCircle(c, x,  y, angle, radius), Fillcolor(Fillcolor) {}
       ~FillHalfCircle(){ hide(); }
-      void setFillcolor(int c);
+      void setFillcolor(int c); //Изменить цвет закраски
 };
 
 //Заполненый цветом полукруг
@@ -118,36 +118,45 @@ inline void FillHalfCircle::setFillcolor(int c){
 void FillHalfCircle::draw(){
    ::setcolor(getcolor());
    setfillstyle(SOLID_FILL, Fillcolor);
-   sector(x, y, angle, end_angle, radius, radius);
+   pieslice(x, y, angle, angle + 180, radius);
 }
 
 
 int main(){
    initwindow(800,600);
    
-   Figure* obj1 = new HalfCircle(WHITE, 100, 100, 0, 180, 100);
-   Figure* obj2 = new FillHalfCircle(RED, 100, 400, 0, 180, 100, BLUE);
+   Figure* obj1 = new HalfCircle(WHITE, 100, 100, 0, 100);
+   Figure* obj2 = new FillHalfCircle(RED, 100, 400, 0, 100, BLUE);
    
    obj1->show();
    obj2->show();
    getch();
+   obj1->hide();
+   obj2->hide();
+   getch();
    obj1->move(300, 150);
    obj2->move(400, 400);
+   getch();
+   obj1->show();
+   obj2->show();
    getch();
    obj1->setcolor(RED);
    obj2->setcolor(WHITE);
    getch();
-   getch();
    
    // Проверяем, можно ли выполнить преобразование к производным классам
    if (HalfCircle* hc = dynamic_cast<HalfCircle*>(obj1)) {
-      hc->setsizes(0, 180, 150); // Задаем новый радиус и углы
+      hc->setsizes(180, 150); // Меняем угол и радиус
       getch();
    }
 
    if (FillHalfCircle* fhc = dynamic_cast<FillHalfCircle*>(obj2)) {
-      fhc->setFillcolor(YELLOW);  // Меняем цвет заливки
-      fhc->setsizes(0, 180, 120); // Меняем радиус и углы
+      fhc->setsizes(180, 120); // Меняем угол и радиус
+      getch();
+   }
+   
+   if(FillHalfCircle* fhc = dynamic_cast<FillHalfCircle*>(obj2)){
+      fhc->setFillcolor(MAGENTA);  // Меняем цвет заливки
       getch();
    }
    
