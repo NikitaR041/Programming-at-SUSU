@@ -14,11 +14,11 @@ namespace AIS
         private string power_speaker; //Мощность аудиоколонки
         private string size_speaker; //Размеры аудиоколонки
         private string connection_type; //Тип соединения аудиоколонки
-        private byte battery_life; //Время работы от батареи аудиоколонки
-        private byte price; //Цена аудиоколонки
+        private string battery_life; //Время работы от батареи аудиоколонки
+        private string price; //Цена аудиоколонки
 
         //Конструктор
-        public AudioSpeaker(string name_audio_speaker, string power_speaker, string counsize_speakertry, string connection_type, byte battery_life, byte price)
+        public AudioSpeaker(string name_audio_speaker, string power_speaker, string counsize_speakertry, string connection_type, string battery_life, string price)
         {
             this.name_audio_speaker = name_audio_speaker;
             this.power_speaker = power_speaker;
@@ -65,7 +65,7 @@ namespace AIS
             }
         }
 
-        public byte ButteryLife { 
+        public string ButteryLife { 
             get { 
                 return this.battery_life; 
             }
@@ -74,7 +74,7 @@ namespace AIS
             }
         }
 
-        public byte Price {
+        public string Price {
             get {
                 return this.price;
             }
