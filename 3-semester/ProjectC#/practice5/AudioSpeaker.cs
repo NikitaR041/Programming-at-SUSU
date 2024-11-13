@@ -18,7 +18,8 @@ namespace AIS
         private string price; //Цена аудиоколонки
 
         //Конструктор
-        public AudioSpeaker(string name_audio_speaker, string power_speaker, string counsize_speakertry, string connection_type, string battery_life, string price)
+        public AudioSpeaker() { }
+        public AudioSpeaker(string name_audio_speaker, string power_speaker, string size_speaker, string connection_type, string battery_life, string price)
         {
             this.name_audio_speaker = name_audio_speaker;
             this.power_speaker = power_speaker;
