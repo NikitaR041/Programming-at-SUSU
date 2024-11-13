@@ -85,5 +85,10 @@ namespace AIS
         }
 
         //Возможно нужно переопределить ToString()
+        public override string ToString()
+        {
+            //return $"Название: {name_audio_speaker}\n, Мощность: {power_speaker}\n, Размер: {size_speaker}\n, Тип соединения: {connection_type}\n, Время работы: {battery_life}\n, Цена: {price}\n";
+            return $"{Name,-26}|{Power,-16}|{Size,-21}|{ConType,-16}|{ButteryLife,-22}|{Price,0}";
+        }
     }
 }

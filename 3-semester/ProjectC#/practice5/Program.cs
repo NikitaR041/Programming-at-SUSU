@@ -19,17 +19,15 @@ namespace AIS
             List<AudioSpeaker> speakerList = new List<AudioSpeaker>(); //Создаем список объектов!
             ConsoleInterface process_console =  new ConsoleInterface(); // Создаем обработчик файла 
             //Сначала считываем файл и обработаем его
-            process_console.read_files(sr, speakerList); // (1)
+            process_console.ReadFile(sr, speakerList); // (1)
 
 
             while (isworking)
             {
                 index = ConsoleInterface.SelectMenuItem(50, 10, speakerList);
-                ConsoleInterface.search_value(index, speakerList);
+                ConsoleInterface.SearchValue(index, speakerList);
             }
             
-            
-
             fs.Close();
             sr.Close();
             Console.ReadKey();
