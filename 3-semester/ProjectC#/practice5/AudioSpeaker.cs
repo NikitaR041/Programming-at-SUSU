@@ -29,62 +29,26 @@ namespace AIS
             this.price = price;
         }
         
-        //Создаем Property - аксессор и геттер
-        public string Name { 
-            get { 
-                return this.name_audio_speaker; 
-            }
-            set {
-                this.name_audio_speaker = value;
-            }
+        //Создаем Property
+        public string Name { get { return this.name_audio_speaker; }
         }
 
-        public string Power { 
-            get { 
-                return this.power_speaker; 
-            }
-            set { 
-                this.power_speaker = value;
-            }
+        public string Power { get { return this.power_speaker; }
         }
 
-        public string Size { 
-            get { 
-                return this.size_speaker; 
-            }
-            set {
-                this.size_speaker = value;
-            }
+        public string Size { get { return this.size_speaker; }
         }
 
-        public string ConType { 
-            get { 
-                return this.connection_type;
-            }
-            set {
-                this.connection_type = value; 
-            }
+        public string ConType { get { return this.connection_type;}
         }
 
-        public string ButteryLife { 
-            get { 
-                return this.battery_life; 
-            }
-            set {
-                this.battery_life = value;
-            }
+        public string ButteryLife { get { return this.battery_life; }
         }
 
-        public string Price {
-            get {
-                return this.price;
-            }
-            set { 
-                this.price = value;
-            }
+        public string Price { get {return this.price;}
         }
 
-        //Возможно нужно переопределить ToString()
+        //Переопределяем ToString()
         public override string ToString()
         {
             //return $"Название: {name_audio_speaker}\n, Мощность: {power_speaker}\n, Размер: {size_speaker}\n, Тип соединения: {connection_type}\n, Время работы: {battery_life}\n, Цена: {price}\n";

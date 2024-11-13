@@ -12,19 +12,18 @@ namespace AIS
     {
         private static List<string> name_title_chapter = new List<string>(); //Название заголовка <title> и название главы <h1>
         private static List<string> chapters = new List<string>(); //Характеристики-свойства
-        private static List<string> temporary_list = new List<string>(); //Аудиоколоника с характеристиками        
+        private static List<string> temporary_list = new List<string>(); //Аудиоколоника с характеристиками
+        private static string[] manual = new string[] { "ESC - выход/очистить экран", "Enter - перейти", "Tab - открыть таблицу"};
 
         private static short index = 0;
-        
 
         // Метод, который считывает информацию с файла
-        public void ReadFile(StreamReader sr, List<AudioSpeaker> speakerList) // Изменим на List<AudioSpeaker>
+        public void ReadFile(StreamReader sr, List<AudioSpeaker> speakerList)
         {
             string stroka = sr.ReadLine();
             while (!sr.EndOfStream)
             {
                 stroka = sr.ReadLine();  // Важно считать строку перед проверкой условий!
-
                 // Проверяем наличие хотя бы одного из тегов
                 if (stroka.IndexOf("<h1>") != -1 || stroka.IndexOf("<title>") != -1 || stroka.IndexOf("<th>") != -1 || stroka.IndexOf("<td>") != -1)
                 {
@@ -56,8 +55,7 @@ namespace AIS
                             index++;
                         }
                         else
-                        { // Создаем новый объект
-
+                        { 
                             speakerList.Add(new AudioSpeaker(temporary_list[0], temporary_list[1], temporary_list[2], temporary_list[3], temporary_list[4], temporary_list[5]));
                             temporary_list.Clear();  // Очищаем список для следующего объекта
                             index = 1;  // Сбрасываем индекс для следующей записи
@@ -181,11 +179,11 @@ namespace AIS
                 Console.SetCursorPosition(50 + (i * (-8)), 6 + i);
                 Console.WriteLine(name_title_chapter[i]);
             }
-            Console.SetCursorPosition(2, 10);
-            Console.WriteLine("ESC - выход/очистить экран");
-            Console.SetCursorPosition(2, 11);
-            Console.WriteLine("Enter - перейти");
-            
+            for (byte i = 0; i < manual.Length; i++)
+            {
+                Console.SetCursorPosition(2, 10 + i);
+                Console.WriteLine(manual[i]);
+            }
             //Сначала рисуем края
             Console.SetCursorPosition(0, 0);
             Console.Write("┌");

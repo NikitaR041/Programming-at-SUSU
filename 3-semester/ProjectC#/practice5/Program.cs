@@ -11,7 +11,6 @@ namespace AIS
         static void Main()
         {
             bool isworking = true;
-            //byte index = 255;
             byte index = 0;
             FileStream fs = new FileStream("Example.txt", FileMode.Open);
             StreamReader sr = new StreamReader(fs);
@@ -19,9 +18,9 @@ namespace AIS
             List<AudioSpeaker> speakerList = new List<AudioSpeaker>(); //Создаем список объектов!
             ConsoleInterface process_console =  new ConsoleInterface(); // Создаем обработчик файла 
             //Сначала считываем файл и обработаем его
-            process_console.ReadFile(sr, speakerList); // (1)
+            process_console.ReadFile(sr, speakerList);
 
-
+            //Затем изображаем интерфейс
             while (isworking)
             {
                 index = ConsoleInterface.SelectMenuItem(50, 10, speakerList);
