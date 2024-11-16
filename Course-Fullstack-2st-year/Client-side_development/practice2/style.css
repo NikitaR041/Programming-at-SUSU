@@ -1,42 +1,119 @@
-/*.grid-container {
-    background-image: url('images/1440px-12columns.png'); //путь к изображению 
-    background-size: cover; //растянуть изображение на весь контейнер 
-    background-repeat: no-repeat; //не повторять
-    width: 100%;
-    height: 100vh; // высота контейнера - вся высота экрана
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.content {
-    width: 80%; //можешь изменить ширину в зависимости от нужд 
-    color: rgb(103, 37, 37); // цвет текста, чтобы было видно на тёмном фоне 
-    text-align: center;
-}*/
-
+/* Голова */
 header{
-    background-color: rgb(14, 99, 4);
+    background-color: rgb(33, 169, 18);
+    height: 50px;
 }
 
 .header{
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
     align-items: center;
 }
 
 .logo-container{
     display: flex;
-    justify-content: space-between;
-    /*align-items: center;*/
+    justify-content: space-evenly;
+    align-items: center;
 }
 
 .logo{
-    width: 100px;
-    height: 100px;
+    width: 50px;
+    height: 50px;
 }
 
-/*
-.info {
-    flex: 0 0 16.66%; //Также занимает примерно 2 из 12 колонок
-}*/
+/* Первое тело main1 */
+.main{
+    background-color: rgb(253, 244, 227);
+}
+
+.content-container{
+    text-align: left;
+    padding: 20px;
+}
+.content-title{
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+.content-text{
+    text-align: left;
+    font-size: 20px; 
+    line-height: 1.2; 
+}
+
+.photo-container{
+	display:flex;
+	justify-content:center;
+	gap: 20px;
+}
+
+.photo{
+	text-align: center;
+	width: 200px;
+}
+
+.photo img{
+	width: 100%;
+	height: auto;
+}
+/* Второе тело main 2 */
+
+.row-news-list{
+    display: flex;
+    justify-content: start;
+    align-items: stretch;
+}
+
+.news-card{
+    background: #4CAF50; /* Зелёный цвет в HEX */
+    border: 5px solid rgba(128, 128, 128, 0.5); /* Полупрозрачный серый */
+    margin: 8px;
+    text-align: center;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Распределяет элементы сверху вниз */
+    height: 100%; /* Задает 100% высоты для заполнения колонки */
+    align-items: center; /* Центрирует контент внутри карточки по горизонтали */
+}
+
+.col-md-3{
+    width: 25%;
+    display: flex;
+    flex-direction: column;
+}
+
+.mini-text{
+    padding: 10px;
+}
+
+img{
+	width: 50px;
+    height: auto;
+}
+
+.news-card a {
+    color: blue; 
+    margin-top: auto; /* Размещает ссылку внизу карточки */
+}
+
+/* Подвал */
+
+footer{
+    background-color: rgb(33, 169, 18);
+    height: 50px;
+}
+
+.footer-container{
+    /*  */
+}
+
+.content-footer{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+/* Шрифт */
+body {
+    font-family: 'Roboto', sans-serif;
+}

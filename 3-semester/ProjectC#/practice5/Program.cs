@@ -12,7 +12,7 @@ namespace AIS
         {
             bool isworking = true;
             byte index = 0;
-            FileStream fs = new FileStream("Example.txt", FileMode.Open);
+            FileStream fs = new FileStream("Example2.txt", FileMode.Open);
             StreamReader sr = new StreamReader(fs);
 
             List<AudioSpeaker> speakerList = new List<AudioSpeaker>(); //Создаем список объектов!
