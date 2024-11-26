@@ -1,8 +1,8 @@
 #pragma once
 #include <iostream>
 
-//Разработаем предварительный класс GeneratorArithmetic
-struct Node {
+//Класс для создания узлов(листов) в генерации арифметического выражения
+class Node {
     short int value; //Значение в узле типа short int
     char sym; //Оператор (например, '+', '-', '*', '/', '-(-)')
     std::unique_ptr<Node> left; //Левый узел(лист)
@@ -12,18 +12,13 @@ struct Node {
     Node(short int value) : value(value), sym('\0'), left(nullptr), right(nullptr) {}
     //Второй конструктор - математическая операция
     Node(char sym, Node* left, Node* right) : value(0), sym(sym), left(left), right(right) {}
-    ~Node() {}
 
     char action() const; //Получение арифметической операции из узла
     int actionPriority() const; //Получение приоритетности
+
+    std::string getExpression(); //Преобразование дерева в строку-выражение  -  сохранение в файл
+    friend std::ostream& operator<<(std::ostream& out, const Node& node); // Переопределение оператора вывода в вывод арифметического выражения 
 };
 
-class GenericArithmetics { 
-    std::unique_ptr<Node> root;//Корень дерева - родитель
-public:
-    GenericArithmetics() : root(nullptr) {}
-   
-    void generateExpression(); //Основной метод для генерации дерева - генерация из полученных параметров из класса ConsoleInterface
-    std::string getExpression(); //Преобразование дерева в строку-выражение  -  сохранение в файл
-    friend std::ostream& operator<<(std::ostream& out, const GenericArithmetics& other); // Переопределение оператора вывода в вывод арифметического выражения 
-};
+//Основной метод, возвращающий указатель на корневой узел дерева, которое представляет сгенерированное выражение
+std::unique_ptr<Node> generateExpression(short int result, short int countOperation,short int minValue, short int maxValue);
