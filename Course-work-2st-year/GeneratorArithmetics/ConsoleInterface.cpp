@@ -6,28 +6,16 @@
 //Здесь должны быть реализованные методы класса ConsoleInterface
 
 //Заполнение арифметических операций в массив для дальнейшего использования
-void ConsoleInterface::setSymbols(std::unique_ptr<char[]>& symbols) {
-	if (count_operations <= 0) {
-		std::cout << "Количетсво действий должно быть от 0 до 5" << '\n';
-		return;
-	}
-
-	std::cout << "Введите арифметические операции (+, -, *, /): ";
-	char symbol;
-	for (short int i = 0; i < count_operations; i++) {
-		std::cout << "Введите символ в массив в индексе " << i << ' ';
-		std::cin >> symbol;
-		if (symbol != '+' && symbol != '-' && symbol != '*' && symbol != '/' && symbol != '~') {
-			std::cout << "Ошибка" << '\n';
-			break;
-		}
-		symbols[i] = symbol;
-	}
-
-	for (short int i = 0; i < count_operations; i++) {
-		std::cout << symbols[i] << '\n';
+void ConsoleInterface::setSymbols() {
+	std::string example;
+	std::cout << "Введите арифметические операции (+, -, *, /, ~): ";
+	std::cin >> example;
+	
+	for (short i = 0; i < example.length(); i++) {
+		if (example[i] != ' ') symbols.push_back(example[i]);
 	}
 }
+
 
 //Ввод данных с консоли 
 void ConsoleInterface::setConfigureInterface() {
