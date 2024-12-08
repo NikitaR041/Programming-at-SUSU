@@ -1,4 +1,4 @@
-#include "ConsoleInterface.h"
+#include "ConsoleInterface.hpp"
 #include <iostream>
 #include <vector>
 #include <string>
@@ -12,6 +12,8 @@ void ConsoleInterface::setSymbols() {
 	std::cin >> example;
 	
 	for (short i = 0; i < example.length(); i++) {
+		//Если пользователь не ввел корректное значение, то пропускаем его
+		if (example[i] != '+' && example[i] != '-' && example[i] != '*' && example[i] != '/' && example[i] != '~') continue;
 		if (example[i] != ' ') symbols.push_back(example[i]);
 	}
 }

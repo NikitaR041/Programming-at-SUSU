@@ -1,88 +1,98 @@
-﻿#include "GeneratorArithmetics.h"
-#include "ConsoleInterface.h"
-#include <cstdlib> // Необходимо подлючить time()
+﻿#include "GeneratorArithmetics.hpp"
+#include "ConsoleInterface.hpp"
+#include <cstdlib>
 #include <string>
-//Разработка методов
+#include <memory>
 
-//Преобразование дерева в строку-выражение  -  сохранение в файл
-//std::string getExpression() {
-//	//После того, как вызывали функцию generateExpression
-//	//if ()
-//
-//}
-//std::string Node::getExpression() {
-//
-//}
+//static constexpr double fraction = 1.0 / (static_cast<double>(RAND_MAX) + 1.0);
 
-// Переопределение оператора вывода в вывод арифметического выражения 
-//std::ostream& operator<<(std::ostream& out, const Node& node);
-//
-////Убрал параметры short int minValue, short int maxValue, т.к. можно получить из настроек
-//std::unique_ptr<Node> generateExpression(short int result, short int countOperation, ConsoleInterface obj) {
-//	//Шаг 6 | Возвращаем лист - число
-//	if (countOperation == 0) {
-//		return std::make_unique<Node>(result); // Создание числового узла - экземпляра
-//	}
-//
-//	//Следуем по инструкции алгоритма
-//	static const double fraction = 1.0 / (static_cast<double>(RAND_MAX) + 1.0);
-//	short int leftValue;
-//	short int rightValue;
-//	//Шаг 1 | Выбираем арифметический знак, который ввёл пользователь 
-//	std::string operations = obj.getSymbols(); //Передаем те знаки, который пользователь выбрал
-//	char operation;
-//	//char operation = operations[rand() % operations.length()]; //Рандомно выбираем один из арифметических знаков
-//	while(true) {
-//		//Выбор арифметического знака предсказуем
-//		operation = operations[rand() % operations.length()]; //Рандомно выбираем один из арифметических знаков
-//		//Шаг 2 | Выбираем число в указанном диапазоне - это 1 операнд | Тестовая версия
-//		leftValue = static_cast<int>((rand() * fraction * (obj.getRangeNumMax() - obj.getRangeNumMin() + 1) + obj.getRangeNumMin()));
-//
-//		switch(operation) {
-//			case '+': rightValue = result - leftValue; break;
-//			case '-': rightValue = leftValue - result; break;
-//			case '*': rightValue = result / leftValue; break;
-//			case '/': rightValue = leftValue / result; break;
-//			default: rightValue = 0;
-//		}
-//
-//		//Шаг 3 | Проверка, если rightValue НЕ выходит за указанный диапазон
-//		if (rightValue >= obj.getRangeNumMin() && rightValue <= obj.getRangeNumMax()) {
-//			break;
-//		}//Иначе заного перегенерируем
-//	}
-//
-//	//Шаг 4 | Выбрать случайно N от 0 до общЧислоДействий-1 для разложения 1-го операнда
-//	short int leftOperations = rand() * fraction * countOperation;
-//	//Шаг 5 | Выбрать случайно M от 0 до общЧислоДействий-N-1 для разложения 2-го операнда
-//	short int rightOperations = countOperation - leftOperations - 1;
-//
-//	//Node leftNode = 
-//	auto leftNode = generateExpression(leftValue, leftOperations, obj);
-//	auto rightNode = generateExpression(rightValue, rightOperations, obj);
-//
-//	//Шаг 7 | Возвращаем узел - арифметическая операция - экземпляр
-//	return std::make_unique<Node>(operation, leftNode.release(), rightNode.release());
-//
-//	//Функция вызывает саму себя тем самым создается дерево, но такое нужно записывать в строку
-//}
-/*
+//Метод для получения приоритетности операций
+int Node::actionPriority() const {
+	if (sym == '+' || sym == '-') return 1;
+	if (sym == '*' || sym == '/') return 2;
+	return 0; //Иначе если попадается число
+}
+
+//Метод для преобразования выражения из рекурсивного дерева в строку с учетом приоритетности операций 
+std::string Node::getExpression(int parentPriority = 0) const {
+	//Возвращаем число, если лист
+	if (this->left == nullptr && this->right == nullptr) {
+		return std::to_string(value);
+	}
+
+	//Рекурсивно вызываем все узлы и листы для построения выражения в строку
+	std::string leftExpression = left->getExpression(actionPriority());
+	std::string rightExpression = right->getExpression(actionPriority());
+
+	//Расставим скобки - в основном для левого операнда
+	if (actionPriority() < parentPriority) {
+		leftExpression = '(' + leftExpression + ')';
+	}
+
+	//Возвращаем отформированную строку
+	return leftExpression + ' ' + sym + ' ' + rightExpression;
+}
+
+//Возвращаем в консоль отформированную строку
+std::ostream& operator<<(std::ostream& out, const Node& node) {
+	out << node.getExpression();
+	return out;
+}
+
+//Метод для генерации выражений
 std::unique_ptr<Node> generateExpression(short int result, short int countOperation, ConsoleInterface obj) {
+	//Если попался лист
+	if (countOperation == 0) return std::make_unique<Node>(result);
 
-	//Следуем по инстркуции алгоритма
-	//Шаг 1 | Выбираем арифметический знак, который ввёл пользователь
-	std::string operations = obj.getSymbols(); //Передаем те знаки, который пользователь выбрал
-	char operation = operations[rand() % operations.length()]; //Рандомно выбираем один из арифметических знаков
+	//fraction нужен для функции rand()
+	short int leftValue; // Левый операнд 
+	short int rightValue; // Правый операнд
 
-	//Шаг 2 | Выбираем число в указанном диапазоне - это 1 операнд | Тестовая версия
-	//1 Вариант
-	//short int leftValue = rand() % (maxValue - minValue + 1) + minValue;
+	std::string operations = obj.getSymbols(); //Предаем арфиметические операции из консоли
+	char operation; // Выборка операции
 
-	//2 Вариант
-	static const double fraction = 1.0 / (static_cast<double>(RAND_MAX) + 1.0);
-	short int leftValue = static_cast<int>((rand() * fraction * (obj.getRangeNumMax() - obj.getRangeNumMin() + 1) + obj.getRangeNumMin()));
-	short int rightValue;
+	while (true) {
+		operation = operations[rand() % operations.length()];
+		leftValue = static_cast<int>((rand() * fraction * (obj.getRangeNumMax() - obj.getRangeNumMin() + 1) + obj.getRangeNumMin()));
+		
+		if (leftValue == 0) continue; //исключительная ситуация
 
-	//Шаг 3 | Проверяем
-	switch(operation)
-}*/
+		switch (operation) 
+		{
+		case '+': rightValue = result - leftValue; break;
+		case '-': rightValue = leftValue - result; break;
+		case '*': rightValue = result / leftValue; break;
+		case '/': rightValue = leftValue / result; break;  
+		default: rightValue = 0;
+		}
+
+		//Проверка правого операнда, если выходит за диапазон, и левого, если будут повторения нулей
+		if (rightValue > obj.getRangeNumMin() && rightValue <= obj.getRangeNumMax() && leftValue != 0) break;
+	}
+
+	short int N = countOperation - 1; //  Выбрать случайно N от 0 до общЧислоДействий-1 для разложения 1-го операнда
+	short int M = countOperation - N - 1; // Выбрать случайно M от 0 до общЧислоДействий-N-1 для разложения 2-го операнда
+
+	//Создаем следующие узлы(листы)
+	std::unique_ptr<Node> leftNode;
+	std::unique_ptr<Node> rightNode;
+
+	//Если больше невозмонжо разложить левый операнд, то сохраняем лист
+	if (N > 0) {
+		leftNode = generateExpression(leftValue, N, obj);
+	}
+	else {
+		leftNode = std::make_unique<Node>(leftValue); //Сохранение числа в объект
+	}
+
+	//Аналогично, если больше невозмонжо разложить правый операнд, то сохраняем лист
+	if (M > 0) {
+		rightNode = generateExpression(rightValue, M, obj);
+	}
+	else {
+		rightNode = std::make_unique<Node>(rightValue); //Сохранение числа в объект
+	}
+
+	//Возвращаем узел - арифметическая операция - экземпляр
+	return std::make_unique<Node>(operation, leftNode.release(), rightNode.release());
+}
