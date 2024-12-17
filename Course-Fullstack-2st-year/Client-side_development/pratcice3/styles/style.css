@@ -1,0 +1,197 @@
+@charset "UTF-8";
+/* Голова */
+header {
+  background-color: rgb(33, 169, 18);
+  height: 50px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.logo-container {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.logo {
+  width: 50px;
+  height: 50px;
+}
+
+/* Первое тело main1 */
+.main {
+  background-color: rgb(253, 244, 227);
+}
+
+.content-container {
+  text-align: left;
+  padding: 20px;
+}
+
+.content-title {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.content-text {
+  text-align: left;
+  font-size: 20px;
+  line-height: 1.2;
+}
+
+.photo-container {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.photo {
+  text-align: center;
+  width: 200px;
+}
+
+.photo img {
+  width: 100%;
+  height: auto;
+}
+
+/* Второе тело main 2 */
+.row-news-list {
+  display: flex;
+  justify-content: start;
+  align-items: stretch;
+}
+
+.news-card {
+  background: #4CAF50; /* Зелёный цвет в HEX */
+  border: 5px solid rgba(128, 128, 128, 0.5); /* Полупрозрачный серый */
+  margin: 8px;
+  text-align: center;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Распределяет элементы сверху вниз */
+  height: 100%; /* Задает 100% высоты для заполнения колонки */
+  align-items: center; /* Центрирует контент внутри карточки по горизонтали */
+}
+
+.col-md-3 {
+  width: 25%;
+  display: flex;
+  flex-direction: column;
+}
+
+.mini-text {
+  padding: 10px;
+}
+
+img {
+  width: 50px;
+  height: auto;
+}
+
+.news-card a {
+  color: blue;
+  margin-top: auto; /* Размещает ссылку внизу карточки */
+}
+
+/* Подвал */
+footer {
+  background-color: rgb(33, 169, 18);
+  height: 50px;
+}
+
+.footer-container {
+  /*  */
+}
+
+.content-footer {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.accordion .item-title, .accordion .item-content {
+  padding: 10px;
+}
+.accordion .item-title {
+  background-color: rgb(253, 244, 227);
+  cursor: pointer;
+  text-align: left;
+  padding: 10px;
+  font-size: 20px;
+}
+.accordion .item-content {
+  background-color: rgb(249, 227, 186);
+  display: none;
+  text-align: left;
+  padding: 10px;
+  font-size: 20px;
+  line-height: 1;
+}
+.accordion .item-content.active {
+  display: block;
+}
+
+/* Стили для контейнера вкладок */
+.tabs {
+  font-family: Arial, sans-serif;
+}
+
+/* Стили для кнопок заголовков */
+.tabs-header button {
+  background-color: #f1f1f1;
+  border: none;
+  padding: 10px 20px;
+  margin-right: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.tabs-header button:hover {
+  background-color: #ddd;
+}
+
+.tabs-header button.active {
+  background-color: #ccc;
+  font-weight: bold;
+}
+
+/* Стили для контента вкладок */
+.tabs-body > div {
+  display: none; /* Скрываем все блоки по умолчанию */
+  padding: 20px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  margin-top: 10px;
+}
+
+/* Стили для вкладок */
+.tabs-body {
+  margin-top: 10px;
+}
+
+.tab-content {
+  display: flex; /* Горизонтальное расположение */
+  justify-content: space-around;
+  align-items: center; /* Выравнивание по вертикали */
+  gap: 20px; /* Отступ между изображением и текстом */
+  padding: 10px;
+}
+
+.tab-image {
+  width: 250px; /* Размер изображения */
+  height: auto;
+  border-radius: 8px; /* Скругление углов */
+}
+
+.tab-text {
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+/*# sourceMappingURL=style.css.map */

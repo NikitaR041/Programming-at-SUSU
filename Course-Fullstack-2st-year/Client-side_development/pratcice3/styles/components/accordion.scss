@@ -1,0 +1,27 @@
+.accordion{
+    .item-title, .item-content{
+        padding: 10px;
+    }
+    .item-title{
+        background-color: rgb(253, 244, 227);
+        cursor: pointer;
+        text-align: left;
+        padding: 10px;
+        font-size: 20px; 
+    }
+
+    .item-content{
+        background-color: rgb(249, 227, 186);
+        display: none;
+
+        text-align: left;
+        padding: 10px;
+        font-size: 20px; 
+        line-height: 1.0; 
+        
+        &.active {
+            display: block;
+        }
+    }
+
+}

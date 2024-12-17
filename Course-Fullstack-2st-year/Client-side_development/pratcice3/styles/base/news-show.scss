@@ -1,0 +1,40 @@
+/* Второе тело main 2 */
+
+.row-news-list{
+    display: flex;
+    justify-content: start;
+    align-items: stretch;
+}
+
+.news-card{
+    background: #4CAF50; /* Зелёный цвет в HEX */
+    border: 5px solid rgba(128, 128, 128, 0.5); /* Полупрозрачный серый */
+    margin: 8px;
+    text-align: center;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Распределяет элементы сверху вниз */
+    height: 100%; /* Задает 100% высоты для заполнения колонки */
+    align-items: center; /* Центрирует контент внутри карточки по горизонтали */
+}
+
+.col-md-3{
+    width: 25%;
+    display: flex;
+    flex-direction: column;
+}
+
+.mini-text{
+    padding: 10px;
+}
+
+img{
+	width: 50px;
+    height: auto;
+}
+
+.news-card a {
+    color: blue; 
+    margin-top: auto; /* Размещает ссылку внизу карточки */
+}

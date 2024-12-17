@@ -1,0 +1,34 @@
+/* Первое тело main1 */
+.main{
+    background-color: rgb(253, 244, 227);
+}
+
+.content-container{
+    text-align: left;
+    padding: 20px;
+}
+.content-title{
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+.content-text{
+    text-align: left;
+    font-size: 20px; 
+    line-height: 1.2; 
+}
+
+.photo-container{
+	display:flex;
+	justify-content:center;
+	gap: 20px;
+}
+
+.photo{
+	text-align: center;
+	width: 200px;
+}
+
+.photo img{
+	width: 100%;
+	height: auto;
+}
