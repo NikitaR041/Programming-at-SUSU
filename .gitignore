@@ -57,12 +57,34 @@ venv/
 *.api
 *.orig
 *Makefile
+
+# Игнорировать все файлы связанные с Word
 *doc
 *docx
 *pdf
 *odt
+# В конкретных каталогах также игнорировать
+/ImagesInASCIIformat/*.doc
+/ImagesInASCIIformat/*.docx
+/ImagesInASCIIformat/*.pdf
+/ECalc/*.doc
+/ECalc/*.docx
+/ECalc/*.pdf
+/Generator/*.doc
+/Generator/*.docx
+/Generator/*.pdf
 
 # Игнорировать все файлы связанные с PowerPoint
 *ppt
 *pptx
 *odp
+# В конкретных каталогах также игнорировать
+/ImagesInASCIIformat/*.pptx
+/ImagesInASCIIformat/*.ppt
+/ImagesInASCIIformat/*.odp
+/ECalc/*.pptx
+/ECalc/*.ppt
+/ECalc/*.odp
+/Generator/*.pptx
+/Generator/*.ppt
+/Generator/*.odp
