@@ -1,0 +1,90 @@
+# Игнорировать все файлы .exe, .dll, .lib, csproj
+*.exe
+*.dll
+*.lib
+*.csproj
+
+# Игнорировать все файлы .log
+*.log
+
+# Игнорировать все файлы в каталоге Debug/
+Debug/
+
+# Игнорировать все файлы в каталоге Release/, temp/, bin/, obj
+Release/
+temp/
+bin/
+obj/
+venv/
+
+# Игнорировать все файлы .suo и .user
+*.suo
+*.user
+
+# Игнорировать все файлы в каталоге .vs/
+.vs/
+
+# Игнорировать все файлы .ncb, .sdf и .suo
+*.ncb
+*.sdf
+*.suo
+
+# Игнорировать все файлы .bak и .swp
+*.bak
+*.swp
+
+# Игнорировать все файлы .vcxproj, .vcxproj.filters и .pdb
+*.vcxproj
+*.vcxproj.filters
+*.pdb
+
+# Игнорировать все файлы .idb, .ilk и .pch
+*.idb
+*.ilk
+*.pch
+
+# Игнорировать все файлы .ipch
+*.ipch
+
+# Игнорировать все файлы .aps
+*.aps
+
+# Игнорировать все файлы .db и .jfm
+*.db
+*.jfm
+
+# Игнорировать все файлы .api и .orig, Makefile, docx, doc, pdf, odt
+*.api
+*.orig
+*Makefile
+
+# Игнорировать все файлы связанные с Word
+*doc
+*docx
+*pdf
+*odt
+# В конкретных каталогах также игнорировать
+/ImagesInASCIIformat/*.doc
+/ImagesInASCIIformat/*.docx
+/ImagesInASCIIformat/*.pdf
+/ECalc/*.doc
+/ECalc/*.docx
+/ECalc/*.pdf
+/Generator/*.doc
+/Generator/*.docx
+/Generator/*.pdf
+
+# Игнорировать все файлы связанные с PowerPoint
+*ppt
+*pptx
+*odp
+# В конкретных каталогах также игнорировать
+/ImagesInASCIIformat/*.pptx
+/ImagesInASCIIformat/*.ppt
+/ImagesInASCIIformat/*.odp
+/ECalc/*.pptx
+/ECalc/*.ppt
+/ECalc/*.odp
+/Generator/*.pptx
+/Generator/*.ppt
+/Generator/*.odp
