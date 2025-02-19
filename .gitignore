@@ -58,6 +58,10 @@ venv/
 *.orig
 *Makefile
 
+# Игнорировать файлы и папки связанные для Java
+*.iml
+.idea/
+
 # Игнорировать все файлы связанные с Word
 *doc
 *docx
@@ -88,3 +92,5 @@ venv/
 /Generator/*.pptx
 /Generator/*.ppt
 /Generator/*.odp
+
+
