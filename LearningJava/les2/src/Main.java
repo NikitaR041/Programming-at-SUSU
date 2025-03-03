@@ -23,6 +23,42 @@
 
 public class Main {
     public static void main(String[] args) {
+        try {
+            //Создаем экземпляры классов
+            Processor obj1 = new Processor();
+            Processor obj2 = new Processor("Intel", 5, 1500, 20000);
+            MotherBoard obj3 = new MotherBoard(obj1, 36);
+            MotherBoard obj4 = new MotherBoard(obj2, 36);
+
+            //Использование свойств для объектов
+            obj1.setStamp("AMD");
+            obj1.setCachesize(1200);
+            obj1.setFrequency(4.3f);
+            obj1.setPrice(15000);
+
+            obj2.getStamp();
+
+            obj1.getStamp();
+            obj1.getCachesize();
+            obj1.getFrequency();
+            obj1.getPrice();
+
+            obj3.getProcessor();
+            obj4.getProcessor();
+
+            //Изменение поля у объекта
+            obj2.setStamp("Elbrus");
+            obj2.getStamp();
+
+            //Пробуем вызвать ошибку
+
+        } catch (ProcessorException ex) {
+            System.out.println(ex.getMessage());
+        } catch (MotherBoardException ex) {
+            System.out.println(ex.getMessage());
+        } catch(Exception ex){
+            System.out.println(ex.getMessage());
+        }
 
     }
 }

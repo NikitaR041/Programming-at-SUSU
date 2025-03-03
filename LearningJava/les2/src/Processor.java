@@ -7,14 +7,14 @@
 Описать класс «материнская плата», включающий класс «процессор» (как ссылку) и объем установленной оперативной памяти.
 Предусмотреть инициализацию с проверкой допустимости значений поля объема памяти.
 В случае недопустимых значений поля выбрасывается исключение.
-Описать свойства дляполучения состояния объекта.
+Описать свойства для получения состояния объекта.
 
 Исключения придумать свои
  */
 
 public class Processor{
     private String stamp; //Марка процессора
-    private int frequency; //Тактовая частота
+    private float frequency; //Тактовая частота
     private int cachesize; //Объем кэша
     private int price; //Стоимость
 
@@ -22,7 +22,7 @@ public class Processor{
     public Processor(){}
 
     //Конструктор с параметрами
-    public Processor(String stamp, int frequency, int cachesize, int price) throws ProcessorException {
+    public Processor(String stamp, float frequency, int cachesize, int price) throws ProcessorException {
         if (frequency < 0 || cachesize < 0 || price < 0){
             throw new ProcessorException("Недопустимые значения полей!");
         }
@@ -33,11 +33,14 @@ public class Processor{
     }
 
     //Свойства (Геттеры, сеттеры)
+    public String getStamp() {return stamp;}
+    public void setStamp(String stamp) { this.stamp = stamp; }
+
     public int getCachesize() { return cachesize; }
     public void setCachesize(int cachesize) { this.cachesize = cachesize; }
 
-    public int getFrequency(){ return frequency; }
-    public void setFrequency(int frequency){ this.frequency = frequency; }
+    public float getFrequency(){ return frequency; }
+    public void setFrequency(float frequency){ this.frequency = frequency; }
 
     public int getPrice() { return price; }
     public void setPrice(int price){ this.price = price; }

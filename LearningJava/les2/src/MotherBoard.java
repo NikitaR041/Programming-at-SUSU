@@ -13,17 +13,20 @@
 */
 
 public class MotherBoard {
-    protected int sizeMemory; //Объем оперативной памяти
+    private Processor processor; // Ссылка класса "процессор"
+    private int sizeMemory; //Объем оперативной памяти
 
     //Конструктор без параметров (Конструктор по умолчанию)
     public MotherBoard(){};
     //Конструктор с параметрами
-    public MotherBoard(int sizeMemory) throws MotherBoardException{
+    public MotherBoard(Processor processor, int sizeMemory) throws MotherBoardException{
         if (sizeMemory < 0) throw new MotherBoardException("Объём памяти не должен быть меньше нуля!");
         this.sizeMemory = sizeMemory;
     }
 
     //Свойства (геттеры, сеттеры)
+    public Processor getProcessor() {return processor;}
+
     public int getSizeMemory() { return sizeMemory; }
     public void setSizeMemory(int sizeMemory) { this.sizeMemory = sizeMemory; }
 }
