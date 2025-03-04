@@ -36,7 +36,9 @@ venv/
 # Игнорировать все файлы .vcxproj, .vcxproj.filters и .pdb
 *.vcxproj
 *.vcxproj.filters
+*.vcxproj.user
 *.pdb
+*.sln
 
 # Игнорировать все файлы .idb, .ilk и .pch
 *.idb
@@ -61,6 +63,7 @@ venv/
 # Игнорировать файлы и папки связанные для Java
 *.iml
 .idea/
+.out/
 
 # Игнорировать все файлы связанные с Word
 *doc
