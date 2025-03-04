@@ -16,7 +16,7 @@
 Описать класс «материнская плата», включающий класс «процессор» (как ссылку) и объем установленной оперативной памяти.
 Предусмотреть инициализацию с проверкой допустимости значений поля объема памяти.
 В случае недопустимых значений поля выбрасывается исключение.
-Описать свойства дляполучения состояния объекта.
+Описать свойства для получения состояния объекта.
 
 Исключения придумать свои
 */
@@ -31,27 +31,38 @@ public class Main {
             MotherBoard obj4 = new MotherBoard(obj2, 36);
 
             //Использование свойств для объектов
+            System.out.println("Установим значения для объекта obj1");
             obj1.setStamp("AMD");
             obj1.setCachesize(1200);
             obj1.setFrequency(4.3f);
             obj1.setPrice(15000);
 
-            obj2.getStamp();
+            System.out.println("Получим значение полей из объектов obj1 и obj2");
+            System.out.println("Название у объекта obj2 " + obj2.getStamp());
 
-            obj1.getStamp();
-            obj1.getCachesize();
-            obj1.getFrequency();
-            obj1.getPrice();
+            System.out.println("Название у объекта obj1 " + obj1.getStamp());
+            System.out.println("Размер кэша у объекта obj1 " + obj1.getCachesize());
+            System.out.println("Тактовая частота у объекта obj1 " + obj1.getFrequency());
+            System.out.println("Цена у объекта obj1 " + obj1.getPrice());
 
-            obj3.getProcessor();
-            obj4.getProcessor();
+            System.out.println("Проверяем работоспособность функции getProcessor");
+            System.out.println(obj3.getProcessor());
+            System.out.println(obj4.getProcessor());
 
             //Изменение поля у объекта
+            System.out.println("Изменение значения полей у объекта obj2");
             obj2.setStamp("Elbrus");
-            obj2.getStamp();
+            System.out.println(obj2.getStamp());
+            obj2.setFrequency(10f);
+            System.out.println(obj2.getFrequency());
+            obj2.setCachesize(500);
+            System.out.println(obj2.getCachesize());
+            obj2.setPrice(3000000);
+            System.out.println(obj2.getPrice());
 
             //Пробуем вызвать ошибку
-
+            //Processor obj5 = new Processor("Intel", -4, -5, -2);
+            MotherBoard obj6 = new MotherBoard(obj1, -1);
         } catch (ProcessorException ex) {
             System.out.println(ex.getMessage());
         } catch (MotherBoardException ex) {

@@ -21,6 +21,7 @@ public class MotherBoard {
     //Конструктор с параметрами
     public MotherBoard(Processor processor, int sizeMemory) throws MotherBoardException{
         if (sizeMemory < 0) throw new MotherBoardException("Объём памяти не должен быть меньше нуля!");
+        this.processor = processor;
         this.sizeMemory = sizeMemory;
     }
 

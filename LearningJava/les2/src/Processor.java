@@ -32,6 +32,10 @@ public class Processor{
         this.price = price;
     }
 
+    //Переопределение класса String для того, чтобы работал getProcessor в классе MotherBoard
+    @Override
+    public String toString(){ return "Процессор " + stamp;}
+
     //Свойства (Геттеры, сеттеры)
     public String getStamp() {return stamp;}
     public void setStamp(String stamp) { this.stamp = stamp; }
