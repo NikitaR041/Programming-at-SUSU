@@ -51,9 +51,15 @@ public:
         top = std::move(obj);
     }
 
-    void popElen() {
+    void popElem() {
         if (top != nullptr) {
             top = std::move(top->next);
+        }
+    }
+
+    int topElem() const {
+        if (top != nullptr) {
+            return top->value;
         }
     }
 
@@ -65,5 +71,25 @@ public:
 
 int main()
 {
+    Stack obj;
+    obj.pushElem(10);
+    obj.pushElem(20);
+    obj.pushElem(30);
+    
+    std::cout << obj.topElem() << '\n';
+    
+    obj.popElem();
+    std::cout << obj.topElem() << '\n';
+
+    obj.popElem();
+    std::cout << obj.topElem() << '\n';
+
+    obj.popElem();
+    std::cout << obj.topElem() << '\n';
+
+    if (obj.isEmpty()) {
+        std::cout << "Стек пуст!" << '\n';
+    }
+   
     std::cout << "Hello World!\n";
 }
