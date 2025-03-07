@@ -13,8 +13,30 @@
  */
 import java.util.List;
 
-public class Main {
-    public static void main(String[] args) {
-        System.out.printf("Hello and welcome!");
+public abstract class ChessFigure {
+    protected int x, y; // Координаты шахматной фигуры
+
+    public ChessFigure(int x, int y){
+        this.x = x;
+        this.y = y;
+    }
+
+    public int getX() { return this.x; }
+    public int getY() { return this.y; }
+    public void setXY(int x, int Y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    //Абстрактный метод - список позиций, которые шахматная фигура может атаковать
+    public abstract List<int[]> getAttackPositions();
+    // Проверяет, может ли фигура атаковать другую фигуру
+    public boolean canAttack(ChessFigure other) {
+        for (int[] pos : getAttackPositions()) {
+            if (pos[0] == other.getX() && pos[1] == other.getY()) {
+                return true;
+            }
+        }
+        return false;
     }
 }
