@@ -11,10 +11,23 @@
     Определить класс «Шахматная фигура» и унаследовать от него классы, соответствующие шахматным фигурам «Ферзь», «Пешка», «Конь».
     Задать позицию и определить список фигур, которые может убить некоторая выбранная фигура.
  */
-import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.printf("Hello and welcome!");
+        ChessFigure[] objFigures = {
+                new Queen(4, 4),
+                new Pawn(5, 5),
+                new Knight(2, 3),
+                new Pawn(3, 6),
+                new Queen(6, 2)
+        };
+
+        for(short i = 0; i < objFigures.length - 1; i++){
+            if(objFigures[i].canAttack(objFigures[i+1])){
+                System.out.println(objFigures[i] + " победила фигурку " + objFigures[i]);
+            }else{
+                System.out.println(objFigures[i] + " проиграла фигурке " + objFigures[i]);
+            }
+        }
     }
 }
