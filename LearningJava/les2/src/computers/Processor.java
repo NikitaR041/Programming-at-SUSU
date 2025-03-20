@@ -10,8 +10,8 @@
 Описать свойства для получения состояния объекта.
 
 Исключения придумать свои
- */
-
+*/
+package computers;
 public class Processor{
     private String stamp; //Марка процессора
     private float frequency; //Тактовая частота
@@ -23,30 +23,49 @@ public class Processor{
 
     //Конструктор с параметрами
     public Processor(String stamp, float frequency, int cachesize, int price) throws ProcessorException {
-        if (frequency < 0 || cachesize < 0 || price < 0){
-            throw new ProcessorException("Недопустимые значения полей!");
-        }
+        isError(stamp, frequency, cachesize, price);
         this.stamp = stamp;
         this.frequency = frequency;
         this.cachesize = cachesize;
         this.price = price;
     }
 
-    //Переопределение класса String для того, чтобы работал getProcessor в классе MotherBoard
+    //Приватный метод для проверки допустимости значений
+    private void isError(String stamp, float frequency, int cachesize, int price ) throws ProcessorException {
+        if (stamp.isEmpty() || stamp == null) throw new ProcessorException("Должно быть название процессора!");
+        if (frequency < 0 ) throw new ProcessorException("Тактовая частота не должна быть меньше 0!");
+        if (cachesize < 0 ) throw new ProcessorException("Объем кэша не должна быть меньше 0!");
+        if (price < 0 ) throw new ProcessorException("Цена на процессор не должна быть меньше 0!");
+
+    }
+
+    //Переопределение класса String для того, чтобы работал getProcessor в классе computers.MotherBoard
     @Override
     public String toString(){ return "Процессор " + stamp;}
 
     //Свойства (Геттеры, сеттеры)
     public String getStamp() {return stamp;}
-    public void setStamp(String stamp) { this.stamp = stamp; }
+    public void setStamp(String stamp) throws ProcessorException {
+        isError(stamp, this.frequency, this.cachesize, this.price);
+        this.stamp = stamp;
+    }
 
     public int getCachesize() { return cachesize; }
-    public void setCachesize(int cachesize) { this.cachesize = cachesize; }
+    public void setCachesize(int cachesize) throws ProcessorException {
+        isError(this.stamp, frequency, this.cachesize, this.price);
+        this.cachesize = cachesize;
+    }
 
     public float getFrequency(){ return frequency; }
-    public void setFrequency(float frequency){ this.frequency = frequency; }
+    public void setFrequency(float frequency) throws ProcessorException {
+        isError(this.stamp, this.frequency, cachesize, this.price);
+        this.frequency = frequency;
+    }
 
     public int getPrice() { return price; }
-    public void setPrice(int price){ this.price = price; }
+    public void setPrice(int price) throws ProcessorException {
+        isError(this.stamp, this.frequency, this.cachesize, price);
+        this.price = price;
+    }
 }
 

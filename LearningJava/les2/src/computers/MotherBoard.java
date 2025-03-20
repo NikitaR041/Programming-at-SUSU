@@ -11,6 +11,7 @@
 
 Исключения придумать свои
 */
+package computers;
 
 public class MotherBoard {
     private Processor processor; // Ссылка класса "процессор"
@@ -20,14 +21,21 @@ public class MotherBoard {
     public MotherBoard(){};
     //Конструктор с параметрами
     public MotherBoard(Processor processor, int sizeMemory) throws MotherBoardException{
-        if (sizeMemory < 0) throw new MotherBoardException("Объём памяти не должен быть меньше нуля!");
+        isError(sizeMemory);
         this.processor = processor;
         this.sizeMemory = sizeMemory;
+    }
+
+    private void isError(int sizeMemory) throws MotherBoardException{
+        if (sizeMemory < 0) throw new MotherBoardException("Объем оперативной памяти не должна быть меньше 0!");
     }
 
     //Свойства (геттеры, сеттеры)
     public Processor getProcessor() {return processor;}
 
     public int getSizeMemory() { return sizeMemory; }
-    public void setSizeMemory(int sizeMemory) { this.sizeMemory = sizeMemory; }
+    public void setSizeMemory(int sizeMemory) throws MotherBoardException {
+        isError(sizeMemory);
+        this.sizeMemory = sizeMemory;
+    }
 }

@@ -20,6 +20,7 @@
 
 Исключения придумать свои
 */
+package computers;
 
 public class Main {
     public static void main(String[] args) {
@@ -61,7 +62,7 @@ public class Main {
             System.out.println(obj2.getPrice());
 
             //Пробуем вызвать ошибку
-            //Processor obj5 = new Processor("Intel", -4, -5, -2);
+            computers.Processor obj5 = new computers.Processor("Intel", -4, -5, -2);
             MotherBoard obj6 = new MotherBoard(obj1, -1);
         } catch (ProcessorException ex) {
             System.out.println(ex.getMessage());

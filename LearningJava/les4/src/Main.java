@@ -42,6 +42,7 @@ public class Main {
     }
 }
 */
+
 //#2
 /*
 public class Main {
@@ -127,6 +128,7 @@ public class Main{
 */
 
 //#7
+
 interface Discriminant{
     double D(double a, double b, double c);
 }
@@ -138,3 +140,4 @@ public class Main{
         System.out.println(obj.D(2,4,0.5));
     }
 }
+
