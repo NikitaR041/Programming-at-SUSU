@@ -1,0 +1,8 @@
+#1
+Получить список названий компаний, названия которых начинаются на букву 'N'. Упорядочить по названию компании.
+
+SELECT CompanyName
+FROM Company
+WHERE CompanyName LIKE 'N%'
+ORDER BY CompanyName ASC
+
