@@ -6,3 +6,24 @@ FROM Company
 WHERE CompanyName LIKE 'N%'
 ORDER BY CompanyName ASC
 
+#2
+Получить список полётов (город отправления, город назначения, дата, тип самолёта), выполненных после 2012 года компанией 'S7'. Упорядочить по полю Dat.
+
+SELECT cFrom.CityName AS CityFrom, cTo.CityName AS CityTo, Flight.Dat, PlaneType.PlaneTypeName
+FROM Flight
+JOIN City cFrom ON Flight.CityFrom_ID = cFrom.City_ID
+JOIN City cTo ON Flight.CityTo_ID = cTo.City_ID
+JOIN PlaneType ON Flight.PlaneType_ID = PlaneType.PlaneType_ID
+JOIN Company ON Flight.Company_ID = Company.Company_ID
+WHERE YEAR(Flight.Dat) > 2012 AND Company.CompanyName = 'S7'
+ORDER BY Flight.Dat ASC
+
+#3
+Список пассажиров, летавших на самолётах компании 'S7'. Упорядочить по алфавиту. Считать, что поле FIO уникально.
+
+SELECT DISTINCT(FIO)
+FROM Passgr
+JOIN Flight ON Flight.Flight_ID = Passgr.Flight_ID
+JOIN Company ON Company.Company_ID = Flight.Company_ID
+WHERE Company.CompanyName = 'S7'
+ORDER BY Passgr.FIO ASC
