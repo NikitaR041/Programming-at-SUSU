@@ -23,7 +23,17 @@ ORDER BY Flight.Dat ASC
 
 SELECT DISTINCT(FIO)
 FROM Passgr
-JOIN Flight ON Flight.Flight_ID = Passgr.Flight_ID
-JOIN Company ON Company.Company_ID = Flight.Company_ID
+(LEFT)JOIN Flight ON Flight.Flight_ID = Passgr.Flight_ID
+(LEFT)JOIN Company ON Company.Company_ID = Flight.Company_ID
 WHERE Company.CompanyName = 'S7'
 ORDER BY Passgr.FIO ASC
+
+#4
+Подсчитайте количество полётов (название города, количество полётов), совершённых из каждого города. Упорядочить по названию города.
+Примечание: если из города не было полётов, он всё равно должен присутствовать в ответе (число полётов=0).
+
+SELECT City.CityName, COUNT(Flight.Flight_ID)
+FROM City
+LEFT OUTER JOIN Flight ON Flight.CityFrom_ID = City.City_ID
+GROUP BY CityName
+ORDER BY CityName ASC
