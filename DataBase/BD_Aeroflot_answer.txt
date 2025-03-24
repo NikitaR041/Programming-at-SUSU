@@ -37,3 +37,29 @@ FROM City
 LEFT OUTER JOIN Flight ON Flight.CityFrom_ID = City.City_ID
 GROUP BY CityName
 ORDER BY CityName ASC
+
+#5
+Список пассажиров (FIO), когда-либо летавших в 'Санкт-Петербург' на самолете 'А-310' (буква А -кириллица). Упорядочить по алфавиту.
+Примечание: предполагается, что FIO пассажиров уникальны.
+
+SELECT DISTINCT(FIO)
+FROM Passgr
+JOIN Flight ON Flight.Flight_ID = Passgr.Flight_ID
+JOIN City ON City.City_ID = Flight.CityTo_ID
+JOIN PlaneType ON PlaneType.PlaneType_ID = Flight.PlaneType_ID
+WHERE City.CityName LIKE 'Санкт-Петербург' AND PlaneType.PlaneTypeName LIKE 'А-310'
+ORDER BY Passgr.FIO ASC
+
+#6
+Получить список типов самолётов, которыми выполняла рейсы авиакомпания 'S7'. Упорядочить по названию типа самолёта.
+
+SELECT PlaneTypeName
+FROM PlaneType
+JOIN Flight ON Flight.PlaneType_ID = PlaneType.PlaneType_ID
+JOIN Company ON Company.Company_ID = Flight.Company_ID
+WHERE Company.CompanyName = 'S7'
+GROUP BY PlaneTypeName
+ORDER BY PlaneTypeName ASC
+
+#7
+Список городов, в которые никогда не выполнялись полёты. Упорядочить по алфавиту.
