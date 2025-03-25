@@ -63,3 +63,29 @@ ORDER BY PlaneTypeName ASC
 
 #7
 Список городов, в которые никогда не выполнялись полёты. Упорядочить по алфавиту.
+
+SELECT CityName
+FROM City
+WHERE NOT EXISTS (SELECT *
+		FROM Flight
+		WHERE City.City_ID = Flight.CityTo_ID)
+ORDER BY City.CityName ASC
+
+#8
+Получить таблицу (название типа самолёта, число мест). Упорядочить по типу самолёта. Учтите, что в самолёте вообще может не быть мест (0 мест).
+
+
+#14
+Найдите тип(ы) самолёта(ов), имеющего(их) наибольшее количество мест. Примите во внимание, что таких может быть несколько. Вывести все. Упорядочить по типу самолёта.
+Примечание: рекомендуется воспользоваться CTE (common table expression), но не обязательно.
+
+WITH name1(ID, n) AS
+(
+SELECT PlaneType_ID, count(Seat_ID)
+FROM Seat
+GROUP BY PlaneType_ID
+)
+
+SELECT PlaneTypeName
+FROM PlaneType, name1
+WHERE PlaneType.PlaneType_ID = name1.ID AND n = (SELECT max(n) FROM name1)

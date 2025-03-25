@@ -1,0 +1,15 @@
+#1
+Найдите средний возраст сотрудников предприятия (в том числе и уволенных), выраженный в целых днях.
+
+SELECT AVG(DATEDIFF(day, Birth, GETDATE()))
+FROM Employee;
+
+#3 
+База данных содержит функцию dbo.curJobTitle (@Emp_ID int), которая возвращает идентификатор текущей должности, которую занимает сотрудник с идентификатором @Emp_ID. Используя её, постройте запрос, возвращающий фонд зарплаты для каждого подразделения (DepartName, Сумма). Упорядочить по названию подразделения.
+
+SELECT DepartName, (SELECT ISNULL(SUM(Salary),0)
+	FROM JobTitle, Employee
+	WHERE dbo.curJobTitle(Emp_ID) = JobTitle.JobTitle_ID
+	AND Depart.Depart_ID = Employee.Depart_ID)
+FROM Depart
+ORDER BY DepartName
