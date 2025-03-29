@@ -123,7 +123,8 @@ int main() {
     while (!my_queue.empty()) {
         int X = my_queue.front(); // (1)
         my_queue.pop();
-        std::cout << "Элемент X из выходной очереди: " << X << '\n';
+        //std::cout << "Элемент X из выходной очереди: " << X << '\n';
+        std::cout << X << ' ';
         while (!my_queue.empty()) {
             int value = my_queue.front();
             my_queue.pop();
@@ -252,4 +253,64 @@ public:
 struct node { int value; node *left, *right; };
 К каждому значению, хранящемуся в дереве, функция применяет функцию, указанную в качестве аргумента:
 void BFSorder(node *n, void (*f)(int));
+
+#include <iostream>
+#include <queue>
+
+struct node {
+    int value;
+    node* left, * right;
+};
+
+// Функция, применяемая к узлу (просто выводит значение)
+void printValue(int val) {
+    std::cout << val << " ";
+}
+
+// Функция обхода бинарного дерева в ширину (BFS)
+void BFSorder(node* n, void (*f)(int)) {
+    if (!n) return;  // Если дерево пустое, сразу выходим
+
+    std::queue<node*> q;  // Очередь для BFS
+    q.push(n);  // Добавляем корень в очередь
+
+    while (!q.empty()) {
+        node* current = q.front();  // Берём первый элемент
+        q.pop();  // Удаляем его из очереди
+
+        f(current->value);  // Применяем функцию f
+
+        // Добавляем потомков в очередь
+        if (current->left)
+            q.push(current->left);
+        if (current->right)
+            q.push(current->right);
+    }
+}
+
+// Тестовый запуск
+int main() {
+    // Создадим дерево:
+    node* root = new node{ 1, nullptr, nullptr };
+    root->left = new node{ 2, nullptr, nullptr };
+    root->right = new node{ 3, nullptr, nullptr };
+    root->left->left = new node{ 4, nullptr, nullptr };
+    root->left->right = new node{ 5, nullptr, nullptr };
+    root->right->left = new node{ 6, nullptr, nullptr };
+    root->right->right = new node{ 7, nullptr, nullptr };
+
+    std::cout << "Обход в ширину (BFS): ";
+    BFSorder(root, printValue);  // Выведет: 1 2 3 4 5 6 7
+
+    return 0;
+}
+*/
+
+//Задание 6 - (2379)
+/*
+Используя декартово дерево из лекций решите следующую задачу.
+Будем называть i-й элемент последовательности a1, a2, ..., aN медианным, если количество элементов, меньших или равных ai среди элементов a1, a2, ..., ai−1, 
+больше или равно количеству элементов, больших или равных ai среди элементов ai+1, ai+2, ..., aN. 
+В последовательности может быть несколько медианных элементов.
+Напишите программу, которая находит минимальный индекс медианного элемента.
 */

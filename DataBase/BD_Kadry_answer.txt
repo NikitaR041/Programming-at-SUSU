@@ -4,6 +4,18 @@
 SELECT AVG(DATEDIFF(day, Birth, GETDATE()))
 FROM Employee;
 
+#2
+Получите послужной список сотрудника 'Иванов Иван Владимирович' (Подразделение, должность, оклад, дата приказа, вид приказа). Упорядочить по дате приказа.
+
+SELECT Depart.DepartName, JobTitle.JobTitleName, JobTitle.Salary, Move.Dat, MoveKind.MoveKindName
+FROM Employee
+LEFT JOIN Move ON Move.Emp_ID=Employee.Emp_ID
+LEFT JOIN MoveKind ON MoveKind.MoveKind_ID = Move.MoveKind_ID
+LEFT JOIN JobTitle ON JobTitle.JobTitle_ID = Move.JobTitle_ID
+LEFT JOIN Depart ON Depart.Depart_ID = Move.Depart_ID
+WHERE Employee.FIO = 'Иванов Иван Владимирович'
+ORDER BY Move.Dat ASC
+
 #3 
 База данных содержит функцию dbo.curJobTitle (@Emp_ID int), которая возвращает идентификатор текущей должности, которую занимает сотрудник с идентификатором @Emp_ID. Используя её, постройте запрос, возвращающий фонд зарплаты для каждого подразделения (DepartName, Сумма). Упорядочить по названию подразделения.
 
@@ -13,3 +25,45 @@ SELECT DepartName, (SELECT ISNULL(SUM(Salary),0)
 	AND Depart.Depart_ID = Employee.Depart_ID)
 FROM Depart
 ORDER BY DepartName
+
+#4
+Для каждого подразделения найти подразделение, в которое оно входит. Ответ содержит поля: (название подразделения, название родителя). Упорядочить по названию подразделения.
+
+SELECT d1.DepartName, d2.DepartName 
+FROM Depart d1
+LEFT OUTER JOIN Depart d2 ON d1.Parent_ID = d2.Depart_ID 
+ORDER BY d1.DepartName
+
+#5
+Для каждого сотрудника найти количество его перемещений. Под перемещением понимается количество записей в таблице move. Упорядочить по фамилии сотрудника.
+
+SELECT FIO , COUNT(Move.Move_ID)
+FROM Employee
+JOIN Move ON Move.Emp_ID = Employee.Emp_ID
+GROUP BY FIO
+
+#6
+База данных содержит функцию dbo.curJobTitle (@Emp_ID int), которая возвращает идентификатор текущей должности, которую занимает сотрудник с идентификатором @Emp_ID. Получить список (должность, количество человек в этой должности) на текущую дату. В ответе должны присутствовать все должности, даже для тех должностей, которые никто не занимает. Упорядочить по названию должности.
+
+SELECT JobTitleName, (SELECT COUNT(Emp_ID)
+		FROM Employee
+		WHERE dbo.curJobTitle(Emp_ID) = JobTitle.JobTitle_ID)
+FROM JobTitle
+ORDER BY JobTitleName ASC
+
+#7
+Количество принятых и переведенных в каждое подразделение в 2018 году (DepartName, Число сотрудников). Упорядочить по названию подразделения.
+
+SELECT  Depart.DepartName, COUNT(MoveKind.MoveKind_ID)
+FROM Move
+JOIN Depart ON Depart.Depart_ID = Move.Depart_ID
+JOIN MoveKind ON MoveKind.MoveKind_ID= Move.MoveKind_ID
+WHERE Dat LIKE '2018'
+GROUP BY Depart.DepartName
+--------------------------------------------------------------------
+SELECT DepartName, (COUNT(Move.MoveKind_ID)
+FROM Depart
+JOIN Move ON Move.Depart_ID = Depart.Depart_ID
+WHERE YEAR(Dat) LIKE '2018'
+GROUP BY Depart.DepartName
+
