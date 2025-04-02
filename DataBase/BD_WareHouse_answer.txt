@@ -1,0 +1,46 @@
+#1
+Получить список пар названий организаций, расположенных по одному и тому же адресу. Для сравнения используйте идентификаторы организаций, а не имена. В первом столбце должна быть организация с меньшим идентификатором. Упорядочить сначала по названию первой организации из пары, а затем по второй. 
+
+SELECT o1.OrgName AS Org1, o2.OrgName AS Org2
+FROM Org o1
+JOIN Org o2 ON o1.Address = o2.Address AND o1.Org_ID < o2.Org_ID
+ORDER BY o1.OrgName, o2.OrgName
+
+#2
+Получить таблицу (дата закупки, номер накладной, количество, цена) для всех закупок товара 'Апельсин' в 2015 году. Упорядочить по дате закупки.
+
+SELECT Dat, Numb, SostNakl.Amount, SostNakl.Price
+FROM SostNakl 
+JOIN Nakl ON Nakl.Nakl_ID = SostNakl.Nakl_ID
+JOIN Tovar ON Tovar.Tovar_ID = SostNakl.Tovar_ID
+WHERE Tovar.TovarName = 'Апельсин' AND Nakl.InOut = '+' AND YEAR(Nakl.Dat) = 2015
+ORDER BY Nakl.Dat ASC
+
+#3
+Подсчитать число отпускных накладных (InOut='-') (OrgName, <число накладных>) для каждой организации в 2015 г. Упорядочить по названию организации.
+Примечание: в ответе должны присутствовать и те организации, которые ничего не покупали со склада.
+
+SELECT Org.OrgName, COUNT(Nakl.Nakl_ID)
+FROM Org
+LEFT JOIN Nakl ON Org.Org_ID = Nakl.Org_ID AND YEAR(Nakl.Dat) = 2015 AND Nakl.InOut = '-'
+GROUP BY Org.OrgName
+ORDER BY Org.OrgName ASC;
+
+#4
+Список подкатегорий, которые входят в категорию 'Продукты'. Упорядочить в алфавитном порядке.
+
+SELECT T1.TovarName
+FROM Tovar T1
+WHERE T1.Parent_ID = (SELECT T2.Tovar_ID
+		FROM Tovar T2
+		WHERE TovarName LIKE 'Продукты') AND T1.IsTovar = 0
+ORDER BY T1.TovarName ASC
+
+ИЛИ 
+
+SELECT T1.TovarName
+FROM Tovar T1
+WHERE T1.Parent_ID = (SELECT T2.Tovar_ID
+		FROM Tovar T2
+		WHERE TovarName LIKE 'Продукты')
+ORDER BY T1.TovarName ASC

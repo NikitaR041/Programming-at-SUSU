@@ -1,0 +1,21 @@
+#1
+Список групп, обучавшихся в 2016/2017 учебном году. Упорядочить по алфавиту.
+
+SELECT g.GruppName
+FROM Gruppa g
+JOIN Year y ON g.Year_ID = y.Year_ID
+WHERE y.YearName = '2016/2017'
+ORDER BY g.GruppName ASC;
+
+#2
+Получить результат (имя БД, название темы, номер вопроса, баллов за правильный ответ) для всех вопросов, балл оценки которых больше 3. Упорядочить по имени БД, теме и номеру вопроса.
+
+#3
+Получить таблицу (учебный год, название группы, число студентов). Упорядочить по названию учебного года и названию группы.
+SELECT Year.YearName, Gruppa.GruppName, COUNT(Student.Student_ID)
+FROM Gruppa
+left JOIN Student ON Gruppa.Grupp_ID = Student.Grupp_ID
+JOIN Year ON Year.Year_ID = Gruppa.Year_ID
+GROUP BY Year.YearName, Gruppa.GruppName
+ORDER BY  Year.YearName, Gruppa.GruppName
+
