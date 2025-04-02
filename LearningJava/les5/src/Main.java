@@ -71,54 +71,58 @@ import java.util.regex.*;
 
 public class Main {
     public static void main(String[] args) {
-        Map<String,Integer> MyMap = new HashMap<String, Integer>();
-        List<Map.Entry<String,Integer>> pairList = new ArrayList<>();
+        Map<String, Integer> MyMap = new HashMap<>();
+        List<Map.Entry<String, Integer>> pairList = new ArrayList<>();
         StringBuilder strBuffer1 = new StringBuilder();
-        String strBuffer2 = new String();
+        String strBuffer2;
         Reader reader = null;
 
-        try
-        {
-            reader = new InputStreamReader(new FileInputStream("example.txt"));
-            //read the data here
-            int index = 0;
-            while((index=reader.read())!=-1){
-                strBuffer1.append((char)index);
+        try {
+            reader = new InputStreamReader(new FileInputStream("example.txt"), "UTF-8"); // Указываем кодировку UTF-8
+            int index;
+            while ((index = reader.read()) != -1) {
+                strBuffer1.append((char) index);
             }
 
-            // Компилируем регулярное выражение
-//            Pattern pattern = Pattern.compile("[^\\p{L}\\p{N}\\s]+");
-//            Matcher matcher = pattern.matcher(strBuffer1);
-//            strBuffer2 = matcher.replaceAll("");// Заменяем все найденные знаки препинания на пустую строкуи
-//            strBuffer2 = strBuffer2.replaceAll("\\s+", " ").trim(); // Убираем начальныне и конечные пробелы
-
+            // Очищаем текст от знаков препинания и лишних пробелов
             strBuffer2 = strBuffer1.toString().replaceAll("[^\\p{L}\\p{N}\\s]+", "").replaceAll("\\s+", " ").trim();
             String[] words = strBuffer2.split("\\s+");
 
-            for(String word : words) {
+            // Подсчет частоты слов
+            for (String word : words) {
                 MyMap.put(word, MyMap.getOrDefault(word, 0) + 1);
             }
-            for (Map.Entry<String, Integer> entry : MyMap.entrySet()) {
-                pairList.add(entry);
-            }
-            Collections.sort(pairList, Comparator.comparing(Map.Entry<String, Integer>::getValue).reversed());
 
+            // Перенос данных в список и сортировка по убыванию
+            pairList.addAll(MyMap.entrySet());
+            pairList.sort(Comparator.comparing(Map.Entry<String, Integer>::getValue).reversed());
 
-        }
-        catch (IOException e)
-        {
-            System.err.println("Error while reading file: " + e.getLocalizedMessage());
-        }
-        finally
-        {
-            if (null != reader)
-            {
-                try
-                {
-                    reader.close();
+            // Общее количество слов
+            int totalWords = words.length;
+
+            // Записываем в CSV с использованием try-with-resources
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter("ExampleOut.csv", false))) {
+                writer.write("Слово,Частота,Частота(%)\n");
+
+                for (Map.Entry<String, Integer> entry : pairList) {
+                    String word = entry.getKey();
+                    int frequency = entry.getValue();
+                    double percentage = (double) frequency / totalWords * 100;
+                    writer.write(String.format("%s,%d,%.2f%%\n", word, frequency, percentage));
                 }
-                catch (IOException e)
-                {
+
+                System.out.println("Файл ExampleOut.csv успешно создан!");
+            } catch (IOException e) {
+                System.err.println("Ошибка при записи в файл: " + e.getMessage());
+            }
+
+        } catch (IOException e) {
+            System.err.println("Ошибка при чтении файла: " + e.getLocalizedMessage());
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException e) {
                     e.printStackTrace(System.err);
                 }
             }

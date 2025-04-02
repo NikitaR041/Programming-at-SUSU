@@ -19,3 +19,27 @@ JOIN Year ON Year.Year_ID = Gruppa.Year_ID
 GROUP BY Year.YearName, Gruppa.GruppName
 ORDER BY  Year.YearName, Gruppa.GruppName
 
+#4
+Получить таблицу (название группы, число правильных ответов, данных студентами группы) для групп 2016/2017 учебного года. Упорядочить по названию группы.
+Примечание: группы, где нет студентов в ответ не включать.
+
+НЕПРАВИЛЬНО
+
+SELECT GruppName, COUNT(Answer_ID)
+FROM Answer
+JOIN Student ON Student.Student_ID = Answer.Student_ID
+JOIN Gruppa ON Gruppa.Grupp_ID = Student.Grupp_ID
+JOIN Year ON Year.Year_ID = Gruppa.Year_ID
+WHERE Year.YearName LIKE '2016/2017'
+GROUP BY GruppName
+ORDER BY GruppName ASC
+
+#5
+Список студентов, отвечавших на вопросы 21 апреля 2009 г. Упорядочить по алфавиту.
+
+SELECT StudName
+FROM Student
+JOIN Answer ON Answer.Student_ID = Student.Student_ID
+WHERE DAY(Answer.Tim) = 21 AND MONTH(Answer.Tim) = 04 AND YEAR(Answer.Tim) = 2009
+GROUP BY StudName
+ORDER BY StudName ASC
