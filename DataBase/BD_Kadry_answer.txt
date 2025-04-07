@@ -54,16 +54,29 @@ ORDER BY JobTitleName ASC
 #7
 Количество принятых и переведенных в каждое подразделение в 2018 году (DepartName, Число сотрудников). Упорядочить по названию подразделения.
 
-SELECT  Depart.DepartName, COUNT(MoveKind.MoveKind_ID)
-FROM Move
-JOIN Depart ON Depart.Depart_ID = Move.Depart_ID
-JOIN MoveKind ON MoveKind.MoveKind_ID= Move.MoveKind_ID
-WHERE Dat LIKE '2018'
-GROUP BY Depart.DepartName
---------------------------------------------------------------------
-SELECT DepartName, (COUNT(Move.MoveKind_ID)
-FROM Depart
-JOIN Move ON Move.Depart_ID = Depart.Depart_ID
-WHERE YEAR(Dat) LIKE '2018'
-GROUP BY Depart.DepartName
+По идеи правильно так, но оказывается, нужно ещё учитывать не переведенных, тогда смотреть на "Решение 2"
+"Решение 1"
+SELECT D.DepartName, ISNULL(COUNT(MK.MoveKind_ID),0)
+FROM Move M
+JOIN MoveKind MK ON MK.MoveKind_ID = M.Move_ID
+JOIN Depart D ON D.Depart_ID = M.Depart_ID
+WHERE YEAR(M.Dat) = 2018
+GROUP BY D.DepartName 
+ORDER BY D.DepartName ASC
 
+"Решение 2"
+SELECT D.DepartName, COUNT(M.Move_ID)
+FROM Depart D
+LEFT JOIN Move M ON D.Depart_ID = M.Depart_ID AND YEAR(M.Dat) = 2018
+LEFT JOIN MoveKind MK ON MK.MoveKind_ID = M.MoveKind_ID AND MK.IsArrival = 1
+GROUP BY D.DepartName
+ORDER BY D.DepartName ASC
+
+#8
+Список уволенных в период с 2016 по 2018 ('Уволен'). Упорядочить по фамилии.
+SELECT E.FIO
+FROM Employee E
+LEFT JOIN Move M ON M.Emp_ID = E.Emp_ID
+LEFT JOIN MoveKind MK ON MK.MoveKind_ID = M.MoveKind_ID
+WHERE YEAR(M.Dat) >= 2016 AND YEAR(M.Dat) <= 2018 AND MK.IsArrival = 0
+ORDER BY E.FIO ASC

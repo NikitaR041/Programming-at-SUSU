@@ -10,6 +10,13 @@ ORDER BY g.GruppName ASC;
 #2
 Получить результат (имя БД, название темы, номер вопроса, баллов за правильный ответ) для всех вопросов, балл оценки которых больше 3. Упорядочить по имени БД, теме и номеру вопроса.
 
+SELECT TestBD.Base, Topic.TopicName, Query.Numb, Query.LevelC
+FROM Query
+JOIN TestBD ON TestBD.TestBD_ID = Query.TestBD_ID
+JOIN Topic ON Topic.Topic_ID = Query.Topic_ID
+WHERE Query.LevelC  > 3
+ORDER BY TestBD.Base, Topic.TopicName, Query.Numb ASC
+
 #3
 Получить таблицу (учебный год, название группы, число студентов). Упорядочить по названию учебного года и названию группы.
 SELECT Year.YearName, Gruppa.GruppName, COUNT(Student.Student_ID)
@@ -23,16 +30,16 @@ ORDER BY  Year.YearName, Gruppa.GruppName
 Получить таблицу (название группы, число правильных ответов, данных студентами группы) для групп 2016/2017 учебного года. Упорядочить по названию группы.
 Примечание: группы, где нет студентов в ответ не включать.
 
-НЕПРАВИЛЬНО
+Важно! Здесь нужно было посмотреть на ПРИМЕЧАНИЕ -> следовательно таблица из Gruppa
 
-SELECT GruppName, COUNT(Answer_ID)
-FROM Answer
-JOIN Student ON Student.Student_ID = Answer.Student_ID
-JOIN Gruppa ON Gruppa.Grupp_ID = Student.Grupp_ID
+SELECT Gruppa.GruppName, COUNT(Answer.Answer_ID)
+FROM Gruppa
 JOIN Year ON Year.Year_ID = Gruppa.Year_ID
-WHERE Year.YearName LIKE '2016/2017'
-GROUP BY GruppName
-ORDER BY GruppName ASC
+LEFT JOIN Student ON Student.Grupp_ID = Gruppa.Grupp_ID
+LEFT JOIN Answer ON Answer.Student_ID = Student.Student_ID AND Answer.Result = 1
+WHERE Year.YearName = '2016/2017'
+GROUP BY Gruppa.GruppName
+ORDER BY Gruppa.GruppName ASC
 
 #5
 Список студентов, отвечавших на вопросы 21 апреля 2009 г. Упорядочить по алфавиту.
@@ -43,3 +50,35 @@ JOIN Answer ON Answer.Student_ID = Student.Student_ID
 WHERE DAY(Answer.Tim) = 21 AND MONTH(Answer.Tim) = 04 AND YEAR(Answer.Tim) = 2009
 GROUP BY StudName
 ORDER BY StudName ASC
+
+#6
+Получить таблицу (студент1, студент2), такую что оба студента правильно ответили на один и тот же вопрос. Упорядочить по фамилиям студентов (сначала по первому, потом по второму). Не должно быть пар записей (A,B) и (B,A), (А,А).
+
+SELECT S1.StudName AS Student1, S2.StudName AS Student2
+FROM Answer A1
+JOIN Answer A2 ON A1.Query_ID = A2.Query_ID AND A1.Student_ID < A2.Student_ID
+JOIN Student S1 ON S1.Student_ID = A1.Student_ID
+JOIN Student S2 ON S2.Student_ID = A2.Student_ID
+WHERE A1.Result = 1 AND A2.Result = 1
+ORDER BY S1.StudName, S2.StudName
+
+#7
+Найдите список вопросов (имя БД, номер вопроса) на которые никто не пытался отвечать. Упорядочить по имени БД и номеру вопроса.
+
+SELECT TestBD.Base, Query.Numb
+FROM Query
+JOIN TestBD ON TestBD.TestBD_ID = Query.TestBD_ID 
+LEFT OUTER JOIN Answer ON Answer.Query_ID = Query.Query_ID
+WHERE Answer.Answer_ID IS NULL
+ORDER BY TestBD.Base, Query.Numb
+
+#8
+Получить список (StudName, суммарное число набранных баллов) для тех студентов, которые правильно ответили хотя бы на один вопрос. Упорядочить по баллам в убывающем порядке, студентам в порядке возрастания.
+
+SELECT S.StudName, SUM(Q.LevelC) AS example
+FROM Answer A
+JOIN Student S ON S.Student_ID = A.Student_ID
+JOIN Query Q ON Q.Query_ID = A.Query_ID
+WHERE A.Result = 1
+GROUP BY S.StudName
+ORDER BY example DESC, S.StudName ASC

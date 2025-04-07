@@ -74,6 +74,61 @@ ORDER BY City.CityName ASC
 #8
 Получить таблицу (название типа самолёта, число мест). Упорядочить по типу самолёта. Учтите, что в самолёте вообще может не быть мест (0 мест).
 
+SELECT PT.PlaneTypeName, COUNT(S.Seat_ID)
+FROM Seat S
+JOIN PlaneType PT ON PT.PlaneType_ID = S.PlaneType_ID
+GROUP BY PT.PlaneTypeName 
+ORDER BY PT.PlaneTypeName ASC
+
+#9
+Получить список пассажиров (FIO), летевших из 'Санкт-Петербург' в 'Магадан' 27 апреля 2013 г. Упорядочить по FIO.
+
+SELECT P.FIO
+FROM Passgr P
+JOIN Flight F ON F.Flight_ID = P.Flight_ID
+WHERE DAY(F.Dat) = 27 AND MONTH(F.Dat) = 4 AND YEAR(F.Dat) = 2013
+	AND F.CityFrom_ID = (SELECT C1.City_ID 
+			FROM City C1
+			WHERE C1.CityName LIKE 'Санкт-Петербург' 
+				AND F.CityTo_ID = (SELECT C2.City_ID 
+					FROM City C2
+					WHERE C2.CityName LIKE 'Магадан')
+			)
+ORDER BY P.FIO ASC
+
+#10
+Список авиакомпаний, выполнявших когда-либо полёты из 'Санкт-Петербург' в 'Магадан'. Упорядочить по алфавиту.
+
+SELECT C.CompanyName 
+FROM Company C
+JOIN Flight F ON F.Company_ID = C.Company_ID
+WHERE F.CityFrom_ID = (SELECT C1.City_ID 
+			FROM City C1
+			WHERE C1.CityName = 'Санкт-Петербург' 
+				AND F.CityTo_ID = (SELECT C2.City_ID
+					FROM City C2
+					WHERE C2.CityName = 'Магадан')
+		         )
+GROUP BY C.CompanyName 
+ORDER BY C.CompanyName ASC 
+
+#11
+Получите список всех полётов (Dat, PlaneTypeName, SeatName, Город отправления, Город назначения) пассажира(ов) по имени 'Пётр Иванович Неуважай-Корыто'. Упорядочить по дате.
+
+SELECT F.Dat, PT.PlaneTypeName, S.SeatName, C1.CityName, C2.CityName
+FROM Passgr P
+JOIN Seat S ON S.Seat_ID = P.Seat_ID
+JOIN Flight F ON F.Flight_ID = P.Flight_ID 
+JOIN PlaneType PT ON PT.PlaneType_ID = F.PlaneType_ID
+JOIN City C1 ON C1.City_ID = F.CityFrom_ID
+JOIN City C2 ON C2.City_ID =  F.CityTo_ID
+WHERE P.FIO LIKE 'Пётр Иванович Неуважай-Корыто'
+ORDER BY F.Dat ASC
+
+#12
+База данных содержит ошибки. Некоторые пассажиры сидят на местах, относящихся не к тому типу самолёта, который выполняет полёт. Получить таблицу (FIO, Dat, PlaneTypeName1, PlaneTypeName2), где полёт выполняется самолётом одного типа, а пассажир сидит на месте, относящемся к самолёту другого типа. Упорядочить по FIO и Dat.
+
+
 
 #14
 Найдите тип(ы) самолёта(ов), имеющего(их) наибольшее количество мест. Примите во внимание, что таких может быть несколько. Вывести все. Упорядочить по типу самолёта.
