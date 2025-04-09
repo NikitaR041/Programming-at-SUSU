@@ -250,7 +250,7 @@ public:
 
 
 //Для хранение неориентированного графа подойдет список смежностей.
-*/
+
 class Graph {
 private:
     int V; //Количество вершин
@@ -295,7 +295,7 @@ public:
     //Асимптотическая сложность:O(k), где k - число соседей у вершины V.
     NeighborIterator getNeighborIterator(int v) const;
 };
-
+*/
 
 //Задание 5
 /*
@@ -364,4 +364,165 @@ int main() {
 больше или равно количеству элементов, больших или равных ai среди элементов ai+1, ai+2, ..., aN. 
 В последовательности может быть несколько медианных элементов.
 Напишите программу, которая находит минимальный индекс медианного элемента.
+
+В приложении MinIDE работает
+
+
+#include <iostream>
+#include <functional>
+#include <stdexcept>
+#include <utility>
+#include <cstdlib>
+
+using namespace std;
+
+template <typename T>
+class ITreap {
+    struct node {
+        T v; // значение элемента
+        size_t k; // неявный ключ - количество элементов в поддереве
+        int y; // случайная высота
+        node* left = nullptr;
+        node* right = nullptr;
+
+        node(T v) : v(v), k(1), y(rand()) {}
+    };
+
+    node* root;
+
+    size_t size(node* n) const {
+        return n ? n->k : 0;
+    }
+
+    void update(node* t) {
+        if (!t) return;
+        t->k = 1 + size(t->left) + size(t->right);
+    }
+
+    pair<node*, node*> spliti(node* t, size_t k) { // разрезание по количеству
+        if (!t || k >= t->k) return { t, nullptr };
+        if (k == 0) return { nullptr, t };
+        size_t l = size(t->left);
+        if (l < k) {
+            auto [t1, t2] = spliti(t->right, k - l - 1);
+            t->right = t1;
+            update(t);
+            return { t, t2 };
+        }
+        else {
+            auto [t1, t2] = spliti(t->left, k);
+            t->left = t2;
+            update(t);
+            return { t1, t };
+        }
+    }
+
+    node* merge(node* t1, node* t2) { // слияние
+        if (!t2) return t1;
+        if (!t1) return t2;
+        if (t1->y > t2->y) {
+            t1->right = merge(t1->right, t2);
+            update(t1);
+            return t1;
+        }
+        else {
+            t2->left = merge(t1, t2->left);
+            update(t2);
+            return t2;
+        }
+    }
+
+    node* find(size_t k) const { // поиск узла по номеру
+        node* p = root;
+        while (p) {
+            size_t l = size(p->left);
+            if (l == k) break;
+            else if (k < l) p = p->left;
+            else {
+                k -= l + 1;
+                p = p->right;
+            }
+        }
+        return p;
+    }
+
+    void foreach(const function<void(T&)>& f, node* p) const { // обход дерева
+        if (!p) return;
+        foreach(f, p->left);
+        f(p->v);
+        foreach(f, p->right);
+    }
+
+    void free(node* p) { // освобождение памяти
+        if (!p) return;
+        free(p->left);
+        free(p->right);
+        delete p;
+    }
+
+public:
+    ITreap() : root(nullptr) {}
+    ITreap(const ITreap&) = delete; // запрет копирования
+    ITreap& operator=(const ITreap&) = delete; // запрет присваивания
+    ~ITreap() { free(root); }
+
+    size_t size() const {
+        return size(root);
+    }
+
+    T& operator[](size_t k) { // доступ к элементу по индексу
+        if (k >= size()) throw runtime_error("Wrong index");
+        node* p = find(k);
+        return p->v;
+    }
+
+    T operator[](size_t k) const {
+        if (k >= size()) throw runtime_error("Wrong index");
+        node* p = find(k);
+        return p->v;
+    }
+
+    void inserti(size_t k, T v) { // вставка
+        if (k > size()) throw runtime_error("Wrong index");
+        node* m = new node(v);
+        auto [t1, t2] = spliti(root, k);
+        root = merge(merge(t1, m), t2);
+    }
+
+    void erasei(size_t k) { // удаление
+        if (k >= size()) throw runtime_error("Wrong index");
+        auto [t1, t] = spliti(root, k);
+        auto [m, t2] = spliti(t, 1);
+        root = merge(t1, t2);
+        delete m;
+    }
+
+    void foreach(const function<void(T&)>& f) const {
+        foreach(f, root);
+    }
+};
+
+int main() {
+    ITreap<int> t;
+
+    // Пример использования
+    t.inserti(0, 10); // {10}
+    t.inserti(1, 20); // {10, 20}
+    t.inserti(1, 15); // {10, 15, 20}
+
+    t.foreach([](int& v) { cout << v << "\n"; });
+
+    t[2] = 25; // {10, 15, 25}
+    t.erasei(1); // {10, 25}
+
+    cout << t[0] << "\n";
+    cout << t[1] << "\n";
+
+    return 0;
+}
+*/
+
+//Задание 7 - 
+/*
+
 */
