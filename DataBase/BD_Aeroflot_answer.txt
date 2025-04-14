@@ -128,7 +128,26 @@ ORDER BY F.Dat ASC
 #12
 База данных содержит ошибки. Некоторые пассажиры сидят на местах, относящихся не к тому типу самолёта, который выполняет полёт. Получить таблицу (FIO, Dat, PlaneTypeName1, PlaneTypeName2), где полёт выполняется самолётом одного типа, а пассажир сидит на месте, относящемся к самолёту другого типа. Упорядочить по FIO и Dat.
 
+SELECT P.FIO, F.Dat, PL1.PlaneTypeName, PL2.PlaneTypeName
+FROM Passgr P
+JOIN Seat S ON S.Seat_ID = P.Seat_ID
+JOIN Flight F ON  F.Flight_ID = P.Flight_ID
+JOIN PlaneType PL1 ON PL1.PlaneType_ID = F.PlaneType_ID
+JOIN PlaneType PL2 ON PL2.PlaneType_ID = S.PlaneType_ID
+WHERE PL1.PlaneType_ID <> PL2.PlaneType_ID
+ORDER BY P.FIO, F.Dat ASC
 
+#13
+Найти города, из которых не было полётов в Васюки. Упорядочить по названию города. Не забудьте о том, что в ответе не должно быть полёта из Васюков в Васюки.
+
+SELECT C1.CityName
+FROM City C1
+WHERE C1.CityName <> 'Васюки' AND NOT EXISTS (
+	SELECT F.Flight_ID
+	FROM Flight F
+	JOIN City C2 ON C2.City_ID = F.CityTo_ID
+	WHERE F.CityFrom_ID = C1.City_ID AND C2.CityName = 'Васюки')
+ORDER BY C1.CityName
 
 #14
 Найдите тип(ы) самолёта(ов), имеющего(их) наибольшее количество мест. Примите во внимание, что таких может быть несколько. Вывести все. Упорядочить по типу самолёта.
