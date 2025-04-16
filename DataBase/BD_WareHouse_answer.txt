@@ -44,3 +44,41 @@ WHERE T1.Parent_ID = (SELECT T2.Tovar_ID
 		FROM Tovar T2
 		WHERE TovarName LIKE 'Продукты')
 ORDER BY T1.TovarName ASC
+
+#5
+Получить количество и стоимость проданного и купленного каждого из товаров в 2011 году для каждой организации (Организация, название товара, к-во проданного, стоимость проданного, к-во купленного, стоимость купленного). Упорядочить по названию организации, затем по названию товара. Если ничего не продавалось или не покупалось, то следует получить 0.
+
+WITH DecartMultTable AS (
+	SELECT O.OrgName, T.TovarName
+	FROM Org O
+	CROSS JOIN Tovar T
+	WHERE T.IsTovar = 1
+), MyTableSale AS (
+	SELECT O.OrgName, T.TovarName, SUM(SN.Amount) AS CountA, SUM(SN.Amount * SN.Price) AS SaleSumTovars
+	FROM Nakl N
+	JOIN Org O ON O.Org_ID = N.Org_ID
+	JOIN SostNakl SN ON SN.Nakl_ID = N.Nakl_ID
+	JOIN Tovar T ON T.Tovar_ID = SN.Tovar_ID
+	WHERE N.InOut LIKE '-' AND YEAR(N.Dat) = 2011 
+	GROUP BY O.OrgName, T.TovarName
+), MyTableBuy AS (
+	SELECT O.OrgName, T.TovarName, SUM(SN.Amount) AS CountB, SUM(SN.Amount * SN.Price) AS BuySumTovars
+	FROM Nakl N
+	JOIN Org O ON O.Org_ID = N.Org_ID
+	JOIN SostNakl SN ON SN.Nakl_ID = N.Nakl_ID
+	JOIN Tovar T ON T.Tovar_ID = SN.Tovar_ID
+	WHERE N.InOut LIKE '+' AND YEAR(N.Dat) = 2011
+	GROUP BY O.OrgName, T.TovarName 
+)
+
+SELECT 
+	DMT.OrgName AS Организация,
+    	DMT.TovarName AS Название_товара,
+    	COALESCE(MTS.CountA, 0) AS Количество_проданного,
+    	COALESCE(MTS.SaleSumTovars, 0) AS Стоимость_проданного,
+    	COALESCE(MTB.CountB, 0) AS Количество_купленного,
+    	COALESCE(MTB.BuySumTovars, 0) AS Стоимость_купленного
+FROM DecartMultTable DMT
+LEFT OUTER JOIN MyTableSale MTS ON DMT.OrgName = MTS.OrgName AND DMT.TovarName = MTS.TovarName
+LEFT OUTER JOIN MyTableBuy MTB ON DMT.OrgName = MTB.OrgName AND DMT.TovarName = MTB.TovarName
+ORDER BY DMT.OrgName, DMT.TovarName

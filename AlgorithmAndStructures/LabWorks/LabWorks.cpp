@@ -38,67 +38,6 @@ top -/-> [10|nullptr]
 /*
 class Stack {
 private:
-    struct Node {
-        int value; //Значение узла
-        std::unique_ptr<Node> next; //Указатель на следующий элемент
-        Node(int value) : value(value), next(nullptr) {}
-    };
-    std::unique_ptr<Node> top; //Указатель на верхний элемент
-
-public:
-    Stack() : top(nullptr) {}
-    
-    void pushElem(int value) {
-        std::unique_ptr<Node> obj = std::make_unique<Node>(value);
-        obj->next = std::move(top);
-        top = std::move(obj);
-    }
-
-    void popElem() {
-        if (top != nullptr) {
-            top = std::move(top->next);
-        }
-    }
-
-    int topElem() const {
-        if (top != nullptr) {
-            return top->value;
-        }
-    }
-
-    bool isEmpty() {
-        return top == nullptr;
-    }
-};
-
-
-int main()
-{
-
-    Stack obj;
-    obj.pushElem(10);
-    obj.pushElem(20);
-    obj.pushElem(30);
-    
-    std::cout << obj.topElem() << '\n';
-    
-    obj.popElem();
-    std::cout << obj.topElem() << '\n';
-
-    obj.popElem();
-    std::cout << obj.topElem() << '\n';
-
-    obj.popElem();
-    std::cout << obj.topElem() << '\n';
-
-    if (obj.isEmpty()) {
-        std::cout << "Стек пуст!" << '\n';
-    }
-    return 0;
-}*/
-/*
-class Stack {
-private:
     std::forward_list<int> MyStack;
 public:
     // Добавление элемента на вершину стека (в начало списка)
@@ -522,7 +461,238 @@ int main() {
 }
 */
 
-//Задание 7 - 
+//Задание 7 - 2040 
 /*
+Используя дерево отрезков решите следующую задачу.
+Мебибайту необходимо рассчитать энергетические нагрузки во время светомузыкального шоу. 
+Управление 2^20 лампочками происходит следующим образом. 
+Для каждого такта музыкального сопровождения указаны два целых числа, определяющих диапазон номеров лампочек, состояние которых должно измениться на противоположное. 
+Если лампочка была выключена, она должна загореться, а горящая лампочка -- погаснуть. В начальный момент времени все лампочки выключены. 
+Напишите программу, определяющую количество горящих лампочек после выполнения каждой команды.
+Первая строка ввода содержит одно целое число N (1≤N≤100000) -- количество команд на переключение состояния лампочек. 
+Далее следует N строк, каждая строка содержит два целых числа ai и bi (1≤ai≤bi≤220) - команда на переключение.
+Вывести N строк, в i-ой строке вывести количество горящих лампочек после i-ой команды.
 
+Работает на MinIDE
+*/
+/*
+#include <vector>
+#include <optional>
+#include <functional>
+#include <stdexcept>
+#include <utility>
+#include <cmath>     // для bit_ceil
+#include <cstddef>   // для size_t
+#include <algorithm> // для std::min и std::max
+
+template <typename T, typename State>
+struct Operation {
+    State operator()(State s, size_t k) const {
+        // Реализация операции для State
+        return s;
+    }
+    T operator()(T v) const {
+        // Реализация операции для T
+        return v;
+    }
+    std::optional<Operation> combine(Operation other) const {
+        // Реализация комбинирования двух операций
+        return other;
+    }
+};
+
+template <typename T, typename State>
+class STree {
+    using func = std::function<State(State, State)>;
+    size_t n, n2;
+    std::vector<std::pair<std::optional<Operation<T, State>>, State>> pyrmd;
+    std::vector<T> values;
+    func f;
+
+    void update(size_t i, size_t k1, size_t k2) {
+        if (i >= n2) return; // не применяется к листу
+        pyrmd[i].second = f(state(2 * i, k1), state(2 * i + 1, k2)); // обновляем состояние поддерева
+    }
+
+    void add_op(size_t i, Operation<T, State> op) { // добавить или применить операцию
+        if (i >= n2) values[i - n2] = op(values[i - n2]); // применить к листу
+        else if (!pyrmd[i].first) pyrmd[i].first = op;
+        else pyrmd[i].first = pyrmd[i].first->combine(op);
+    }
+
+    void clear_op(size_t i, size_t k) { // сдвинуть операцию вниз
+        if (i >= n2 || !pyrmd[i].first) return;
+        Operation<T, State> op = *(pyrmd[i].first);
+        pyrmd[i].second = op(pyrmd[i].second, k);
+        pyrmd[i].first = {};
+        add_op(2 * i, op);
+        add_op(2 * i + 1, op);
+    }
+
+    State state(size_t i, size_t k) { // состояние поддерева или листа
+        if (i >= n2) {
+            if (i - n2 >= n) return State();
+            return State(values[i - n2]);
+        }
+        if (pyrmd[i].first) return (*(pyrmd[i].first))(pyrmd[i].second, k);
+        return pyrmd[i].second;
+    }
+
+    State calc(size_t p, size_t k, size_t pi, size_t pj, size_t i, size_t j) {
+        if (k == 1) return State(values[p - n2]); // лист
+        if (i <= pi && pj <= j) // все поддерево
+            return state(p, pj + 1 - pi);
+        clear_op(p, pj + 1 - pi); // сдвинуть операцию
+        k /= 2;
+        size_t m = pi + k;
+        // вернуть из одного поддерева
+        if (j < m) return calc(p * 2, k, pi, m - 1, i, j);
+        if (i >= m) return calc(p * 2 + 1, k, m, pj, i, j);
+        // или комбинацию
+        return f(calc(p * 2, k, pi, m - 1, i, j), calc(p * 2 + 1, k, m, pj, i, j));
+    }
+
+    void apply(size_t p, size_t k, size_t pi, size_t pj, size_t i, size_t j, std::optional<Operation<T, State>> op, T v) {
+        if (k == 1) { // лист
+            if (op) values[p - n2] = (*op)(values[p - n2]);
+            else values[p - n2] = v;
+            return;
+        }
+        if (i <= pi && pj <= j) { // полный отрезок
+            if (op) add_op(p, *op);
+            return;
+        }
+        clear_op(p, pj + 1 - pi); // сдвинуть операцию
+        k /= 2;
+        size_t m = pi + k;
+        if (i < m) // обработать поддеревья, если есть
+            apply(p * 2, k, pi, m - 1, i, j, op, v);
+        if (j >= m)
+            apply(p * 2 + 1, k, m, pj, i, j, op, v);
+        update(p, std::min(pj + 1, m) - pi, std::max(static_cast<int>(pj + 1 - m), 0)); // пересчитать
+    }
+
+public:
+    STree(size_t n, func f)
+        : n(n), n2(std::bit_ceil(n)), pyrmd(2 * n2, { {}, State() }), values(n, T()), f(f) {}
+
+    size_t size() const { return n; } // размер
+
+    State calc(size_t i, size_t j) { // получить значение функции на отрезке
+        if (i >= n || j >= n || i > j) throw std::runtime_error("Wrong index");
+        return calc(1, n2, 0, n - 1, i, j);
+    }
+
+    T get(size_t i) { // получить i-й элемент
+        if (i >= n) throw std::runtime_error("Wrong index");
+        return values[i];
+    }
+
+    void set(size_t i, T v) { // изменить i-й элемент
+        if (i >= n) throw std::runtime_error("Wrong index");
+        apply(1, n2, 0, n - 1, i, i, {}, v);
+    }
+
+    void apply(size_t i, size_t j, Operation<T, State> op) { // изменить значения на отрезке
+        if (i >= n || j >= n || i > j) throw std::runtime_error("Wrong index");
+        apply(1, n2, 0, n - 1, i, j, op, T());
+    }
+};
+
+#include <iostream> // для вывода
+
+int main() {
+    auto combine_func = [](int a, int b) { return a + b; };
+    STree<int, int> tree(10, combine_func);
+    tree.set(0, 1);
+    tree.set(1, 2);
+    tree.set(2, 3);
+
+    int result = tree.calc(0, 2); // вычисление суммы на отрезке
+    std::cout << "Результат: " << result << std::endl; // использование переменной
+    return 0;
+}
+*/
+
+//Задание 8
+/*
+Используя map из STL напишите решение следующей задачи с эффективностью O(NlogN).
+Дана последовательность из n целых чисел. 
+Найти непрерывную подпоследовательность максимальной длины, в которой нет одинаковых элементов. 
+Вывести длину и начальный индекс найденной подпоследовательности.
+*/
+/*
+#include <iostream>
+#include <vector>
+#include <map>
+
+//У пары есть left и right
+std::pair<int, int> func(std::vector<int>& nums) {
+    std::map<int, int> my_slovar;
+    int max_l = 0, start_ind = 0;
+    int left = 0;
+
+    for (int right = 0; right < nums.size(); right++) {
+        if (my_slovar.find(nums[right]) != my_slovar.end() && my_slovar[nums[right]] >= left) {
+            left = my_slovar[nums[right]] + 1; //Смещаем левый указатель правее
+        }
+
+        my_slovar[nums[right]] = right;
+
+        if (right - left + 1 > max_l) {
+            max_l = right - left + 1;
+            start_ind = left;
+        }
+    }
+    return { max_l, start_ind };
+}
+
+int main() {
+    setlocale(LC_ALL, "rus");
+    std::vector<int> nums = { 5, 3, 4, 3, 6, 7, 8, 3, 2 };
+    auto result = func(nums);
+    std::cout << "Максимальная длина: " << result.first << " Индекс, с которого найдена макс длина: " << result.second << std::endl;
+    return 0;
+}
+*/
+//Задание 25
+/*
+Напишите функцию разложения числа на простые множители.
+*/
+/*
+void func2(int x) {
+    if (x < 2) return;  // Простых чисел нет
+
+    std::vector<bool> m(x+1, true);
+    m[0] = m[1] = false;
+    for (int i = 2; i <= x; i++) {
+        if (m[i] == true) {
+            for (int j = i * i; j <= x; j+=i) {
+                m[j] = false;
+            }
+        }
+        //std::cout << i << ' ';
+    }
+    //std::cout << '\n';
+
+    //for(bool elem : m){
+    //    std::cout << elem << ' ';
+    //}
+    //std::cout << '\n';
+
+    // Разложение на простые множители
+    for (int i = 2; i <= x; ++i) {
+        if (m[i] && x % i == 0) {
+            while (x % i == 0) {
+                std::cout << i << ' ';
+                x /= i;
+            }
+        }
+    }
+
+}
+int main() {
+    func2(20);
+    return 0;
+}
 */

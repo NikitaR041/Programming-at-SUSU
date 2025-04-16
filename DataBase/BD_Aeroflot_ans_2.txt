@@ -1,0 +1,22 @@
+#1
+Добавить в таблицу city город 'Абакан'.
+
+INSERT INTO City (CityName) VALUES ('Абакан')
+
+#4
+Все будущие рейсы компании 'Delta' перенести на неделю вперед.
+
+UPDATE Flight
+SET Dat = Dat + 7
+FROM Company
+WHERE Company.CompanyName = 'Delta' 
+	AND Flight.Company_ID =Company.Company_ID 
+	AND Dat > GETDATE()
+
+#6
+Удалить из базы данных все города, в которые и из которых не летают никакие самолёты.
+
+DELETE FROM City
+WHERE NOT EXISTS(SELECT Flight_ID
+FROM Flight
+WHERE City.City_ID = Flight.CityFrom_ID OR City.City_ID = Flight.CityTo_ID)
