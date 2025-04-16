@@ -3,6 +3,20 @@
 
 INSERT INTO City (CityName) VALUES ('Абакан')
 
+#2
+Удалить из таблицы Passgr все упоминания пассажира(ов) 'Иванов Иван Иванович'.
+
+DELETE
+FROM Passgr 
+WHERE FIO LIKE 'Иванов Иван Иванович'
+
+#3
+Переименовать город 'Челябинск' в 'Челяба'.
+
+UPDATE City
+SET CityName = 'Челяба'
+WHERE CityName LIKE 'Челябинск'
+
 #4
 Все будущие рейсы компании 'Delta' перенести на неделю вперед.
 
@@ -12,6 +26,22 @@ FROM Company
 WHERE Company.CompanyName = 'Delta' 
 	AND Flight.Company_ID =Company.Company_ID 
 	AND Dat > GETDATE()
+
+#5
+Рейс Челябинск - Магадан компании 'Delta' от 28.02.2015 выполнялся самолётом 'АН-2', а не 'Боинг-747', как это ошибочно указано в базе данных. Исправьте ошибку.
+
+UPDATE Flight
+SET PlaneType_ID = (
+	SELECT PlaneType_ID FROM PlaneType WHERE PlaneTypeName = 'АН-2'
+)
+WHERE PlaneType_ID = (
+	SELECT PlaneType_ID FROM PlaneType WHERE PlaneTypeName = 'Боинг-747'
+)
+AND Company_ID = (SELECT Company_ID FROM Company WHERE CompanyName = 'Delta')
+AND CityFrom_ID = (SELECT City_ID FROM City WHERE CityName = 'Челябинск')
+AND CityTo_ID = (SELECT City_ID FROM City WHERE CityName = 'Магадан')
+AND DAY(Flight.Dat) = 28 AND MONTH(Flight.Dat) = 02 AND YEAR(Flight.Dat) = 2015
+
 
 #6
 Удалить из базы данных все города, в которые и из которых не летают никакие самолёты.
