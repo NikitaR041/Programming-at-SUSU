@@ -1,0 +1,25 @@
+#1
+Удвоить оклад для всех должностей, оклад которых менее 5000.
+
+UPDATE JobTitle
+SET Salary = Salary * 2
+WHERE Salary < 5000
+
+#2
+Добавьте в БД новую должность 'Рабочий' с окладом 30000 рублей.
+
+INSERT INTO JobTitle (JobTitleName, Salary) 
+VALUES ('Рабочий', 30000);
+
+#3
+Удалить все приказы из таблицы Move, имеющие дату (Dat) позже 01.01.2009.
+
+DELETE 
+FROM Move
+WHERE Dat > '2009-01-01';
+
+#5
+В ЮУрГУ создаётся кафедра 'Прикладная математика и программирование'. Напишите соответствующий оператор insert. Рекомендация: сначала найдите идентификатор ЮУрГУ.
+
+INSERT INTO Depart (DepartName, Parent_ID)
+VALUES ('Прикладная математика и программирование', (SELECT Depart_ID FROM Depart WHERE DepartName = 'ЮУрГУ'))
