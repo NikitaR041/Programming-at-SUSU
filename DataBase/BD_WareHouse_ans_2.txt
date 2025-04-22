@@ -15,3 +15,24 @@ WHERE (SELECT Tovar_ID FROM Tovar WHERE TovarName = 'Черешня' ) = Tovar_I
 #3
 Товар 'Мандарины' перенести в категорию 'Фрукты'.
 
+UPDATE Tovar
+SET Parent_ID = (
+	SELECT Tovar_ID
+	FROM Tovar
+	WHERE TovarName = 'Фрукты')
+WHERE TovarName = 'Мандарины'
+
+#4
+Добавить в таблицу PriceList запись о новой цене на 'Черешня', равной 600 руб. с 01.03.2016.
+
+INSERT INTO PriceList(Tovar_ID, Price, DateStart)
+VALUES ((SELECT Tovar_ID FROM Tovar WHERE TovarName = 'Черешня' AND IsTovar = 1), 600, '20160301')
+
+#5
+Удалить все исходящие накладные, в которых отсутствует список товаров.
+
+DELETE FROM Nakl
+WHERE InOut LIKE '-' AND Nakl_ID NOT IN(SELECT Nakl_ID FROM SostNakl)
+
+#6
+Удалить из таблицы Tovar все товары, которые ни разу ни покупались, ни продавались и на которые никогда не назначалась цена.
