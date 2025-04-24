@@ -13,4 +13,11 @@ public class Material {
         this.dateMaterial = dateMaterial;
         this.weightMaterial = weightMaterial;
     }
+
+    //Собственный вывод материала на экран
+    // В класс Material
+    @Override
+    public String toString() {
+        return nameMaterial + " (Дата: " + dateMaterial + ", Вес: " + weightMaterial + "г)";
+    }
 }

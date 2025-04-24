@@ -20,12 +20,21 @@ public class MyCollectionMap<T1 extends String, T2 extends Material> {
     public void erasePairMyMap(T1 key){ MyMap.remove(key); }
 
     //Поиск пары в словаре по ключу - возвращает и удаляет пару из словаря
-    public Map.Entry<T1, T2> getSearchInMyMap(T1 key) throws MyException {
+    public Map.Entry<T1, List<T2>> getSearchInMyMap(T1 key) throws MyException {
         if (!MyMap.containsKey(key)) { throw new MyException("Неизвестный ключ!"); }
-        T2 value = MyMap.get(key);
-        Map.Entry<T1, T2> entry = Map.entry(key, value);
+        List<T2> value = MyMap.get(key);
+        Map.Entry<T1, List<T2>> entry = Map.entry(key, value);
         MyMap.remove(key);
         return entry;
+    }
+
+    //печать содержимого из словаря на экран
+    public void printAll() {
+        MyMap.forEach((key, materials) -> {
+            System.out.println("[" + key + "]");
+            materials.forEach(System.out::println);
+            System.out.println();  // Пустая строка между категориями
+        });
     }
 
     //Поиск пары в словаря по ключу - возвращает истинно или ложь
