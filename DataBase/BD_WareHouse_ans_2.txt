@@ -36,3 +36,16 @@ WHERE InOut LIKE '-' AND Nakl_ID NOT IN(SELECT Nakl_ID FROM SostNakl)
 
 #6
 Удалить из таблицы Tovar все товары, которые ни разу ни покупались, ни продавались и на которые никогда не назначалась цена.
+
+DELETE FROM Tovar
+WHERE IsTovar = 1
+	AND Tovar_ID NOT IN(SELECT DISTINCT Tovar_ID FROM SostNakl)
+	AND Tovar_ID NOT IN(SELECT DISTINCT Tovar_ID FROM PriceList)
+
+ИЛИ
+
+DELETE FROM Tovar
+WHERE IsTovar = 1
+	AND Tovar_ID NOT IN(SELECT Tovar_ID FROM SostNakl)
+	AND Tovar_ID NOT IN(SELECT Tovar_ID FROM PriceList)
+
