@@ -21,6 +21,13 @@ WHERE Dat > '2009-01-01';
 #4
 Уволить (MoveKindName='Уволен') из организации всех сотрудников, имеющих дату рождения ранее 15.11.1960. Дата увольнения - 21.01.2016.
 
+INSERT INTO Move (Emp_ID, MoveKind_ID, Dat)
+SELECT Emp_ID, 
+	(SELECT MoveKind_ID FROM MoveKind WHERE MoveKindName = 'Уволен'), 
+	'20160121'
+FROM Employee
+WHERE Birth < '19601115'
+
 
 #5
 В ЮУрГУ создаётся кафедра 'Прикладная математика и программирование'. Напишите соответствующий оператор insert. Рекомендация: сначала найдите идентификатор ЮУрГУ.
@@ -30,3 +37,10 @@ VALUES ('Прикладная математика и программирова
 
 #6
 Назначить сотрудника 'Яковлев Яков Яковлевич' на должность 'Директор' с 23.06.2016. MoveKind_ID=5 для назначения на должность, оставив его в текущем подразделении.
+
+INSERT INTO Move (Emp_ID, MoveKind_ID, Dat, JobTitle_ID, Depart_ID)
+SELECT E.Emp_ID, 5, '20160623', J.JobTitle_ID, E.Depart_ID        
+FROM Employee E
+JOIN JobTitle J ON J.JobTitleName = 'Директор'
+WHERE E.FIO = 'Яковлев Яков Яковлевич';
+
