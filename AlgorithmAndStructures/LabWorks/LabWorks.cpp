@@ -667,6 +667,237 @@ int main() {
     return 0;
 }
 */
+
+//Задание 20
+/*
+Сравните время сортировки с помощью sort, stable_sort, multiset для последовательности из 10^6 чисел от 1 до N и от N до 1. 
+ Результаты оформить в виде таблицы.
+*/
+/*
+#include <chrono>
+#include <vector>
+#include <set>
+
+void testsorting(const std::vector<int>& v) {
+    using Time = std::chrono::time_point<std::chrono::high_resolution_clock>;
+    using Diff = std::chrono::milliseconds;
+    
+    //1
+    std::vector<int> v_sort = v;
+    Time start1 = std::chrono::high_resolution_clock::now();
+    sort(v_sort.begin(), v_sort.end());
+    Time end1 = std::chrono::high_resolution_clock::now();
+    Diff diff1 = std::chrono::duration_cast<Diff>(end1 - start1);
+
+    std::cout << "Для метода .sort в милисекундах: " << diff1.count() << '\n';
+
+    //2
+    std::vector<int> v_table = v;
+    Time start2 = std::chrono::high_resolution_clock::now();
+    stable_sort(v_table.begin(), v_table.end());
+    Time end2 = std::chrono::high_resolution_clock::now();
+    Diff diff2 = std::chrono::duration_cast<Diff>(end2 - start2);
+
+    std::cout << "Для метода .stable_sort в милисекундах: " << diff2.count() << '\n';
+
+    //3
+    std::multiset<int> ms;
+    Time start3 = std::chrono::high_resolution_clock::now();
+    for (int elem : v) ms.insert(elem);
+    Time end3 = std::chrono::high_resolution_clock::now();
+    Diff diff3 = std::chrono::duration_cast<Diff>(end3 - start3);
+
+    std::cout << "Для метода .multiset в милисекундах: " << diff3.count() << '\n';
+}
+
+int main() {
+    std::setlocale(LC_ALL,"Rus");
+    const int num = 1000000;
+
+    std::vector<int> v1; //В прямом порядке
+    std::vector<int> v2; //В обратном порядке
+
+    for (int i = 0; i < num; i++) {
+        v1.push_back(i);
+    }
+    for (int i = num; i != 0; i--) {
+        v2.push_back(i);
+    }
+
+    testsorting(v1);
+    testsorting(v2);
+}*/
+
+//Задание 21
+/*
+Напишите функцию поиска подстроки турбо-методом Бойера-Мура. 
+Сравните время работы вашей функции с методом find и алгоритмом search с использованием boyer_moore_searcher из <functional> для текста размером 10^6 
+    символов и шаблона 10^4 символов.
+Результаты представить в виде таблицы. 
+Строки: 3 указанных алгоритма (Для алгоритма Бойер-Мура указать время, включая создание boyer_moore_searcher, и отдельно, исключая). 
+Столбцы: 1) для случайного текста и шаблона; 2) текст 00...00, шаблон 00...01; 3) текст 00...00, шаблон 10...00.
+*/
+
+#include <iostream>
+#include <vector>
+#include <random>
+#include <chrono>
+#include <string>
+#include <functional>
+#include <algorithm>
+
+const int ASIZE = 256; // размер алфавита (например, ASCII)
+
+void preBmBc(const std::string& x, std::vector<int>& bmBc) {
+    int m = x.size();
+    bmBc.assign(ASIZE, m);
+    for (int i = 0; i < m - 1; ++i)
+        bmBc[static_cast<unsigned char>(x[i])] = m - i - 1;
+}
+
+void suffixes(const std::string& x, std::vector<int>& suff) {
+    int m = x.size();
+    suff.resize(m);
+    suff[m - 1] = m;
+    int g = m - 1;
+    int f = 0;
+    for (int i = m - 2; i >= 0; --i) {
+        if (i > g && suff[i + m - 1 - f] < i - g)
+            suff[i] = suff[i + m - 1 - f];
+        else {
+            if (i < g) g = i;
+            f = i;
+            while (g >= 0 && x[g] == x[g + m - 1 - f])
+                --g;
+            suff[i] = f - g;
+        }
+    }
+}
+
+void preBmGs(const std::string& x, std::vector<int>& bmGs) {
+    int m = x.size();
+    std::vector<int> suff;
+    suffixes(x, suff);
+    bmGs.assign(m, m);
+    int j = 0;
+    for (int i = m - 1; i >= 0; --i) {
+        if (suff[i] == i + 1) {
+            for (; j < m - 1 - i; ++j) {
+                if (bmGs[j] == m)
+                    bmGs[j] = m - 1 - i;
+            }
+        }
+    }
+    for (int i = 0; i <= m - 2; ++i)
+        bmGs[m - 1 - suff[i]] = m - 1 - i;
+}
+
+std::string turbo_boyer_moore(const std::string& pattern, const std::string& text) {
+    std::string result;
+    int m = pattern.size();
+    int n = text.size();
+
+    if (m == 0 || n < m) return result;
+
+    std::vector<int> bmGs, bmBc;
+    preBmGs(pattern, bmGs);
+    preBmBc(pattern, bmBc);
+
+    int j = 0, u = 0, shift = m;
+    while (j <= n - m) {
+        int i = m - 1;
+        while (i >= 0 && pattern[i] == text[i + j]) {
+            --i;
+            if (u != 0 && i == m - 1 - shift)
+                i -= u;
+        }
+        if (i < 0) {
+            result.push_back(j);  // OUTPUT(j)
+            shift = bmGs[0];
+            u = m - shift;
+        }
+        else {
+            int v = m - 1 - i;
+            int turboShift = u - v;
+            int bcShift = bmBc[static_cast<unsigned char>(text[i + j])] - m + 1 + i;
+            shift = std::max({ turboShift, bcShift, bmGs[i] });
+            if (shift == bmGs[i]) {
+                u = std::min(m - shift, v);
+            }
+            else {
+                if (turboShift < bcShift)
+                    shift = std::max(shift, u + 1);
+                u = 0;
+            }
+        }
+        j += shift;
+    }
+    return result;
+}
+
+
+void testSearching(std::string& text, std::string& pattern) {
+    using Time = std::chrono::time_point<std::chrono::high_resolution_clock>;
+    using Diff = std::chrono::milliseconds;
+
+    //1
+    Time start1 = std::chrono::high_resolution_clock::now();
+    std::string v_TBM = turbo_boyer_moore(pattern, text);
+    Time end1 = std::chrono::high_resolution_clock::now();
+    Diff diff1 = std::chrono::duration_cast<Diff>(end1 - start1);
+    std::cout << "Метод turbo_boyer_moore в милисекундах: " << diff1.count() << '\n';
+
+    //#2
+    Time start2 = std::chrono::high_resolution_clock::now();
+    auto pos2 = text.find(pattern);
+    Time end2 = std::chrono::high_resolution_clock::now();
+    Diff diff2 = std::chrono::duration_cast<Diff>(end2 - start2);
+    std::cout << "Метод find в миллисекундах: " << diff2.count() << '\n';
+
+    //#3 - время создания 
+    Time start3 = std::chrono::high_resolution_clock::now();
+    auto searcher = std::boyer_moore_searcher(pattern.begin(), pattern.end());
+    Time end3 = std::chrono::high_resolution_clock::now();
+    Diff diff3 = std::chrono::duration_cast<Diff>(end3 - start3);
+    std::cout << "Создание метода boyer_moore_searcher в миллисекундах: " << diff3.count() << '\n';
+    
+    //#3.1 - Время работы
+    Time start3_1 = std::chrono::high_resolution_clock::now();
+    auto elem = std::search(text.begin(), text.end(), searcher);
+    Time end3_1 = std::chrono::high_resolution_clock::now();
+    Diff diff3_1 = std::chrono::duration_cast<Diff>(end3_1 - start3_1);
+    std::cout << "Метод boyer_moore_searcher в миллисекундах: " << diff3_1.count() << '\n';
+}
+
+int main() {
+    std::setlocale(LC_ALL, "Rus");
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<int> dis(0,1);
+    const int num1 = 1000000;
+    const int num2 = 10000;
+    std::string v1(num1,0); // 00...00 - исходный текст
+    std::string v2; // 00...01 - шаблон
+    std::string v3; // 10...00 - шаблон
+    std::string v4; // случайный набор цифр из 0 и 1 - исходный текст
+    std::string v5; // случайный набор цифр из 0 и 1 - шаблон
+
+    for (int i = 0; i < num2; i++) {
+        if (i == num2 - 1) v2.push_back(1);
+        v2.push_back(0);
+    }
+    for (int i = 0; i < num2; i++) {
+        if (i == 0) v3.push_back(1);
+        v3.push_back(0);
+    }
+
+    for (int i = 0; i < num1; i++) v4.push_back(dis(gen));
+    for (int i = 0; i < num2; i++) v5.push_back(dis(gen)); 
+    testSearching(v1,v2); // текст:00..00, шаблон:00...01
+    testSearching(v1,v3); // текст:00..00, шаблон:10...00
+    testSearching(v4,v5); // текст:случайный набор цифр из 0 и 1, шаблон:случайный набор цифр из 0 и 1
+}
+
 //Задание 25
 /*
 Напишите функцию разложения числа на простые множители.

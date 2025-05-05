@@ -1,0 +1,29 @@
+#1
+Напишите функцию dbo.nPass(@Flight_ID int), возвращающую число пассажиров в рейсе с идентификатором @Flight_ID.
+
+CREATE FUNCTION dbo.nPass(@Flight_ID int)
+RETURNS int 
+AS
+BEGIN
+RETURN (
+	SELECT COUNT(*)
+	FROM Passgr
+	WHERE Flight_ID = @Flight_ID
+	)
+END
+
+
+#2
+Напишите функцию dbo.nMest(@PlaneType_ID int), возвращающую число мест в самолёте типа PlaneType_ID.
+
+create function dbo.nMest(@PlaneType_ID int)
+returns int as
+begin
+return
+(
+select count(*)
+from Seat
+join PlaneType on Seat.PlaneType_ID = PlaneType.PlaneType_ID
+and PlaneType.PlaneType_ID = @PlaneType_ID
+)
+end

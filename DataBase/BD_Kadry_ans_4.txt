@@ -1,0 +1,23 @@
+#1
+Написать функцию dbo.EmpDep(@Depart_ID int), возвращающую таблицу
+(
+ FIO varchar(50),
+ Birth datetime
+),
+которая содержит список сотрудников подразделения @Depart_ID в текущий момент.
+Примечание: сотрудников подчинённых подразделений в результат не включать.
+
+CREATE FUNCTION dbo.EmpDep(@Depart_ID int)
+RETURNS @table TABLE
+(
+ 	FIO varchar(50),
+ 	Birth datetime
+)
+AS
+BEGIN
+INSERT INTO @table
+SELECT FIO, Birth
+FROM Employee
+WHERE Depart_ID = @Depart_ID
+RETURN
+END

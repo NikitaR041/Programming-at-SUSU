@@ -1,0 +1,77 @@
+#1
+Напишите функцию dbo.MonthSale (@year smallint, @month tinyint), возвращающую суммарную стоимость товара, проданного в году @year и месяце @month.
+
+CREATE FUNCTION dbo.MonthSale(@year smallint, @month tinyint)
+RETURNS money
+AS
+BEGIN
+RETURN (
+	SELECT ISNULL(SUM(SostNakl.Price * SostNakl.Amount),0)
+	FROM SostNakl
+	JOIN Nakl ON Nakl.Nakl_ID = SostNakl.Nakl_ID
+	WHERE Nakl.InOut = '-' AND YEAR(Nakl.Dat) = @year AND MONTH(Nakl.Dat) = @month
+	)
+END
+
+#2
+Напишите функцию dbo.SumNakl9(@Nakl_ID int), возвращающую стоимость товаров по накладной с идентификатором @Nakl_ID. Из-за ошибок операторов накладная может не содержать товаров, тогда её стоимость - ноль.
+
+CREATE FUNCTION dbo.SumNakl9(@Nakl_ID int)
+RETURNS money
+AS
+BEGIN
+RETURN (
+	SELECT ISNULL(SUM(S.Price * S.Amount), 0)
+        	FROM SostNakl S
+        	WHERE S.Nakl_ID = @Nakl_ID
+	)
+END
+
+#3
+Номер следующей по порядку исходящей накладной должен по умолчанию вычисляться как максимальный номер исходящей накладной плюс единица. Напишите функцию dbo.NextNumbNakl(), которая вычисляет этот номер.
+
+CREATE FUNCTION dbo.NextNumbNakl()
+RETURNS  int
+AS
+BEGIN
+RETURN (
+	SELECT MAX(Nakl.Numb)+1
+	FROM Nakl
+	WHERE Nakl.InOut = '-'
+	)
+END
+
+ИЛИ
+
+CREATE FUNCTION dbo.NextNumbNakl()
+RETURNS int
+AS
+BEGIN
+    DECLARE @nextNumb int
+
+    SELECT @nextNumb = ISNULL(MAX(Numb), 0) + 1
+    FROM Nakl
+    WHERE InOut = '-'
+
+    RETURN @nextNumb
+END
+
+#4
+Напишите функцию dbo.Predok(@Tov_ID int), которая возвращает идентификатор корня дерева, в котором находится узел дерева с идентификатором @Tov_ID. Функцию можно написать, используя рекурсию, либо цикл, выполняющий подъём по ветвям дерева.
+
+CREATE FUNCTION dbo.Predok(@Tov_ID int)
+RETURNS int
+AS
+BEGIN
+	DECLARE @MyParent int
+	
+	SELECT @MyParent = Tovar.Parent_ID
+	FROM Tovar
+	WHERE Tovar.Tovar_ID = @Tov_ID
+	
+	IF @MyParent IS NULL
+		RETURN @Tov_ID
+
+	RETURN dbo.Predok(@MyParent)
+END
+

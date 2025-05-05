@@ -1,0 +1,23 @@
+#1
+Написать функцию dbo.TasksInTopic( ), возвращающую таблицу
+(
+ TopicName varchar(40),
+ nTask int -- число задач по теме TopicName
+)
+Темы, в которых вообще нет задач, тоже включить в результат.
+
+CREATE FUNCTION dbo.TasksInTopic()
+RETURNS @table TABLE
+(
+ 	TopicName varchar(40),
+ 	nTask int -- число задач по теме TopicName
+)
+AS
+BEGIN
+INSERT INTO @table
+SELECT T.TopicName, COUNT(T.TopicName)
+FROM Topic T
+JOIN Query Q ON Q.Topic_ID = T.Topic_ID
+GROUP BY T.TopicName
+RETURN
+END

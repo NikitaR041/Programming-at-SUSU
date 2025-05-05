@@ -1,0 +1,84 @@
+#1
+Написать функцию dbo.FlightsInMonth(@Year int, @Month tinyint), возвращающую таблицу, содержащую список полётов в году @Year и месяце @Month
+(
+ CompanyName varchar(40),
+ CityFrom varchar(20),
+ CityTo varchar(20),
+ Dat datetime,
+ PlaneTypeName varchar(20)
+)
+
+CREATE FUNCTION dbo.FlightsInMonth(@Year int, @Month tinyint)
+RETURNS @table TABLE
+(
+	CompanyName varchar(40),
+	CityFrom varchar(20),
+	CityTo varchar(20),
+	Dat datetime,
+	PlaneTypeName varchar(20)
+)
+AS
+BEGIN
+INSERT INTO @table
+SELECT C.CompanyName, C1.CityName, C2.CityName, F.Dat, PT.PlaneTypeName
+FROM Flight F
+JOIN Company C ON C.Company_ID = F.Company_ID
+JOIN PlaneType PT ON PT.PlaneType_ID = F.PlaneType_ID
+JOIN City C1 ON C1.City_ID = F.CityFrom_ID
+JOIN CIty C2 ON C2.City_ID = F.CityTo_ID
+WHERE YEAR(F.Dat) = @Year AND MONTH(F.Dat) = @Month
+RETURN
+END
+
+#2
+Написать функцию dbo.CompPassgr(@Year int), возвращающую таблицу
+(
+ CompanyName varchar(40),
+ nPassgr int -- число перевезённых пассажиров
+),
+содержащую число пассажиров, перевезённых каждой компанией в году @Year. Компании не имевших перевозок тоже включить в результат. В решении используйте внешние соединения.
+
+CREATE FUNCTION dbo.CompPassgr(@Year int)
+RETURNS @table TABLE
+(
+	CompanyName varchar(40),
+	nPassgr int -- число перевезённых пассажиров
+)
+AS
+BEGIN
+INSERT INTO @table
+SELECT C.CompanyName, COUNT(P.Passgr_ID)
+FROM Company C
+LEFT JOIN Flight F ON C.Company_ID = F.Company_ID AND YEAR(F.Dat) = @Year
+LEFT JOIN Passgr P ON P.Flight_ID = F.Flight_ID
+GROUP BY C.CompanyName
+RETURN
+END
+
+#3
+Написать функцию dbo.CompPassgr(@Year int), возвращающую таблицу
+(
+ CompanyName varchar(40),
+ nPassgr int -- число перевезённых пассажиров
+),
+содержащую число пассажиров, перевезённых каждой компанией в году @Year. Компании, не имевшие перевозок, тоже должны входить в результат. В решении используйте поле, вычисляемое как (select
+....)
+
+CREATE FUNCTION dbo.CompPassgr(@Year int)
+RETURNS @table TABLE
+(
+	CompanyName varchar(40),
+	nPassgr int -- число перевезённых пассажиров
+)
+AS
+BEGIN
+INSERT INTO @table
+SELECT C.CompanyName, (
+	SELECT COUNT(*)
+	FROM Flight F
+	JOIN Passgr P ON P.Flight_ID = F.Flight_ID
+	WHERE YEAR(F.Dat) = @Year AND C.Company_ID = F.Company_ID
+	) as nPassgr
+FROM Company C
+RETURN
+END
