@@ -97,9 +97,22 @@ namespace TesstMyBD
         //Конпка `удалить` - удаление содержимого из таблицы 
         private void button4_Click(object sender, EventArgs e)
         {
-            
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connestionString))
+                {
+                    conn.Open();
+                    string query = "DELETE FROM MeasUnit";
+                    SqlCommand cmd = new SqlCommand(query, conn);
+                    int rowsAffected = cmd.ExecuteNonQuery();
+                    MessageBox.Show($"Удалено записей: {rowsAffected}");
+                    LoadMeasUnits(); // обновляем таблицу на форме
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка при удалении: " + ex.Message);
+            }
         }
-
-
     }
 }

@@ -1,0 +1,62 @@
+#1
+Написать функцию dbo.Rashod(@d1 datetime,@d2 datetime), возвращающую таблицу
+(
+ Tovar_ID int,
+ Amount float,
+ Cost money
+)
+содержащую расход товаров в количественном и стоимостном выражении за период от @d1 до @d2. Товары, расхода которых не было в результат не включаются.
+
+CREATE FUNCTION dbo.Rashod(@d1 datetime,@d2 datetime)
+RETURNS @table TABLE
+(
+	Tovar_ID int,
+	Amount float,
+	Cost money
+)
+AS
+BEGIN
+INSERT INTO @table
+SELECT SN.Tovar_ID, SUM(SN.Amount), SUM(SN.Price * SN.Amount)
+FROM SostNakl SN
+JOIN Nakl N ON N.Nakl_ID = SN.Nakl_ID 
+WHERE N.InOut = '-' AND N.Dat BETWEEN @d1 AND @d2
+GROUP BY SN.Tovar_ID
+RETURN
+END
+
+#2
+Написать функцию dbo.TovarAmountOnDate(@d datetime), возвращающую таблицу
+(
+ Tovar_ID int,
+ TovarName varchar(30) COLLATE
+SQL_Latin1_General_CP1251_CI_AS,
+ Amount numeric(12,3) null
+)
+содержащую количество товара на складе на дату @d, округленного до целого.
+
+Почти правильное решение
+
+CREATE FUNCTION dbo.TovarAmountOnDate(@d datetime)
+RETURNS @table TABLE
+(
+ Tovar_ID int,
+ TovarName varchar(30) COLLATE SQL_Latin1_General_CP1251_CI_AS,
+ Amount numeric(12,3) null
+)
+AS
+BEGIN
+INSERT INTO @table
+SELECT T.Tovar_ID, T.TovarName COLLATE SQL_Latin1_General_CP1251_CI_AS, 
+			SUM(CASE
+				WHEN N.InOut = '+' THEN SN.Amount
+				WHEN N.InOut = '-' THEN -SN.Amount
+				ELSE 0
+			END)
+FROM Tovar T
+JOIN SostNakl SN ON SN.Tovar_ID = T.Tovar_ID
+JOIN Nakl N ON N.Nakl_ID = SN.Nakl_ID
+WHERE N.Dat <= @d AND T.IsTovar = 1
+GROUP BY  T.Tovar_ID, T.TovarName
+RETURN 
+END
