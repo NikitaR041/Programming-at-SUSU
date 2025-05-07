@@ -18,7 +18,7 @@ namespace TesstMyBD
     public partial class MainForm : Form
     {
         //Строка подключения
-        private static string DS = "Database = Stud_WareHouse; User ID = Stud; Password = New20@%PSW;";
+        private static string DS = "Database = ....; User ID = ....; Password = ....;";
 
         public MainForm()
         {
