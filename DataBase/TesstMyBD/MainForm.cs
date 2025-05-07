@@ -24,7 +24,7 @@ namespace TesstMyBD
         {
             //Методы
             InitializeComponent(); //По умолчанию - инициализация
-            InitSetup(); //Собственное - отображение текста
+            //InitSetup(); //Собственное - отображение текста
 
         }
         private void Form1_Load(object sender, EventArgs e)
@@ -89,17 +89,17 @@ namespace TesstMyBD
 
         }
 
-        private void InitSetup()
-        {
-            var lblText = new Label
-            {
-                Text = "Лабораторная работа",
-                AutoSize = true,
-                Location = new Point(this.Width / 2 - 120, 20),
+        //private void InitSetup()
+        //{
+        //    var lblText = new Label
+        //    {
+        //        Text = "Лабораторная работа",
+        //        AutoSize = true,
+        //        Location = new Point(this.Width / 2 - 120, 20),
 
-            };
-            this.Controls.Add(lblText);
-        }
+        //    };
+        //    this.Controls.Add(lblText);
+        //}
         //private void Form1_Click(object sender, EventArgs e)
         //{
 
