@@ -239,5 +239,67 @@ namespace TesstMyBD
             }
         }
 
+        //Добавление триггера MyTriggerCheck
+        private void button7_Click(object sender, EventArgs e)
+        {
+            string MyTriggerCheck = @"
+            IF NOT EXISTS (
+                SELECT * FROM sys.triggers WHERE name = 'MyTrigger'
+            )
+            BEGIN EXEC(
+                '
+                    CREATE TRIGGER MyTrigger
+                    ON MeasUnit
+                    INSTEAD OF INSERT
+                    AS BEGIN
+                        IF EXISTS(
+                            SELECT 1 FROM MEASUNIT MU
+                            JOIN inserted i ON MU.MeasUnitName COLLATE Cyrillic_General_CS_AS = i.MeasUnitName COLLATE Cyrillic_General_CS_AS 
+                        )
+                        BEGIN
+                            RAISERROR(''Такая единица измерения уже существует (с учетом регистра)'', 16, 1)
+                            RETURN
+                        END
+                        INSERT INTO MeasUnit(MeasUnitName)
+                        SELECT MeasUnitName FROM inserted
+                    END
+                ')
+            END
+            ";
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connestionString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand(MyTriggerCheck, conn);
+                    cmd.ExecuteNonQuery();
+                    MessageBox.Show("Триггер успешно создан (или уже существует).");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка при загрузке единиц измерения: " + ex.Message);
+            }
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            string DeleteTrigger = "IF EXISTS (SELECT * FROM sys.triggers WHERE name = 'MyTrigger') DROP TRIGGER MyTrigger";
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connestionString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand(DeleteTrigger, conn);
+                    cmd.ExecuteNonQuery();
+                    MessageBox.Show("Триггер успешно удалён.");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка при удалении триггера: " + ex.Message);
+            }
+        }
     }
 }

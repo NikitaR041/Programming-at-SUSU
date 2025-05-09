@@ -48,6 +48,7 @@ namespace TesstMyBD
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
+            checkBox1.Checked = true; //Поумолчанию стоит галочка
             this.checkBox1.Location = new System.Drawing.Point(164, 153);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(162, 20);
