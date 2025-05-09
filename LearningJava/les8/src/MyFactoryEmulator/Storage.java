@@ -45,5 +45,5 @@ public class Storage<T> {
     //Метод получение количества элементов в складе
     public synchronized int getItemCount(){ return warehouse.size(); }
     //Метод получение максимального размера склада
-    public int get(){ return this.maxsizeWarehouse; }
+    public int getMaxsizeWarehouse(){ return this.maxsizeWarehouse; }
 }
