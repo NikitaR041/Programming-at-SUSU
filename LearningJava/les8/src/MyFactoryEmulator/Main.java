@@ -1,17 +1,55 @@
 package MyFactoryEmulator;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+import java.io.IOException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.logging.Logger;
+
 public class Main {
     public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+        try {
+            // Загрузка конфигурации
+            MyConfig config = new MyConfig("MyFactoryEmulator/config.properties");
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
+            int motorDelay = config.getInt("motorDelay");
+            int bodyDelay = config.getInt("bodyDelay");
+            int accessoryDelay = config.getInt("accessoryDelay");
+            int carStorageSize = config.getInt("carStorageSize");
+
+            // Создание логгера
+            Logger logger = MyLogger.createLogger("FactoryLogger");
+
+            // Создание складов
+            Storage<Body> bodyStorage = new Storage<>(10);
+            Storage<Motor> motorStorage = new Storage<>(10);
+            Storage<Accessory> accessoryStorage = new Storage<>(10);
+            Storage<Car> carStorage = new Storage<>(carStorageSize);
+
+            // Создание и запуск поставщиков
+            Thread bodySupplier = new Thread(new Supplier<>(bodyStorage, Body::new, bodyDelay));
+            Thread motorSupplier = new Thread(new Supplier<>(motorStorage, Motor::new, motorDelay));
+            Thread accessorySupplier = new Thread(new Supplier<>(accessoryStorage, Accessory::new, accessoryDelay));
+
+            bodySupplier.start();
+            motorSupplier.start();
+            accessorySupplier.start();
+
+            // Сборка автомобилей (через пул потоков)
+            ExecutorService carAssemblyPool = Executors.newFixedThreadPool(2);
+            for (int i = 0; i < 2; i++) {
+                carAssemblyPool.submit(new CarAssembly(bodyStorage, motorStorage, accessoryStorage, carStorage));
+            }
+
+            // Запуск дилера
+            Thread dealer = new Thread(new Dealer(carStorage, 1000, logger));
+            dealer.start();
+
+            // Контроллер склада готовых изделий (пока в заготовке)
+            Thread controller = new Thread(new ControllerWarehouse(carStorage));
+            controller.start();
+
+        } catch (IOException e) {
+            System.err.println("Ошибка конфигурации: " + e.getMessage());
         }
     }
 }

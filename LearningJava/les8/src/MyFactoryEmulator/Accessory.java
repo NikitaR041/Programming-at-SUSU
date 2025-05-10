@@ -1,12 +1,15 @@
 package MyFactoryEmulator;
 
 public class Accessory {
-    private static int counter = 0; //Счетчик - количество созданных объектов от класса Body
-    private static final int id = counter++; //Уникальный индетификатор для каждого объекта класса Body
-    //Поле id - обновляется после каждого созданного объекта класса Body
+    private static int counter = 0; //Счетчик - количество созданных объектов от класса Accessory
+    private final int id; //Уникальный индетификатор для каждого объекта класса Accessory
+    //Поле id - обновляется после каждого созданного объекта класса Accessory
 
-    //Метод - получение индетификатора объекта классса Body
+    public Accessory() { this.id = counter++; }
+    //Метод - получение индетификатора объекта классса Accessory
     public int getId(){ return id;}
-    //Метод - получение общего количества произведенных объектов класса Body
+    //Метод - получение общего количества произведенных объектов класса Accessory
     public static int getTotalCount(){ return counter;}
+    @Override
+    public String toString(){ return "Accessory#" + id; }
 }

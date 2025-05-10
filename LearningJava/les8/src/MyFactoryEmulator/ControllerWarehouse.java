@@ -2,20 +2,29 @@ package MyFactoryEmulator;
 
 public class ControllerWarehouse implements Runnable{
     private final Storage<Car> carStorage;
-
-    public ControllerWarehouse(Storage<Car> carStorage) {
+    public ControllerWarehouse(Storage<Car> carStorage){
         this.carStorage = carStorage;
     }
-
     @Override
     public void run(){
-        while (carStorage.getItemCount() >= carStorage.getMaxsizeWarehouse()) {
-            try{
-                wait(); //Работает текущий поток, а другие ждут
+        try {
+            while (!Thread.currentThread().isInterrupted()) {
+                synchronized (carStorage) {
+                    int count = carStorage.getItemCount();
+                    int capacity = carStorage.getMaxsizeWarehouse();
 
-            }catch(InterruptedException e){
+                    if (count >= capacity) {
+                        System.out.println("Склад машин полон (" + count + "/" + capacity + "). Ожидаем продажи...");
+                        carStorage.wait();
+                    } else {
+                        carStorage.notifyAll();
+                    }
+                }
+
+                Thread.sleep(500);
             }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
         }
-        notifyAll(); //Теперь работают другие потоки
     }
 }

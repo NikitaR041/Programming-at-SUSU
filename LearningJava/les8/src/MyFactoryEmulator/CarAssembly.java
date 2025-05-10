@@ -1,5 +1,9 @@
 package MyFactoryEmulator;
 
+/*
+Класс CarAssembly - класс, который представляет сборку автомобилей из частей объектов классов Body, Motor, Accessory
+*/
+
 public class CarAssembly implements Runnable{
     //Поля - хранилища элементов
     private final Storage<Body> bodyStorage;
