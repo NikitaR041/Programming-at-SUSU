@@ -667,6 +667,170 @@ int main() {
     return 0;
 }
 */
+/*
+#include <iostream>
+#include <vector>
+#include <map>
+
+int main() {
+    std::map<int, int> myMap;
+    int left = 0; //Нижняя граница
+    int right = 0; //Верхняя граница - наибольшая длина
+    int s_index = 0; //Позиция, с которого начинается наибольшая длина
+    std::vector<int> m = { 1,2,3,4,5 };
+        
+    //Идем по массиву
+    for (int r = 0; r < m.size(); r++) { 
+        if (myMap.count(m[r]) && myMap[m[r]] >= left) {
+            left = myMap[m[r]] + 1;
+        }
+        myMap[m[r]] = r; //Добавляем элемент
+        if ((r - left + 1) > right) {
+            right = r - left + 1;
+            s_index = left;
+        }
+    }
+    for (auto elem : myMap) {
+        std::cout << elem.first << ' ' << elem.second << '\n';
+    }
+    std::cout << '\n';
+    std::cout << right << ' ' << s_index << '\n';
+}*/
+
+//Задание 9
+/*
+Сравните время работы set и unordered_set из STL для операций добавления N элементов, где N=100,10000,10^6,10^7. 
+Ключами являются строки из случайных букв от a до z длиной ровно 16. Результат оформить в виде таблицы, время в ns. 
+Привести код, использованный для измерения времени для одного значения N.
+*/
+#include <iostream>
+#include <set>
+#include <unordered_set>
+#include <vector>
+#include <string>
+#include <random>
+#include <chrono>
+#include <iomanip>
+
+std::vector<double> m(0);
+
+std::vector<std::string> generateSymbols(int N, int len = 16) {
+    std::vector<std::string> strings;
+    std::mt19937 gen(std::random_device{}());
+    std::uniform_int_distribution<> dist('a', 'z');
+
+    for (int i = 0; i < N; ++i) {
+        std::string s;
+        for (int j = 0; j < len; ++j)
+            s += static_cast<char>(dist(gen));
+        strings.push_back(s);
+    }
+    return strings;
+}
+
+void testSearching(std::vector<std::string>& data) {
+    // Измерение времени для std::set
+    {
+        std::set<std::string> s;
+        auto start1 = std::chrono::high_resolution_clock::now();
+        for (const auto& str : data)
+            s.insert(str);
+        auto end1 = std::chrono::high_resolution_clock::now();
+        auto duration_ns1 = std::chrono::duration_cast<std::chrono::nanoseconds>(end1 - start1).count();
+        std::cout << "std::set: " << duration_ns1 << " ns\n";
+        m.push_back(duration_ns1);
+    }
+
+    // Измерение времени для std::unordered_set
+    {
+        std::unordered_set<std::string> us;
+        auto start2 = std::chrono::high_resolution_clock::now();
+        for (const auto& str : data)
+            us.insert(str);
+        auto end2 = std::chrono::high_resolution_clock::now();
+        auto duration_ns2 = std::chrono::duration_cast<std::chrono::nanoseconds>(end2 - start2).count();
+        std::cout << "std::unordered_set: " << duration_ns2 << " ns\n";
+        m.push_back(duration_ns2);
+    }
+}
+
+int main() {
+    setlocale(LC_ALL, "rus");
+    int N1 = 100;
+    int N2 = 10000;
+    int N3 = 1000000; // Можно заменить на 100, 10000, 1'000'000, 10'000'000
+    int N4 = 10000000;
+    //std::vector<int> m = {100, 10000, 1000000, 10000000};
+    std::vector<std::string> v1 = generateSymbols(N1);
+    std::vector<std::string> v2 = generateSymbols(N2);
+    std::vector<std::string> v3 = generateSymbols(N3);
+    std::vector<std::string> v4 = generateSymbols(N4);
+
+    testSearching(v1); 
+    testSearching(v2);
+    testSearching(v3);
+    testSearching(v4);
+
+    std::cout << '\n';
+    std::cout << std::setw(30) << "set в ns" << std::setw(40) << "unordered_set в ns" << '\n';
+    std::cout << "100" << std::setw(30) << m.at(0) << std::setw(30) << m.at(1) << std::setw(30) << '\n';
+    std::cout << "10000" << std::setw(30) << m.at(2) << std::setw(30) << m.at(3) << std::setw(30) << '\n';
+    std::cout << "1000000" << std::setw(30) << m.at(4) << std::setw(30) << m.at(5) << std::setw(30) << '\n';
+    std::cout << "10000000" << std::setw(23) << m.at(6) << std::setw(30) << m.at(7) << std::setw(30) << '\n';
+
+    return 0;
+}
+
+
+//Задание 19
+/*
+Напишите функцию для получения K-го в порядке возрастания числа из двоичного файла, содержащего N (N>10^9) 64-битных беззнаковых целых чисел. 
+Функции передается имя файла с числами и K. 
+Можно считывать файл несколько раз. 
+В памяти можно хранить не более 66000 64-битных чисел. Оцените эффективность вашего алгоритма.
+*/
+/*
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <cstdint> //Целочисленный тип с определенным разме
+#include <limits>
+#include <string>
+
+const size_t size = 66000;
+
+uint64_t find_kth_smallest(const std::string& filename, uint64_t K) {
+    std::vector<uint64_t> buffer(size); //Память
+    uint64_t left = 0; //Нижняя граница
+    uint64_t right = std::numeric_limits<uint64_t>::max(); //Верхняя граница
+
+    while (left < right) {
+        uint64_t mid = left + (right - left) / 2;
+
+        std::ifstream file(filename, std::ios::binary);
+        if (!file) throw std::runtime_error("Не удалось открыть файл!");
+
+        uint64_t count = 0;
+
+        while (file.read(reinterpret_cast<char*>(buffer.data()), size * sizeof(uint64_t)) || file.gcount() > 0) {
+            size_t read_count = file.gcount() / sizeof(uint64_t);
+            for (size_t i = 0; i < read_count; ++i) {
+                if (buffer[i] <= mid) {
+                    ++count;
+                }
+            }
+        }
+
+        if (count < K) {
+            left = mid + 1;
+        }
+        else {
+            right = mid;
+        }
+    }
+
+    return left;
+}*/
 
 //Задание 20
 /*
@@ -738,10 +902,12 @@ int main() {
 Столбцы: 1) для случайного текста и шаблона; 2) текст 00...00, шаблон 00...01; 3) текст 00...00, шаблон 10...00.
 */
 
+/*
 #include <iostream>
 #include <vector>
 #include <random>
 #include <chrono>
+#include <iomanip>
 #include <string>
 #include <functional>
 #include <algorithm>
@@ -835,38 +1001,47 @@ std::string turbo_boyer_moore(const std::string& pattern, const std::string& tex
     return result;
 }
 
+std::vector<double> m(0);
 
 void testSearching(std::string& text, std::string& pattern) {
-    using Time = std::chrono::time_point<std::chrono::high_resolution_clock>;
-    using Diff = std::chrono::milliseconds;
+    using Clock = std::chrono::high_resolution_clock;
 
-    //1
-    Time start1 = std::chrono::high_resolution_clock::now();
+    //1 Сравнение функции Турбо-Бойера-Мура с методом find
+    auto start1 = Clock::now();
     std::string v_TBM = turbo_boyer_moore(pattern, text);
-    Time end1 = std::chrono::high_resolution_clock::now();
-    Diff diff1 = std::chrono::duration_cast<Diff>(end1 - start1);
-    std::cout << "Метод turbo_boyer_moore в милисекундах: " << diff1.count() << '\n';
+    auto end1 = Clock::now();
+    std::chrono::duration<double> diff1 = end1 - start1;
+    std::cout << std::fixed << std::setprecision(10);
+    //std::cout << "Метод turbo_boyer_moore: " << diff1.count() << " секунд\n";
+    m.push_back(diff1.count());
 
-    //#2
-    Time start2 = std::chrono::high_resolution_clock::now();
+    //find
+    auto start2 = Clock::now();
     auto pos2 = text.find(pattern);
-    Time end2 = std::chrono::high_resolution_clock::now();
-    Diff diff2 = std::chrono::duration_cast<Diff>(end2 - start2);
-    std::cout << "Метод find в миллисекундах: " << diff2.count() << '\n';
+    auto end2 = Clock::now();
+    std::chrono::duration<double> diff2 = end2 - start2;
+    //std::cout << "Метод find: " << diff2.count() << " секунд\n";
+    m.push_back(diff2.count());
 
-    //#3 - время создания 
-    Time start3 = std::chrono::high_resolution_clock::now();
-    auto searcher = std::boyer_moore_searcher(pattern.begin(), pattern.end());
-    Time end3 = std::chrono::high_resolution_clock::now();
-    Diff diff3 = std::chrono::duration_cast<Diff>(end3 - start3);
-    std::cout << "Создание метода boyer_moore_searcher в миллисекундах: " << diff3.count() << '\n';
+    //2 Сравнеие функции Турбо-Бойера-Мура с использованием boyer_moore_searcher из <functional> 
+    // С созданием: boyer_moore_searcher из <functional>
+    auto start3 = Clock::now();
+    auto searcher1 = std::boyer_moore_searcher(pattern.begin(), pattern.end());
+    auto result1 = std::search(text.begin(), text.end(), searcher1);
+    auto end3 = Clock::now();
+    std::chrono::duration<double> diff3 = end3 - start3;
+    //std::cout << "Создание метода и поиск: " << diff3.count() << " секунд\n";
+    m.push_back(diff3.count());
+
+    //#2.1 - Время работы
+    auto searcher2 = std::boyer_moore_searcher(pattern.begin(), pattern.end());
     
-    //#3.1 - Время работы
-    Time start3_1 = std::chrono::high_resolution_clock::now();
-    auto elem = std::search(text.begin(), text.end(), searcher);
-    Time end3_1 = std::chrono::high_resolution_clock::now();
-    Diff diff3_1 = std::chrono::duration_cast<Diff>(end3_1 - start3_1);
-    std::cout << "Метод boyer_moore_searcher в миллисекундах: " << diff3_1.count() << '\n';
+    auto start3_1 = Clock::now();
+    auto result2 = std::search(text.begin(), text.end(), searcher2);
+    auto end3_1 = Clock::now();
+    std::chrono::duration<double> diff3_1 = end3_1 - start3_1;
+    //std::cout << "Метод boyer_moore_searcher работа поиска: " << diff3_1.count() << " секунд\n";
+    m.push_back(diff3_1.count());
 }
 
 int main() {
@@ -893,15 +1068,63 @@ int main() {
 
     for (int i = 0; i < num1; i++) v4.push_back(dis(gen));
     for (int i = 0; i < num2; i++) v5.push_back(dis(gen)); 
+    //std::cout << "Текст: случайный набор цифр из 0 и 1, шаблон: случайный набор цифр из 0 и 1" << '\n';    
+    testSearching(v4, v5); // текст:случайный набор цифр из 0 и 1, шаблон:случайный набор цифр из 0 и 1
+    //std::cout << "Текст: 00...00, Шаблон: 00...01" << '\n';
     testSearching(v1,v2); // текст:00..00, шаблон:00...01
-    testSearching(v1,v3); // текст:00..00, шаблон:10...00
-    testSearching(v4,v5); // текст:случайный набор цифр из 0 и 1, шаблон:случайный набор цифр из 0 и 1
-}
+    //std::cout << "Текст: 00...00, шаблон: 10...00" << '\n';
+    testSearching(v1,v3); // текст:00..00, шаблон:10...00 
+
+    std::cout << '\n'; 
+    std::cout << std::setw(45) << "Случайный набор цифр" << std::setw(35) << "Текст:00...00 Шаблон:00...01" << std::setw(35) << "Текст:00...00 Шаблон:10...00" << '\n';
+    std::cout << "turbo_boyer_moore" << std::setw(25) << m.at(0) << std::setw(30) << m.at(4) << std::setw(30) << m.at(8) << '\n';
+    std::cout << "find" << std::setw(38) << m.at(1) << std::setw(30) << m.at(5) << std::setw(30) << m.at(9) << '\n';
+    std::cout << "Полный boyer_moore_searcher" << std::setw(15) << m.at(2) << std::setw(30) << m.at(6) << std::setw(30) << m.at(10) << '\n';
+    std::cout << "Поиск boyer_moore_searcher" << std::setw(16) << m.at(3) << std::setw(30) << m.at(7) << std::setw(30) << m.at(11) << '\n';
+}*/
+
+//Задание 22 - сделано храниться на бумаге
+/*
+Постройте сжатое суффиксное дерево для строки "shesellsseashells" и найдите количеcтво различных подстрок в этой строке. 
+Объясните способ подсчета с использованием суффиксного дерева
+*/
+
+//Задание 23
+/*
+Определите необходимые геометрические объекты и напишите следующую функцию
+В декартовой системе координат на плоскости заданы две окружности. Найдите все касательные к этим окружностям (их может быть до 4).
+Для точки использовать класс из лекций и его методы.
+*/
+
+/*
+struct Point {
+    double x, y;
+    double len() const { return hypot(x, y); } // расстояние от начала координат
+    double phi() const { return atan2(y, x); } // угол
+    Point operator+(Point p) const { return { x + p.x,y + p.y }; }
+    Point operator-(Point p) const { return { x - p.x,y - p.y }; }
+    double operator*(Point p) const { return x * p.x + y * p.y; } // скалярное произведение
+    double operator^(Point p) const { return x * p.y - y * p.x; } // векторное произведение
+    Point operator*(double a) const { return  { a * x,a * y }; } // "масштабирование"
+    Point turn(double a) const { double ca = cos(a), sa = sin(a); return { x * ca - y * sa,-x * sa + y * ca }; } // поворот
+    Point turn() const { return { -y,x }; } // поворот на п/2 
+    Point operator-() const { return { -x,-y }; } // поворот на п
+};
+inline Point operator*(double a, Point p) { return p * a; } // "масштабирование"
+
+struct Circle {
+    Point position;
+    double radius;
+};
+*/
+
 
 //Задание 25
 /*
 Напишите функцию разложения числа на простые множители.
 */
+
+//Алгоритм решето-Эратосфена
 /*
 std::vector<int> func2(int x) {
     std::vector<int> my_list(0);
@@ -932,4 +1155,26 @@ int main() {
         std::cout << temp << ' ';
     }
     return 0;
-}*/
+}
+*/
+/*
+std::vector<int> func2(int num) {
+    std::vector<int> my_list(0);
+    int n = num;
+    for (int i = 2; i <= sqrt(n); i++) {
+        while (n % i == 0) {
+            n = n / i;
+            my_list.push_back(i);
+        }
+    }
+    my_list.push_back(n);
+    return my_list;
+}
+
+int main() {
+    for (int temp : func2(20)) {
+        std::cout << temp << ' ';
+    }
+    return 0;
+}
+*/
