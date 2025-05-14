@@ -14,29 +14,23 @@
 import java.util.List;
 
 public abstract class ChessFigure {
-    protected int x, y; // Координаты шахматной фигуры
+    protected char x; //Координаты от A до Н
+    protected int y; //Координаты от 1 до 8
 
-    public ChessFigure(int x, int y){
+    //Конструктор с параметрами
+    public ChessFigure(char x, int y){
         this.x = x;
         this.y = y;
     }
 
-    public int getX() { return this.x; }
+    //Методы - геттеры и сеттеры
+    public char getX() { return this.x; }
     public int getY() { return this.y; }
-    public void setXY(int x, int Y) {
+    public void setXY(char x, int Y) {
         this.x = x;
         this.y = y;
     }
 
-    //Абстрактный метод - список позиций, которые шахматная фигура может атаковать
-    public abstract List<int[]> getAttackPositions();
-    // Проверяет, может ли фигура атаковать другую фигуру
-    public boolean canAttack(ChessFigure other) {
-        for (int[] pos : getAttackPositions()) {
-            if (pos[0] == other.getX() && pos[1] == other.getY()) {
-                return true;
-            }
-        }
-        return false;
-    }
+    //Метод - список позиций, которые шахматная фигура может атаковать
+    public abstract boolean canKill(ChessFigure other);
 }

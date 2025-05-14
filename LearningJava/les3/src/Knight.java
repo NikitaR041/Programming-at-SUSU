@@ -2,30 +2,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Knight extends ChessFigure{
-    public Knight(int x, int y){
+    public Knight(char x, int y){
         super(x,y);
     }
 
+    //Переопределение метода
     @Override
-    public List<int[]> getAttackPositions() {
-        List<int[]> positions = new ArrayList<>();
-        int[][] moves = {
-                {2, 1}, {2, -1}, {-2, 1}, {-2, -1},
-                {1, 2}, {1, -2}, {-1, 2}, {-1, -2}
-        };
-
-        for (int[] move : moves) {
-            int newX = x + move[0];
-            int newY = y + move[1];
-            if (newX >= 1 && newX <= 8 && newY >= 1 && newY <= 8) {
-                positions.add(new int[]{newX, newY});
-            }
-        }
-        return positions;
-    }
-    @Override
-    public String toString() {
-        return "Конь на позиции ("+x+' '+ y+')';
+    public boolean canKill(ChessFigure other) {
+        int dx = Math.abs(other.x - this.x);
+        int dy = Math.abs(other.y - this.y);
+        return (dx == 2 && dy == 1) || (dx == 1 && dy == 2);
     }
 }
 
