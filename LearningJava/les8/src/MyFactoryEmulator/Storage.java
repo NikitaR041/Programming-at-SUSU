@@ -3,12 +3,10 @@ package MyFactoryEmulator;
 import java.util.LinkedList;
 import java.util.Queue;
 
-
 /*
 Класс Storage - это обобщенный класс, от которого объявлены объекты "Склад двигателей", "Склад кузовов",
     "Склад аксессуаров", "Склад готовых изделий".
 */
-
 
 public class Storage<T> {
     private final Queue<T> warehouse = new LinkedList<T>(); //Само хранилище в виде структуры данных очередь
