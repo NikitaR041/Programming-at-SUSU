@@ -1,0 +1,27 @@
+#1
+В связи с кризисом уволить (MoveKindName='Уволен') всех сотрудников 'каф.Прикладной математики' c 1 сентября 2019 г. Для решения создайте курсор, оператор select которого содержит всех сотрудников кафедры. Проходя по записям курсора для каждого сотрудника добавьте приказ (Move) об увольнении.
+
+DECLARE @MoveKindID int
+DECLARE @EmpID int
+
+SELECT @MoveKindID = MK.MoveKind_ID
+FROM MoveKind MK
+WHERE MK.MoveKindName LIKE 'Уволен'
+
+DECLARE MyCursor CURSOR LOCAL FORWARD_ONLY FOR
+	SELECT E.Emp_ID
+	FROM Employee E
+	JOIN Depart D ON D.Depart_ID = E.Depart_ID
+	WHERE D.DepartName LIKE 'каф.Прикладной математики'
+
+OPEN MyCursor
+FETCH NEXT FROM MyCursor INTO @EmpID
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+	INSERT INTO Move (MoveKind_ID, Emp_ID, JobTitle_ID, Depart_ID, Dat)
+	VALUES (@MoveKindID, @EmpID, NULL, NULL, '20190901')
+	FETCH NEXT FROM MyCursor INTO @EmpID
+END
+CLOSE MyCursor
+DEALLOCATE MyCursor

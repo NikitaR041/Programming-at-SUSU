@@ -703,6 +703,7 @@ int main() {
 Ключами являются строки из случайных букв от a до z длиной ровно 16. Результат оформить в виде таблицы, время в ns. 
 Привести код, использованный для измерения времени для одного значения N.
 */
+/*
 #include <iostream>
 #include <set>
 #include <unordered_set>
@@ -779,8 +780,162 @@ int main() {
     std::cout << "10000000" << std::setw(23) << m.at(6) << std::setw(30) << m.at(7) << std::setw(30) << '\n';
 
     return 0;
+}*/
+
+//Задание 15
+/*
+Напишите функцию для проверки, что в орграфе, заданном через списки смежных вершин, существует эйлеров путь (путь, проходящий по всем дугам графа). 
+Сам путь находить не нужно.
+*/
+
+#include <vector>
+#include <iostream>
+using namespace std;
+
+bool EylerRoute(const vector<vector<int>>& G) {
+    int n = G.size();
+    vector<int> in(n, 0), out(n, 0);
+
+    for (int v = 0; v < n; ++v) {
+        for (int u : G[v]) {
+            out[v]++;
+            in[u]++;
+        }
+    }
+
+    int start_nodes = 0, end_nodes = 0;
+
+    for (int i = 0; i < n; ++i) {
+        if (out[i] - in[i] == 1)
+            start_nodes++;
+        else if (in[i] - out[i] == 1)
+            end_nodes++;
+        else if (in[i] != out[i])
+            return false; 
+    }
+    return (start_nodes == 1 && end_nodes == 1) || (start_nodes == 0 && end_nodes == 0);
+}
+int main() {
+    std::setlocale(LC_ALL, "Rus");
+    vector<vector<int>> G = {
+        {1},    // 0 → 1
+        {2, 3}, // 1 → 2, 3
+        {},     // 2
+        {0}     // 3 → 0
+    };
+
+    std::cout << (EylerRoute(G) ? "Есть эйлеров путь\n" : "Нет эйлерова пути\n");
 }
 
+
+
+//Задание 18
+/*
+Модифицируйте алгоритм Дейкстры для решения задачи:
+В городе есть N площадей, соединенных M дорогами. 
+Известна длина каждой дороги и номера площадей ai, bi(1≤ai,bi≤N), соединенных этой дорогой. 
+Посчитайте количество способов добраться с площади A до площади B так, чтобы пройденный путь был минимален.
+*/
+
+/*
+#include <iostream>
+#include <vector>
+#include <set>
+#include <iomanip>
+using namespace std;
+
+const double oo = 1e10;
+
+void Dijkstra( 
+    const vector<vector<pair<int, double>>>& G, // граф в виде списка смежности
+    int s, // стартовая вершина A
+    vector<double>& d, // расстояния от A
+    vector<int>& to, // предки (для восстановления пути) 
+    vector<int>& cnt // количество кратчайших путей
+)
+{
+    int n = G.size();
+    d.assign(n, oo);      // минимальное расстояние
+    cnt.assign(n, 0);     // количество путей
+    to.assign(n, -1);     // родительские вершины (необязательно)
+
+    d[s] = 0;
+    cnt[s] = 1; // до себя — один способ
+
+    set<pair<double, int>> q;
+    q.insert({ d[s], s });
+
+    while (!q.empty()) {
+        auto it = q.begin();
+        int v = it->second;
+        q.erase(it);
+
+        for (auto [u, w] : G[v]) {
+            if (d[v] + w < d[u]) {
+                // улучшили расстояние — пересчёт
+                q.erase({ d[u], u });
+                d[u] = d[v] + w;
+                cnt[u] = cnt[v];
+                to[u] = v;
+                q.insert({ d[u], u });
+            }
+            else if (d[v] + w == d[u]) {
+                // ещё один путь той же длины
+                cnt[u] += cnt[v];
+            }
+        }
+    }
+}
+
+int main() {
+    std::setlocale(LC_ALL, "Rus");
+    int N = 6;
+    vector<vector<pair<int, double>>> G(N);
+
+    // Пример графа:
+    // 0 --1-- 1 --1-- 2
+    //  |              |
+    //  2              1
+    //  |              |
+    //  3 --1-- 4 --1-- 5
+
+    G[0].push_back({ 1, 1 });
+    G[1].push_back({ 0, 1 });
+    G[1].push_back({ 2, 1 });
+    G[2].push_back({ 1, 1 });
+    G[0].push_back({ 3, 2 });
+    G[3].push_back({ 0, 2 });
+    G[3].push_back({ 4, 1 });
+    G[4].push_back({ 3, 1 });
+    G[4].push_back({ 5, 1 });
+    G[5].push_back({ 4, 1 });
+    G[2].push_back({ 5, 1 });
+    G[5].push_back({ 2, 1 });
+
+    int A = 0, B = 5;
+    vector<double> d;
+    vector<int> to, cnt;
+
+    Dijkstra(G, A, d, to, cnt);
+
+    // Табличный вывод
+    cout << left << setw(10) << "Вершина" << setw(20) << "Мин. расстояние"
+        << setw(20) << "Кол-во путей" << "Родитель\n";
+    cout << string(60, '-') << "\n";
+
+    for (int i = 0; i < N; ++i) {
+        cout << left << setw(10) << i
+            << setw(20) << d[i]
+            << setw(20) << cnt[i]
+            << to[i] << '\n';
+    }
+
+    cout << "\nМинимальное расстояние от " << A << " до " << B << " = " << d[B] << '\n';
+    cout << "Количество кратчайших путей = " << cnt[B] << '\n';
+
+    return 0;
+}
+*/
 
 //Задание 19
 /*

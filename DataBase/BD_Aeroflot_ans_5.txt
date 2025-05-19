@@ -1,0 +1,28 @@
+#1
+Таблица City, помимо указанных на схеме, содержит поле Nomer int null. Перенумеруйте все города по алфавиту, начиная с 1.
+
+DECLARE @CityName varchar(100)
+DECLARE @CityId int
+DECLARE @CountId int = 1
+
+DECLARE CityCursor CURSOR LOCAL FORWARD_ONLY FOR
+	SELECT City_ID, CityName
+	FROM City
+	ORDER by CityName
+
+OPEN CityCursor
+FETCH NEXT FROM CityCursor INTO @CityId, @CityName
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+	UPDATE City
+	SET Nomer = @CountId 
+	WHERE City_ID = @CityId
+	SET @CountId = @CountId + 1
+	FETCH NEXT FROM CityCursor INTO @CityId, @CityName
+END
+CLOSE CityCursor
+DEALLOCATE CityCursor
+
+#2 - несделано
+Сделать так, чтобы каждый пассажир (FIO) упоминался в таблице Passgr только один раз. Все остальные вхождения FIO в таблицу, кроме первого должны быть удалены.
