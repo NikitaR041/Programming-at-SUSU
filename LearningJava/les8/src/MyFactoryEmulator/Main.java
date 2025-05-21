@@ -4,10 +4,12 @@ import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Logger;
+import java.util.concurrent.Semaphore;
 
 public class Main {
     public static void main(String[] args) {
         try {
+            Semaphore carReady = new Semaphore(0, true);
             // Загрузка конфигурации
             MyConfig config = new MyConfig("MyFactoryEmulator/config.properties");
 
@@ -25,6 +27,13 @@ public class Main {
             Storage<Accessory> accessoryStorage = new Storage<>(10);
             Storage<Car> carStorage = new Storage<>(carStorageSize);
 
+            //---
+            Thread assembler1 = new Thread(new CarAssembly(bodyStorage, motorStorage, accessoryStorage, carStorage, carReady));
+            Thread assembler2 = new Thread(new CarAssembly(bodyStorage, motorStorage, accessoryStorage, carStorage, carReady));
+            assembler1.start();
+            assembler2.start();
+
+
             // Создание и запуск поставщиков
             Thread bodySupplier = new Thread(new Supplier<>(bodyStorage, Body::new, bodyDelay));
             Thread motorSupplier = new Thread(new Supplier<>(motorStorage, Motor::new, motorDelay));
@@ -37,11 +46,11 @@ public class Main {
             // Сборка автомобилей (через пул потоков)
             ExecutorService carAssemblyPool = Executors.newFixedThreadPool(2);
             for (int i = 0; i < 2; i++) {
-                carAssemblyPool.submit(new CarAssembly(bodyStorage, motorStorage, accessoryStorage, carStorage));
+                carAssemblyPool.submit(new CarAssembly(bodyStorage, motorStorage, accessoryStorage, carStorage, carReady));
             }
 
             // Запуск дилера
-            Thread dealer = new Thread(new Dealer(carStorage, 1000, logger));
+            Thread dealer = new Thread(new Dealer(carStorage, 1000, logger, carReady));
             dealer.start();
 
             // Контроллер склада готовых изделий (пока в заготовке)

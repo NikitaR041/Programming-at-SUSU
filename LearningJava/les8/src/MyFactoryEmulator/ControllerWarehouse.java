@@ -9,19 +9,7 @@ public class ControllerWarehouse implements Runnable{
     public void run(){
         try {
             while (!Thread.currentThread().isInterrupted()) {
-                synchronized (carStorage) {
-                    int count = carStorage.getItemCount();
-                    int capacity = carStorage.getMaxsizeWarehouse();
-
-                    if (count >= capacity) {
-                        System.out.println("Склад машин полон (" + count + "/" + capacity + "). Ожидаем продажи...");
-                        carStorage.wait();
-                    } else {
-                        carStorage.notifyAll();
-                    }
-                }
-
-                Thread.sleep(500);
+                Thread.sleep(100);
             }
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
