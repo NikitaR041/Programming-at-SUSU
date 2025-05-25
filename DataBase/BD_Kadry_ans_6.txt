@@ -1,0 +1,12 @@
+#1
+Напишите процедуру Fired @year1 int, @year2 int, возвращающую список всех сотрудников (ФИО, дата увольнения) уволенных в течение c года @year1 по год @year2.
+
+CREATE PROCEDURE Fired @year1 int, @year2 int
+AS
+BEGIN
+	SELECT E.FIO, M.Dat
+	FROM Employee E 
+	JOIN Move M ON M.Emp_ID = E.Emp_ID
+	JOIN MoveKind MK ON MK.MoveKind_ID = M.MoveKind_ID
+	WHERE MK.IsArrival = 0 AND YEAR(M.Dat) BETWEEN @year1 AND @year2
+END

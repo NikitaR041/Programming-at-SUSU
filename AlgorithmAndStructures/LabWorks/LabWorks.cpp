@@ -315,160 +315,143 @@ int main() {
 больше или равно количеству элементов, больших или равных ai среди элементов ai+1, ai+2, ..., aN. 
 В последовательности может быть несколько медианных элементов.
 Напишите программу, которая находит минимальный индекс медианного элемента.
+*/
 
-В приложении MinIDE работает
+/*
+#include <iostream> 
+#include <vector> 
 
-
-#include <iostream>
-#include <functional>
-#include <stdexcept>
-#include <utility>
-#include <cstdlib>
-
-using namespace std;
-
-template <typename T>
-class ITreap {
-    struct node {
-        T v; // значение элемента
-        size_t k; // неявный ключ - количество элементов в поддереве
-        int y; // случайная высота
-        node* left = nullptr;
-        node* right = nullptr;
-
-        node(T v) : v(v), k(1), y(rand()) {}
+class MyTrip {
+    struct MyNodeTrip
+    {
+        int value;//Значение объекта
+        size_t k; //неявный ключ - количество элементов в поддереве
+        int priority;//Приоритет объекта - для балансировки - случайная высота
+        MyNodeTrip* left, * right; //Узлы левый, правый 
+        MyNodeTrip(int value) : value(value), k(1), priority(rand()), left(nullptr), right(nullptr) {} //Конструктор с параметрами
+        void update() { k = 1 + size(left) + size(right); } //Метод: перерасчёт количество элементов 
     };
 
-    node* root;
+    static size_t size(MyNodeTrip* node) { return node ? node->k : 0; } //Функция возвращающая количество элементов
 
-    size_t size(node* n) const {
-        return n ? n->k : 0;
+    MyNodeTrip *root = nullptr;
+
+    //Метод разрезания элементов
+    std::pair<MyNodeTrip*, MyNodeTrip*> MySplit(MyNodeTrip *node, int value) {
+        if (!node) return { nullptr, nullptr };
+
+        size_t leftS = size(node->left);
+        if (value <= leftS) {
+            auto [left, right] = MySplit(node->left, value);
+            node->left = right;
+            node->update();
+            return { left, node };
+        }
+        else {
+            auto [left, right] = MySplit(node->right, value-leftS-1);
+            node->right = left;
+            node->update();
+            return { node, right};
+        }
     }
-
-    void update(node* t) {
+    //Метод слияния элементов 
+    MyNodeTrip* MyMerge(MyNodeTrip* node1, MyNodeTrip* node2) {
+        if (!node1) return node2;
+        if (!node2) return node1;
+        if (node1->priority > node2->priority) {
+            node1->right = MyMerge(node1->right, node2);
+            node1->update();
+            return node1;
+        }
+        else {
+            node2->left = MyMerge(node1, node2->left);
+            node2->update();
+            return node2;
+        }
+    }
+    //Метод вставки элемента
+    void MyInsert(MyNodeTrip*& t, int value) {
+        MyNodeTrip *node = new MyNodeTrip(value);
+        //MyNodeTrip *left, *right;
+        auto [left, right] = MySplit(t, value);
+        t = MyMerge(MyMerge(left, node), right);
+    }
+    //Метод удаления элемента
+    void MyErase(MyNodeTrip*& t, int value) {
         if (!t) return;
-        t->k = 1 + size(t->left) + size(t->right);
-    }
-
-    pair<node*, node*> spliti(node* t, size_t k) { // разрезание по количеству
-        if (!t || k >= t->k) return { t, nullptr };
-        if (k == 0) return { nullptr, t };
-        size_t l = size(t->left);
-        if (l < k) {
-            auto [t1, t2] = spliti(t->right, k - l - 1);
-            t->right = t1;
-            update(t);
-            return { t, t2 };
+        if (t->value == value) {
+            t = MyMerge(t->left, t->right);
+        }
+        else if (value < t->value) {
+            MyErase(t->left, value);
         }
         else {
-            auto [t1, t2] = spliti(t->left, k);
-            t->left = t2;
-            update(t);
-            return { t1, t };
+            MyErase(t->right, value);
         }
+        if (t) t->update();
     }
-
-    node* merge(node* t1, node* t2) { // слияние
-        if (!t2) return t1;
-        if (!t1) return t2;
-        if (t1->y > t2->y) {
-            t1->right = merge(t1->right, t2);
-            update(t1);
-            return t1;
+    //Методы подсчета количества элементов слева
+    int countLeft(MyNodeTrip *t, int value) {
+        if (!t) return 0;
+        if (t->value <= value) {
+            return 1 + size(t->left) + countLeft(t->right, value);
         }
         else {
-            t2->left = merge(t1, t2->left);
-            update(t2);
-            return t2;
+            return countLeft(t->left, value);
         }
     }
-
-    node* find(size_t k) const { // поиск узла по номеру
-        node* p = root;
-        while (p) {
-            size_t l = size(p->left);
-            if (l == k) break;
-            else if (k < l) p = p->left;
-            else {
-                k -= l + 1;
-                p = p->right;
-            }
+    //Метод подсчета количества элементов справа
+    int countRight(MyNodeTrip *t, int value) {
+        if (!t) return 0;
+        if (t->value >= value) {
+            return 1 + size(t->right) + countRight(t->left, value);
         }
-        return p;
+        else {
+            return countRight(t->right, value);
+        }
     }
-
-    void foreach(const function<void(T&)>& f, node* p) const { // обход дерева
-        if (!p) return;
-        foreach(f, p->left);
-        f(p->v);
-        foreach(f, p->right);
-    }
-
-    void free(node* p) { // освобождение памяти
-        if (!p) return;
-        free(p->left);
-        free(p->right);
-        delete p;
-    }
-
 public:
-    ITreap() : root(nullptr) {}
-    ITreap(const ITreap&) = delete; // запрет копирования
-    ITreap& operator=(const ITreap&) = delete; // запрет присваивания
-    ~ITreap() { free(root); }
-
-    size_t size() const {
-        return size(root);
+    void insert(int value) {
+        MyInsert(root, value);
     }
 
-    T& operator[](size_t k) { // доступ к элементу по индексу
-        if (k >= size()) throw runtime_error("Wrong index");
-        node* p = find(k);
-        return p->v;
+    void erase(int value) {
+        MyErase(root, value);
     }
 
-    T operator[](size_t k) const {
-        if (k >= size()) throw runtime_error("Wrong index");
-        node* p = find(k);
-        return p->v;
+    int countLessOrEqual(int value) {
+        return countLeft(root, value);
     }
 
-    void inserti(size_t k, T v) { // вставка
-        if (k > size()) throw runtime_error("Wrong index");
-        node* m = new node(v);
-        auto [t1, t2] = spliti(root, k);
-        root = merge(merge(t1, m), t2);
-    }
-
-    void erasei(size_t k) { // удаление
-        if (k >= size()) throw runtime_error("Wrong index");
-        auto [t1, t] = spliti(root, k);
-        auto [m, t2] = spliti(t, 1);
-        root = merge(t1, t2);
-        delete m;
-    }
-
-    void foreach(const function<void(T&)>& f) const {
-        foreach(f, root);
+    int countGreaterOrEqual(int value) {
+        return countRight(root, value);
     }
 };
 
 int main() {
-    ITreap<int> t;
+    setlocale(LC_ALL, "rus");
+    std::vector<int> a = { 3, 5, 2, 4, 6 };
+    int n = a.size();
 
-    // Пример использования
-    t.inserti(0, 10); // {10}
-    t.inserti(1, 20); // {10, 20}
-    t.inserti(1, 15); // {10, 15, 20}
+    std::cout << "Последовательность: ";
+    for (int elem : a) {
+        std::cout << elem << ' ';
+    }
+    std::cout << '\n';
 
-    t.foreach([](int& v) { cout << v << "\n"; });
+    for (int i = 0; i < n; ++i) {
+        int leftCount = 0, rightCount = 0;
+        for (int j = 0; j < i; ++j) {
+            if (a[j] <= a[i]) ++leftCount;
+        }
 
-    t[2] = 25; // {10, 15, 25}
-    t.erasei(1); // {10, 25}
-
-    cout << t[0] << "\n";
-    cout << t[1] << "\n";
-
+        for (int j = i + 1; j < n; ++j) {
+            if (a[j] >= a[i]) ++rightCount;
+        }
+        if (leftCount >= rightCount) {
+            std::cout << " --> Подходит: " << a[i] << '\n';
+        }
+    }
     return 0;
 }
 */
@@ -484,147 +467,72 @@ int main() {
 Первая строка ввода содержит одно целое число N (1≤N≤100000) -- количество команд на переключение состояния лампочек. 
 Далее следует N строк, каждая строка содержит два целых числа ai и bi (1≤ai≤bi≤220) - команда на переключение.
 Вывести N строк, в i-ой строке вывести количество горящих лампочек после i-ой команды.
-
-Работает на MinIDE
 */
-/*
-#include <vector>
-#include <optional>
-#include <functional>
-#include <stdexcept>
-#include <utility>
-#include <cmath>     // для bit_ceil
-#include <cstddef>   // для size_t
-#include <algorithm> // для std::min и std::max
 
-template <typename T, typename State>
-struct Operation {
-    State operator()(State s, size_t k) const {
-        // Реализация операции для State
-        return s;
-    }
-    T operator()(T v) const {
-        // Реализация операции для T
-        return v;
-    }
-    std::optional<Operation> combine(Operation other) const {
-        // Реализация комбинирования двух операций
-        return other;
-    }
-};
+//#include <iostream>
+//#include <vector>
+//using namespace std;
+//
+//const int MAX = 1 << 20;
+//
+//struct SegmentTree {
+//    vector<int> cnt;   // количество включённых лампочек на отрезке
+//    vector<bool> flip; // флаг инверсии
+//
+//    SegmentTree() {
+//        cnt.resize(4 * MAX);
+//        flip.resize(4 * MAX);
+//    }
+//
+//    void push(int v, int l, int r) {
+//        if (flip[v]) {
+//            cnt[v] = (r - l + 1) - cnt[v]; // инвертируем количество единиц
+//            if (l != r) { // если не лист
+//                flip[v * 2] ^= true;
+//                flip[v * 2 + 1] ^= true;
+//            }
+//            flip[v] = false;
+//        }
+//    }
+//
+//    void update(int v, int l, int r, int ql, int qr) {
+//        push(v, l, r);
+//        if (qr < l || r < ql) return; // нет пересечения
+//        if (ql <= l && r <= qr) {
+//            flip[v] ^= true;
+//            push(v, l, r);
+//            return;
+//        }
+//        int m = (l + r) / 2;
+//        update(v * 2, l, m, ql, qr);
+//        update(v * 2 + 1, m + 1, r, ql, qr);
+//        cnt[v] = cnt[v * 2] + cnt[v * 2 + 1];
+//    }
+//
+//    int query() {
+//        return cnt[1]; // на корне — количество включённых лампочек
+//    }
+//};
+//
+//int main() {
+//    ios::sync_with_stdio(false);
+//    cin.tie(nullptr);
+//
+//    int N;
+//    cin >> N;
+//    SegmentTree tree;
+//
+//    for (int i = 0; i < N; ++i) {
+//        int a, b;
+//        cin >> a >> b;
+//        --a; --b; // переводим к 0-индексации
+//        tree.update(1, 0, MAX - 1, a, b);
+//        cout << tree.query() << "\n";
+//    }
+//
+//    return 0;
+//}
 
-template <typename T, typename State>
-class STree {
-    using func = std::function<State(State, State)>;
-    size_t n, n2;
-    std::vector<std::pair<std::optional<Operation<T, State>>, State>> pyrmd;
-    std::vector<T> values;
-    func f;
-
-    void update(size_t i, size_t k1, size_t k2) {
-        if (i >= n2) return; // не применяется к листу
-        pyrmd[i].second = f(state(2 * i, k1), state(2 * i + 1, k2)); // обновляем состояние поддерева
-    }
-
-    void add_op(size_t i, Operation<T, State> op) { // добавить или применить операцию
-        if (i >= n2) values[i - n2] = op(values[i - n2]); // применить к листу
-        else if (!pyrmd[i].first) pyrmd[i].first = op;
-        else pyrmd[i].first = pyrmd[i].first->combine(op);
-    }
-
-    void clear_op(size_t i, size_t k) { // сдвинуть операцию вниз
-        if (i >= n2 || !pyrmd[i].first) return;
-        Operation<T, State> op = *(pyrmd[i].first);
-        pyrmd[i].second = op(pyrmd[i].second, k);
-        pyrmd[i].first = {};
-        add_op(2 * i, op);
-        add_op(2 * i + 1, op);
-    }
-
-    State state(size_t i, size_t k) { // состояние поддерева или листа
-        if (i >= n2) {
-            if (i - n2 >= n) return State();
-            return State(values[i - n2]);
-        }
-        if (pyrmd[i].first) return (*(pyrmd[i].first))(pyrmd[i].second, k);
-        return pyrmd[i].second;
-    }
-
-    State calc(size_t p, size_t k, size_t pi, size_t pj, size_t i, size_t j) {
-        if (k == 1) return State(values[p - n2]); // лист
-        if (i <= pi && pj <= j) // все поддерево
-            return state(p, pj + 1 - pi);
-        clear_op(p, pj + 1 - pi); // сдвинуть операцию
-        k /= 2;
-        size_t m = pi + k;
-        // вернуть из одного поддерева
-        if (j < m) return calc(p * 2, k, pi, m - 1, i, j);
-        if (i >= m) return calc(p * 2 + 1, k, m, pj, i, j);
-        // или комбинацию
-        return f(calc(p * 2, k, pi, m - 1, i, j), calc(p * 2 + 1, k, m, pj, i, j));
-    }
-
-    void apply(size_t p, size_t k, size_t pi, size_t pj, size_t i, size_t j, std::optional<Operation<T, State>> op, T v) {
-        if (k == 1) { // лист
-            if (op) values[p - n2] = (*op)(values[p - n2]);
-            else values[p - n2] = v;
-            return;
-        }
-        if (i <= pi && pj <= j) { // полный отрезок
-            if (op) add_op(p, *op);
-            return;
-        }
-        clear_op(p, pj + 1 - pi); // сдвинуть операцию
-        k /= 2;
-        size_t m = pi + k;
-        if (i < m) // обработать поддеревья, если есть
-            apply(p * 2, k, pi, m - 1, i, j, op, v);
-        if (j >= m)
-            apply(p * 2 + 1, k, m, pj, i, j, op, v);
-        update(p, std::min(pj + 1, m) - pi, std::max(static_cast<int>(pj + 1 - m), 0)); // пересчитать
-    }
-
-public:
-    STree(size_t n, func f)
-        : n(n), n2(std::bit_ceil(n)), pyrmd(2 * n2, { {}, State() }), values(n, T()), f(f) {}
-
-    size_t size() const { return n; } // размер
-
-    State calc(size_t i, size_t j) { // получить значение функции на отрезке
-        if (i >= n || j >= n || i > j) throw std::runtime_error("Wrong index");
-        return calc(1, n2, 0, n - 1, i, j);
-    }
-
-    T get(size_t i) { // получить i-й элемент
-        if (i >= n) throw std::runtime_error("Wrong index");
-        return values[i];
-    }
-
-    void set(size_t i, T v) { // изменить i-й элемент
-        if (i >= n) throw std::runtime_error("Wrong index");
-        apply(1, n2, 0, n - 1, i, i, {}, v);
-    }
-
-    void apply(size_t i, size_t j, Operation<T, State> op) { // изменить значения на отрезке
-        if (i >= n || j >= n || i > j) throw std::runtime_error("Wrong index");
-        apply(1, n2, 0, n - 1, i, j, op, T());
-    }
-};
-
-#include <iostream> // для вывода
-
-int main() {
-    auto combine_func = [](int a, int b) { return a + b; };
-    STree<int, int> tree(10, combine_func);
-    tree.set(0, 1);
-    tree.set(1, 2);
-    tree.set(2, 3);
-
-    int result = tree.calc(0, 2); // вычисление суммы на отрезке
-    std::cout << "Результат: " << result << std::endl; // использование переменной
-    return 0;
-}
-*/
 
 //Задание 8
 /*
@@ -782,12 +690,128 @@ int main() {
     return 0;
 }*/
 
-//Задание 15
+//Задание 10
+/*
+Определить АТД Полином, обеспечивающий метод calc для вычисления значения полинома в точке x (используйте схему Горнера или барицентрическую форму интерполяционного многочлена Лагранжа).
+Реализовать полином через представление на значениях в точках. В конструкторе задается набор значений y0,...,yn−1, x0 и Δx (xi=x0+i⋅Δx). Определить операцию +.
+*/
+/*
+#include<vector> 
+#include<iostream> 
+#include<cmath> 
+
+class Polinom {
+    std::vector<double> y;
+    double x0, dx;
+public:
+    Polinom(const std::vector<double>& y, double x0, double dx) : y(y), x0(x0), dx(dx) {}
+
+    double calc(double x) const {
+        const double eps = 1e-9;
+        int n = y.size();
+        double i = (x - x0) / dx;
+        double ri = round(i);
+        if (ri >= 0 && ri < n && fabs(i - ri) < eps) // попадаем близко к точке x+ri*dx
+            return y[ri];
+        double wk = 1;
+        double xk = x0;
+        double ch = 0, zn = 0; // числитель и знаменатель
+        for (int k = 0; k < n; ++k) {
+            double v = wk / (x - xk);
+            ch += v * y[k];
+            zn += v;
+            xk += dx;
+            wk = -wk * (n - 1 - k) / (k + 1);
+        }
+        return ch / zn;
+    }
+    // Оператор сложения: поэлементное сложение значений
+    Polinom operator+(const Polinom& other) const {
+        std::vector<double> sum_y(y.size());
+        for (size_t i = 0; i < y.size(); ++i) {
+            sum_y[i] = y[i] + other.y[i];
+        }
+        return Polinom(sum_y, x0, dx);
+    }
+};
+int main() {
+    std::setlocale(LC_ALL, "Rus");
+    std::vector<double> y1 = { 1, 12, 4 };
+    std::vector<double> y2 = { 2, 2, 1 };   
+
+    Polinom p1(y1, 0.0, 2.0);
+    Polinom p2(y2, 0.0, 1.0);
+
+    Polinom sum = p1 + p2;
+
+    double x = 1.5;
+    std::cout << "\nЗначение p1(" << x << ") = " << p1.calc(x) << '\n';
+    std::cout << "Значение p2(" << x << ") = " << p2.calc(x) << '\n';
+    std::cout << "Значение (p1 + p2)(" << x << ") = " << sum.calc(x) << '\n';
+
+    return 0;
+}*/
+
+//Задание 11
+/*
+Определить АТД Разреженная матрица, обеспечивающий метод get(i,j) для получения элемента матрицы и set(i,j,v) для изменения (добавления) ненулевого элемента. 
+В конструкторе задаются размеры матрицы.
+Реализовать АТД через список списков vector<list<pair<int,double>>>. 
+Определить эффективность операций + и * в зависимости от количества ненулевых элементов K. 
+Рекомендуется поддерживать в методе set упорядочение списка по j для повышения эффективности операций.
+Примерные реализации сложения и умножения матриц в лекции.
+*/
+
+//Опеределие АТД Разряженной матрицы через список списков vector<list<pair<int,double>>>
+#include <iostream>
+#include <vector>
+#include <list>
+#include <utility>
+#include <stdexcept>
+
+class SparseMatrix {
+    int n, m;
+    std::vector<std::list<std::pair<int, double>>> data;
+public:
+    SparseMatrix(int n, int m) :n(n), m(m), data(n) {}
+    double get(int i, int j) const { // получение значения
+        if (i < 0 || i >= n || j < 0 || j >= m) throw std::out_of_range("get: Вышел за предел");
+        for (const auto& p : data[i]) {
+            if (p.first == j) return p.second;
+            if (p.first > j) break; // ранний выход, если упорядочено
+        }
+        return 0.0;
+    }
+    double set(int i, int j, double v) {  // установка значения
+        if (i < 0 || i >= n || j < 0 || j >= m) throw std::out_of_range("set: Вышел за предел");
+
+        auto& row = data[i];
+        for (auto it = row.begin(); it != row.end(); ++it) {
+            if (it->first == j) {
+                if (v == 0.0)
+                    row.erase(it); // удаляем
+                else
+                    it->second = v; // заменяем
+                return;
+            }
+            if (it->first > j) {
+                if (v != 0.0)
+                    row.insert(it, { j, v }); // вставка в отсортированное место
+                return;
+            }
+        }
+        if (v != 0.0)
+            row.emplace_back(j, v); // в конец
+    }
+};
+
+//Задание 15 - 1 балл, наверно, нужно исправить
 /*
 Напишите функцию для проверки, что в орграфе, заданном через списки смежных вершин, существует эйлеров путь (путь, проходящий по всем дугам графа). 
 Сам путь находить не нужно.
 */
 
+/*
 #include <vector>
 #include <iostream>
 using namespace std;
@@ -826,8 +850,7 @@ int main() {
 
     std::cout << (EylerRoute(G) ? "Есть эйлеров путь\n" : "Нет эйлерова пути\n");
 }
-
-
+*/
 
 //Задание 18
 /*

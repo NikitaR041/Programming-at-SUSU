@@ -1,0 +1,46 @@
+#1 - решение пока не найдено
+Написать процедуру dbo.DelCorrAnsOnProcTopic @year int, которая удалит все правильные ответы на вопросы темы 'Select', данные ранее года @year, а перед фамилиями студентов, давшим такие ответы, поставит вопросительный знак '?'.
+
+Либо update такой:
+
+CREATE PROCEDURE dbo.DelCorrAnsOnProcTopic @year int
+AS
+BEGIN
+	UPDATE S
+	SET S.StudName = '?' + S.StudName
+	FROM Student S
+	WHERE S.Student_ID IN (
+		SELECT DISTINCT A.Studnent_ID 
+		FROM Answer A
+		JOIN Query Q ON Q.Query_ID = A.Query_ID
+		JOIN Topic T ON T.Topic_ID = Q.Topic_ID
+		WHERE A.Result = 1 AND T.TopicName LIKE 'Select' AND YEAR(A.Tim) < @year
+		)
+
+	
+END
+
+Либо update такой:
+CREATE PROCEDURE dbo.DelCorrAnsOnProcTopic @year int
+AS
+BEGIN
+	UPDATE Student
+	SET StudName = '?' + StudName
+	FROM Student S
+	WHERE EXISTS (
+		SELECT 1	
+		FROM Answer A
+        		JOIN Query Q ON Q.Query_ID = A.Query_ID
+        		JOIN Topic T ON T.Topic_ID = Q.Topic_ID
+        		WHERE A.Student_ID = S.Student_ID
+          			AND A.Result = 1
+          			AND T.TopicName = 'Select'
+          			AND YEAR(A.Tim) < @year
+    		)
+
+	DELETE Answer
+	FROM Answer A
+	JOIN Query Q ON Q.Query_ID = A.Query_ID
+	JOIN Topic T ON T.Topic_ID = Q.Topic_ID 
+	WHERE A.Result = 1 AND T.TopicName LIKE 'Select' AND YEAR(A.Tim) < @year
+END

@@ -24,5 +24,37 @@ END
 CLOSE CityCursor
 DEALLOCATE CityCursor
 
-#2 - несделано
+#2 - Два способа - 1)Курсор, 2)Использование ROW_NUMBER() в CTE
 Сделать так, чтобы каждый пассажир (FIO) упоминался в таблице Passgr только один раз. Все остальные вхождения FIO в таблицу, кроме первого должны быть удалены.
+
+1)
+DECLARE @FIOs TABLE(
+	FIO NVARCHAR(100)
+)
+
+DECLARE MyCursor CURSOR LOCAL FORWARD_ONLY FOR
+	SELECT Passgr_ID, FIO
+	FROM Passgr
+	ORDER by Passgr_ID
+
+DECLARE @id int
+DECLARE @fio NVARCHAR(100)
+
+OPEN MyCursor
+FETCH NEXT FROM MyCursor INTO @id, @fio
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+	IF EXISTS(SELECT 1 FROM @FIOs WHERE FIO=@fio )
+	BEGIN
+		DELETE FROM Passgr WHERE Passgr_ID = @id
+	END
+	ELSE
+	BEGIN
+		INSERT INTO @FIOs (FIO) VALUES (@fio)
+	END
+
+	FETCH NEXT FROM MyCursor INTO @id, @fio		
+END
+CLOSE MyCursor
+DEALLOCATE MyCursor
