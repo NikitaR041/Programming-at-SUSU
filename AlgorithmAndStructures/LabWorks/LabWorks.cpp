@@ -763,6 +763,7 @@ int main() {
 */
 
 //Опеределие АТД Разряженной матрицы через список списков vector<list<pair<int,double>>>
+/*
 #include <iostream>
 #include <vector>
 #include <list>
@@ -804,6 +805,157 @@ public:
             row.emplace_back(j, v); // в конец
     }
 };
+*/
+
+//Задание 12
+/*
+Определить АТД Матрица, обеспечивающий метод [i, j] для доступа к элементам матрицы. 
+В конструкторе задаются размеры матрицы.
+Реализовать матрицу через vector размером N*M. 
+Определить операцию +. 
+Сравнить время сложения матриц размером 1000×1000, меняя порядок циклов (строки/столбцы и столбцы/строки) для уровня оптимизации O3. 
+Результаты записать в таблицу, в которой будет указан порядок выполнения циклов и время выполнения в мкс.
+*/
+
+/*
+#include <vector>
+#include <iostream>
+#include <chrono>
+#include <iomanip>
+
+class MyMatrix {
+    int N, M;
+    std::vector<double> v;
+public:
+    MyMatrix(int x, int y) : N(x), M(y), v(x*y) {}
+
+    std::pair<int, int> size() const {
+        return { N, M };
+    }
+    double& operator()(int i, int j) {
+        return v[i * M + j];
+    }
+
+    const double& operator()(int i, int j) const {
+        return v[i * M + j];
+    }
+    MyMatrix operator+(const MyMatrix& other) const {
+        if (N != other.N || M != other.M) throw std::runtime_error("Размеры матриц отличаются");
+        MyMatrix result(N, M);
+        for (int i = 0; i < N * M; ++i)
+            result.v[i] = this->v[i] + other.v[i];
+        return result;
+    }
+};
+
+int main() {
+    setlocale(LC_ALL, "rus");
+    const int N = 1000, M = 1000;
+    MyMatrix A(N, M), B(N, M), C(N, M);
+
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < M; j++) {
+            A(i, j) = i + j;
+            B(i, j) = i - j;
+        }
+    }
+
+    using Time = std::chrono::time_point<std::chrono::high_resolution_clock>;
+    using Diff = std::chrono::microseconds;
+
+    std::pair<int, int> m_size = A.size();
+    
+    //Строка->столбец
+    Time start1 = std::chrono::high_resolution_clock::now();
+    for (int i = 0; i < m_size.first; ++i)
+        for (int j = 0; j < m_size.second; ++j)
+            C(i, j) = A(i, j) + B(i, j);
+    Time end1 = std::chrono::high_resolution_clock::now();
+    Diff diff1 = std::chrono::duration_cast<Diff>(end1 - start1);
+
+    //Столбец->строка
+    Time start2 = std::chrono::high_resolution_clock::now();
+    for (int j = 0; j < m_size.first; ++j)
+        for (int i = 0; i < m_size.second; ++i)
+            C(i, j) = A(i, j) + B(i, j);
+    Time end2 = std::chrono::high_resolution_clock::now();
+    Diff diff2 = std::chrono::duration_cast<Diff>(end2 - start2);
+
+    std::cout << std::setw(45) << "Строки/столбец" << std::setw(30) << "Столбцы/строки" << '\n';
+    std::cout << "Матрица 1000*1000" << std::setw(25) << diff1.count() << std::setw(30) << diff2.count() << '\n';
+}*/
+
+//Задание 13 - (945)
+/*
+Используя поиск в глубину, определите число компонент связности в графе, задаваемом следующим образом: 
+Как матрица N×M из клеток черного ('B') и белого ('W') цветов.  
+Клетки считаются связными, если они имеют общую границу и цвета клеток отличаются (компонента раскрашена в черно-белую клетку как шахматная доска).
+*/
+
+/*
+#include <iostream>
+#include <vector>
+
+std::vector<std::vector<char>> doska;
+std::vector<std::vector<bool>> visited;
+const std::vector<std::pair<int, int>> dirs = { {-1, 0}, {1, 0}, {0, -1}, {0, 1} };
+
+void dfs(int x, int y, int n, int m) {
+    visited[x][y] = true;
+    for (auto [dx, dy] : dirs) {
+        int nx = x + dx;
+        int ny = y + dy;
+        if (nx >= 0 && nx < n && ny >= 0 && ny < m)
+            if (doska[x][y] != doska[nx][ny] && !visited[nx][ny])
+                dfs(nx, ny, n, m);
+    }
+}
+
+int count_comp(int n, int m) {
+    int count = 0;
+    visited.assign(n, std::vector<bool>(m, false));
+    for (int i = 0; i < n; ++i)
+        for (int j = 0; j < m; ++j)
+            if (!visited[i][j]) {
+                dfs(i, j, n, m);
+                count++;
+            }
+    return count;
+}
+
+int main() {
+    setlocale(LC_ALL, "rus");
+    doska = { {'B', 'W'},
+             {'B', 'B'} };
+    std::cout << "Пример 1: " << count_comp(2, 2) << '\n';
+
+    doska = { {'W', 'W'},
+             {'W', 'W'} };
+    std::cout << "Пример 2: " << count_comp(2, 2) << '\n';
+
+    doska = { {'B', 'W', 'B'},
+             {'W', 'W', 'W'},  
+             {'B', 'W', 'B'} };
+    std::cout << "Пример 3: " << count_comp(3, 3) << '\n';
+    return 0;
+}
+*/
+
+//Задание 14 - (2340)
+
+/*
+Используя поиск в ширину, решите задачу. 
+Шерлок обнаружил за картиной сейф и хочет его открыть, чтобы узнать секретные планы Мориарти. 
+У сейфа есть дисплей, на котором выводится числовой код, но вместо обычной клавиатуры только четыре кнопки: 2, 3, 5 и 7. 
+Шерлок выяснил, что кнопка 2 выполняет целочисленное деление числа на дисплее на 2, кнопка 3 – умножает на 3, кнопка 5 – увеличивает на 5, а кнопка 7 – уменьшает на 7. 
+Все операции, кроме деления, выполняются по модулю 101111. 
+Также Шерлок нашел код, который должен высвечиваться на дисплее, чтобы сейф открылся, 
+   У Шерлока мало времени, поэтому ему нужно найти минимальную последовательность нажатий на кнопки, позволяющую получить код для открытия.
+Ввод содержит два целых числа – код на дисплее K и код для открытия N (0≤K,N<101111, K≤N).
+В первой строке вывести одно целое число – минимальное количество нажатий. 
+Во второй строке вывести найденную последовательность без пробелов. 
+Если существует несколько минимальных вариантов, то можно вывести любой из них.
+*/
 
 //Задание 15 - 1 балл, наверно, нужно исправить
 /*
@@ -1335,9 +1487,12 @@ int main() {
     return 0;
 }
 */
+
 /*
 std::vector<int> func2(int num) {
     std::vector<int> my_list(0);
+    if (num == 1) return my_list;
+
     int n = num;
     for (int i = 2; i <= sqrt(n); i++) {
         while (n % i == 0) {
