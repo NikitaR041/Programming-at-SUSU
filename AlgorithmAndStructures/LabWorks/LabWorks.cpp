@@ -469,69 +469,6 @@ int main() {
 Вывести N строк, в i-ой строке вывести количество горящих лампочек после i-ой команды.
 */
 
-//#include <iostream>
-//#include <vector>
-//using namespace std;
-//
-//const int MAX = 1 << 20;
-//
-//struct SegmentTree {
-//    vector<int> cnt;   // количество включённых лампочек на отрезке
-//    vector<bool> flip; // флаг инверсии
-//
-//    SegmentTree() {
-//        cnt.resize(4 * MAX);
-//        flip.resize(4 * MAX);
-//    }
-//
-//    void push(int v, int l, int r) {
-//        if (flip[v]) {
-//            cnt[v] = (r - l + 1) - cnt[v]; // инвертируем количество единиц
-//            if (l != r) { // если не лист
-//                flip[v * 2] ^= true;
-//                flip[v * 2 + 1] ^= true;
-//            }
-//            flip[v] = false;
-//        }
-//    }
-//
-//    void update(int v, int l, int r, int ql, int qr) {
-//        push(v, l, r);
-//        if (qr < l || r < ql) return; // нет пересечения
-//        if (ql <= l && r <= qr) {
-//            flip[v] ^= true;
-//            push(v, l, r);
-//            return;
-//        }
-//        int m = (l + r) / 2;
-//        update(v * 2, l, m, ql, qr);
-//        update(v * 2 + 1, m + 1, r, ql, qr);
-//        cnt[v] = cnt[v * 2] + cnt[v * 2 + 1];
-//    }
-//
-//    int query() {
-//        return cnt[1]; // на корне — количество включённых лампочек
-//    }
-//};
-//
-//int main() {
-//    ios::sync_with_stdio(false);
-//    cin.tie(nullptr);
-//
-//    int N;
-//    cin >> N;
-//    SegmentTree tree;
-//
-//    for (int i = 0; i < N; ++i) {
-//        int a, b;
-//        cin >> a >> b;
-//        --a; --b; // переводим к 0-индексации
-//        tree.update(1, 0, MAX - 1, a, b);
-//        cout << tree.query() << "\n";
-//    }
-//
-//    return 0;
-//}
 
 
 //Задание 8
@@ -957,6 +894,78 @@ int main() {
 Если существует несколько минимальных вариантов, то можно вывести любой из них.
 */
 
+/*
+#include <iostream>
+#include <queue>
+#include <vector>
+#include <string>
+using namespace std;
+
+const int MOD = 101111;
+
+struct State {
+    int value;
+    string path;
+};
+
+int bfs(int start, int target) {
+    vector<bool> visited(MOD, false);
+    queue<State> q;
+    q.push({ start, "" });
+    visited[start] = true;
+
+    while (!q.empty()) {
+        State cur = q.front(); 
+        q.pop();
+
+        if (cur.value == target) {
+            cout << cur.path.length() << endl;
+            cout << cur.path << endl;
+            return 0;
+        }
+
+        // Операция 2: целочисленное деление на 2
+        int next = cur.value / 2;
+        if (!visited[next]) {
+            visited[next] = true;
+            q.push({ next, cur.path + '2' });
+        }
+
+        // Операция 3: умножение на 3 по модулю
+        next = (cur.value * 3) % MOD;
+        if (!visited[next]) {
+            visited[next] = true;
+            q.push({ next, cur.path + '3' });
+        }
+
+        // Операция 5: прибавить 5 по модулю
+        next = (cur.value + 5) % MOD;
+        if (!visited[next]) {
+            visited[next] = true;
+            q.push({ next, cur.path + '5' });
+        }
+
+        // Операция 7: вычесть 7 по модулю
+        next = (cur.value - 7 + MOD) % MOD;
+        if (!visited[next]) {
+            visited[next] = true;
+            q.push({ next, cur.path + '7' });
+        }
+    }
+
+    // Если невозможно достичь цели (по условию задачи не требуется)
+    cout << -1 << endl;
+    return -1;
+}
+
+int main() {
+    int K, N;
+    cin >> K >> N;
+    bfs(K, N);
+    return 0;
+}
+*/
+
 //Задание 15 - 1 балл, наверно, нужно исправить
 /*
 Напишите функцию для проверки, что в орграфе, заданном через списки смежных вершин, существует эйлеров путь (путь, проходящий по всем дугам графа). 
@@ -968,7 +977,58 @@ int main() {
 #include <iostream>
 using namespace std;
 
+// Проверка слабой связности графа
+bool isWeaklyConnected(const vector<vector<int>>& G) {
+    int n = G.size();
+    vector<vector<int>> undirected(n);
+
+    // Построим неориентированный граф
+    for (int u = 0; u < n; ++u) {
+        for (int v : G[u]) {
+            undirected[u].push_back(v);
+            undirected[v].push_back(u); // добавляем обратную связь
+        }
+    }
+
+    vector<bool> visited(n, false);
+
+    // Найдём первую вершину с хотя бы одним ребром
+    int start = -1;
+    for (int i = 0; i < n; ++i) {
+        if (!undirected[i].empty()) {
+            start = i;
+            break;
+        }
+    }
+
+    if (start == -1) return true; // граф пустой, считаем связным
+
+    // DFS
+    vector<int> stack = { start };
+    visited[start] = true;
+    while (!stack.empty()) {
+        int v = stack.back(); stack.pop_back();
+        for (int u : undirected[v]) {
+            if (!visited[u]) {
+                visited[u] = true;
+                stack.push_back(u);
+            }
+        }
+    }
+
+    // Проверим достижимость всех "непустых" вершин
+    for (int i = 0; i < n; ++i) {
+        if (!undirected[i].empty() && !visited[i])
+            return false;
+    }
+
+    return true;
+}
+
 bool EylerRoute(const vector<vector<int>>& G) {
+    if (!isWeaklyConnected(G))
+        return false;
+
     int n = G.size();
     vector<int> in(n, 0), out(n, 0);
 
@@ -987,10 +1047,13 @@ bool EylerRoute(const vector<vector<int>>& G) {
         else if (in[i] - out[i] == 1)
             end_nodes++;
         else if (in[i] != out[i])
-            return false; 
+            return false;
     }
+
     return (start_nodes == 1 && end_nodes == 1) || (start_nodes == 0 && end_nodes == 0);
 }
+
+
 int main() {
     std::setlocale(LC_ALL, "Rus");
     vector<vector<int>> G = {
@@ -1491,7 +1554,7 @@ int main() {
 /*
 std::vector<int> func2(int num) {
     std::vector<int> my_list(0);
-    if (num == 1) return my_list;
+    if (num <= 1) return my_list;
 
     int n = num;
     for (int i = 2; i <= sqrt(n); i++) {
