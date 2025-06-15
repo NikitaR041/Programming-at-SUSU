@@ -1,3 +1,28 @@
 #1
 Напишите функцию dbo.EmpDepart(@Emp_ID int,@d datetime), возвращающую идентификатор подразделения, в котором сотрудник @Emp_D работал на дату @d или null если он нигде не работал.
 Примечание: MoveKindName для увольнения = 'Уволен'.
+
+CREATE FUNCTION EmpDepart(@Emp_ID INT, @d DATETIME)
+RETURNS INT
+AS
+BEGIN
+    DECLARE @Depart_ID INT
+
+    SELECT TOP 1 @Depart_ID = 
+        CASE 
+            WHEN mk.MoveKindName = 'Уволен' THEN NULL
+            ELSE m.Depart_ID
+        END
+    FROM Move m
+    JOIN MoveKind mk ON m.MoveKind_ID = mk.MoveKind_ID
+    WHERE m.Emp_ID = @Emp_ID AND m.Dat <= @d
+    ORDER BY m.Dat DESC
+
+    RETURN @Depart_ID
+END
+
+
+#2
+Напишите функцию 
+FullDepartName(@Depart_ID int),
+возвращающую полное наименование подразделения, описывающее место подразделения в иерархии предприятия, например: 'Завод.Цех12.Участок 10'.

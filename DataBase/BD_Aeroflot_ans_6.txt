@@ -1,0 +1,19 @@
+#1
+Напишите процедуру 
+DeleteEmptyFlight @d datetime, @city1_id int, @city2_id int, 
+которая удаляла бы все рейсы с датой @d (не забудьте округлить дату вылета перед сравнением) из города @city1_id в город @city2_id, на которые не продано ни одного билета.
+
+CREATE PROCEDURE DeleteEmptyFlight @d datetime, @city1_id int, @city2_id int
+AS
+BEGIN
+	DELETE FROM Flight
+	WHERE CONVERT(date, Dat) = CONVERT(date, @d) AND
+		CityFrom_ID = @city1_id AND 
+		CityTo_ID = @city2_id AND
+		NOT EXISTS(SELECT 1 FROM Passgr
+			WHERE Passgr.Flight_ID = Flight.Flight_ID
+			)
+END
+
+#2
+Напишите процедуру Fired @year1 int, @year2 int, возвращающую список всех сотрудников (ФИО, дата увольнения) уволенных в течение c года @year1 по год @year2.

@@ -5,3 +5,32 @@
 | 12      | 3.13  | 01.02.2011 | 21.02.2011 |
 Требуется обнаружить такие ситуации и внести исправления так, чтобы начало следующего периода было следующим днем за окончанием предыдущего периода.
 Примечание: полагаем, что все значения DateStart, DateEnd имеют определённые значения.
+
+DECLARE @PriceList_ID INT, @Tovar_ID INT, @Price INT, @DateStart DATE, @DateEnd DATE, @EmpTovar_ID INT = NULL, @EmpDateEnd DATE = NULL
+
+DECLARE MyCursor CURSOR LOCAL FORWARD_ONLY FOR
+	SELECT PriceList_ID, Tovar_ID, Price, DateStart, DateEND
+	FROM PriceList
+	ORDER BY Tovar_ID, DateStart
+
+OPEN MyCursor
+FETCH NEXT FROM MyCursor INTO @PriceList_ID, @Tovar_ID, @Price, @DateStart, @DateEnd
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+	IF @EmpTovar_ID = @Tovar_ID AND @DateStart <= @EmpDateEnd
+	BEGIN
+		UPDATE PriceList
+		SET DateStart = DATEADD(DAY, 1, @EmpDateEnd)
+		WHERE PriceList_ID = @PriceList_ID
+
+		SET @DateStart = DATEADD(DAY, 1, @EmpDateEnd );
+	END
+
+	SET @EmpTovar_ID = @Tovar_ID
+	SET @EmpDateEnd = @DateEnd
+
+	 FETCH NEXT FROM MyCursor INTO @PriceList_ID, @Tovar_ID, @Price, @DateStart, @DateEnd
+END
+CLOSE MyCursor
+DEALLOCATE MyCursor
