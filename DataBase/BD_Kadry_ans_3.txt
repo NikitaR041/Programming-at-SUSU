@@ -26,3 +26,29 @@ END
 Напишите функцию 
 FullDepartName(@Depart_ID int),
 возвращающую полное наименование подразделения, описывающее место подразделения в иерархии предприятия, например: 'Завод.Цех12.Участок 10'.
+
+CREATE FUNCTION FullDepartName(@Depart_ID int)
+RETURNS INT
+AS
+BEGIN
+    	DECLARE @FName NVARCHAR(MAX) = ' '
+	DECLARE @CDepartID INT = @Depart_ID
+	DECLARE @CDepartName NVARCHAR(255) 
+	DECLARE @PDepartID INT
+
+	IF @CDepartID IS NOT NULL
+	BEGIN
+		SELECT @CDepartName = DepartName, @PDepartID = Parent_ID
+		FROM Depart
+		WHERE Depart_ID = @CDepartID
+		
+		SET @FName = 
+			CASE 
+				WHEN @FName = ' ' THEN @CDepartName
+				ELSE @CDepartName + '.' + @FName
+			END
+		SET @CDepartID = @PDepartID
+	END
+
+	RETURN @FName
+END

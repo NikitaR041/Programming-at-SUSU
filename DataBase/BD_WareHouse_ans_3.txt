@@ -75,3 +75,72 @@ BEGIN
 	RETURN dbo.Predok(@MyParent)
 END
 
+#5
+Напишите функцию 
+TovarOnDate(@Tovar_ID int, @d datetime),
+возвращающую количество товара @Tovar_ID на дату @d.
+Примечание: контрольный запрос возвращает количество всех товаров на 01.01.2009.
+
+CREATE FUNCTION dbo.TovarOnDate(@Tovar_ID int, @d datetime)
+RETURNS INT
+BEGIN
+
+DECLARE @MyGlobalCount INT
+DECLARE @TovarIn INT
+DECLARE @TovarOut INT
+
+SELECT @TovarIn = ISNULL(SUM(SN.Amount), 0)
+FROM SostNakl SN
+JOIN Nakl N ON N.Nakl_ID = SN.Nakl_ID
+WHERE N.Dat > @d AND N.InOut LIKE '+' AND SN.Tovar_ID = @Tovar_ID
+
+SELECT @TovarOut = ISNULL(SUM(SN.Amount), 0)
+FROM SostNakl SN
+JOIN Nakl N ON N.Nakl_ID = SN.Nakl_ID
+WHERE N.Dat > @d AND N.InOut LIKE '-' AND SN.Tovar_ID = @Tovar_ID
+
+SET @MyGlobalCount = @TovarOut - @TovarIn + (SELECT Amount 
+					FROM Tovar
+					WHERE Tovar_ID = @Tovar_ID)
+
+RETURN @MyGlobalCount
+END
+
+#6
+Напишите функцию CurrentCostt(@Tovar_ID int),
+которая возвращает текущую цену товара.
+Примечание: поскольку нельзя использовать внутри функции недетерминированную функцию getdate(), используйте view CurrentDate, имеющееся в БД и возвращающее текущую дату. Например: select @curDate=CurDate from CurrentDate
+
+create function dbo.CurrentCostt(@Tovar_ID int)
+returns decimal(18, 4) as
+
+begin
+
+declare @CurDate datetime;
+declare @CurCost decimal(18, 4);
+select @CurDate = CurDate from CurrentDate
+select @CurCost = Price
+from PriceList
+where Tovar_ID = @Tovar_ID
+and @CurDate >= DateStart
+and (@CurDate < DateEnd or DateEnd is null)
+return @CurCost
+
+end
+
+ИЛИ
+
+CREATE FUNCTION dbo.CurrentCostt(@Tovar_ID int)
+RETURNS MONEY
+BEGIN
+
+DECLARE @CureDate DATE
+SELECT @CureDate = CurDate from CurrentDate
+
+RETURN (
+	SELECT TOP 1 Price
+	FROM PriceList PL
+	WHERE PL.Tovar_ID = @Tovar_ID AND DateStart <= @CureDate AND (DateEnd IS NULL OR DateEnd >= @CureDate)
+	ORDER BY DateStart DESC
+	)
+END
