@@ -82,3 +82,32 @@ FROM DecartMultTable DMT
 LEFT OUTER JOIN MyTableSale MTS ON DMT.OrgName = MTS.OrgName AND DMT.TovarName = MTS.TovarName
 LEFT OUTER JOIN MyTableBuy MTB ON DMT.OrgName = MTB.OrgName AND DMT.TovarName = MTB.TovarName
 ORDER BY DMT.OrgName, DMT.TovarName
+
+#6
+Получить список (Название организации, Номер накладной, Дата накладной) для последних поступивших от организаций накладных (накладные на покупку). Упорядочить по названию организации, номеру накладной. Если накладных с максимальной датой для организации несколько, вывести их все.
+
+SELECT OrgName, N.Numb, N.Dat
+FROM Nakl N
+JOIN Org O ON O.Org_ID = N.Org_ID
+WHERE N.InOut LIKE '+' AND N.Dat = (SELECT MAX(N2.Dat) 
+				FROM Nakl N2
+				WHERE InOut LIKE '+' AND N2.Org_ID = N.Org_ID)
+GROUP BY O.OrgName, N.Numb, N.Dat
+
+#7
+Найти противоречия в таблице PriceList, заключающиеся в пересечении сроков действия цены в виде (Название товара, Дата начала 1, Дата конца 1, Дата начала 2, Дата конца 2). Например, следующая запись обнаруживает противоречия: ('Помидоры', 01.01.2009, 15.01.2009, 10.01.2009, 25.01.2009). Результат упорядочить по названию товара и датам начала и конца первого и второго периодов.
+
+SELECT T.TovarName, 
+    	PL1.DateStart AS DateStart1, 
+    	PL1.DateEnd AS DateEnd1, 
+    	PL2.DateStart AS DateStart2, 
+    	PL2.DateEnd AS DateEnd2
+FROM PriceList PL1
+JOIN PriceList PL2 ON PL1.PriceList_ID < PL2.PriceList_ID
+JOIN Tovar T ON T.Tovar_ID = PL1.Tovar_ID
+WHERE PL1.Tovar_ID = PL2.Tovar_ID AND NOT (PL1.DateEnd < PL2.DateStart OR PL2.DateEnd < PL1.DateStart)
+ORDER BY T.TovarName, PL1.DateStart, PL1.DateEnd, PL2.DateStart, PL2.DateEnd
+
+#8
+Получить таблицу (номер месяца, сумма продаж) для 2015 г. Упорядочить по месяцам. В результате должны присутствовать и месяцы, в которые не было продаж.
+Примечание: один из вариантов решения предполагает создание временной таблицы, содержащей номера месяцев.

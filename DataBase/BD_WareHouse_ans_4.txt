@@ -29,34 +29,67 @@ END
 Написать функцию dbo.TovarAmountOnDate(@d datetime), возвращающую таблицу
 (
  Tovar_ID int,
- TovarName varchar(30) COLLATE
-SQL_Latin1_General_CP1251_CI_AS,
+ TovarName varchar(30) COLLATE SQL_Latin1_General_CP1251_CI_AS,
  Amount numeric(12,3) null
 )
 содержащую количество товара на складе на дату @d, округленного до целого.
 
-Почти правильное решение
+create function dbo.TovarAmountOnDate(@d datetime)
+returns @table table
+(
+Tovar_ID int,
+ TovarName varchar(30) COLLATE
+SQL_Latin1_General_CP1251_CI_AS,
+ Amount numeric(12,3) null
+)
+as
+begin
 
+insert into @table
+select Tovar.Tovar_ID, Tovar.TovarName, 
+round(Tovar.Amount + isnull(sum(
+case
+when Nakl.InOut = '-' then SostNakl.Amount
+when Nakl.InOut = '+' then -SostNakl.Amount
+else 0
+end
+), 0), 0)
+from Tovar
+left join SostNakl on Tovar.Tovar_ID = SostNakl.Tovar_ID
+left join Nakl on SostNakl.Nakl_ID = Nakl.Nakl_ID
+and Nakl.Dat >= @d
+where Tovar.IsTovar = 1
+group by Tovar.Tovar_ID, Tovar.TovarName, Tovar.Amount
+
+return
+end
+
+ИЛИ 
 CREATE FUNCTION dbo.TovarAmountOnDate(@d datetime)
 RETURNS @table TABLE
 (
- Tovar_ID int,
- TovarName varchar(30) COLLATE SQL_Latin1_General_CP1251_CI_AS,
- Amount numeric(12,3) null
+    Tovar_ID int,
+    TovarName varchar(30) COLLATE SQL_Latin1_General_CP1251_CI_AS,
+    Amount numeric(12,3) null
 )
 AS
 BEGIN
-INSERT INTO @table
-SELECT T.Tovar_ID, T.TovarName COLLATE SQL_Latin1_General_CP1251_CI_AS, 
-			SUM(CASE
-				WHEN N.InOut = '+' THEN SN.Amount
-				WHEN N.InOut = '-' THEN -SN.Amount
-				ELSE 0
-			END)
-FROM Tovar T
-JOIN SostNakl SN ON SN.Tovar_ID = T.Tovar_ID
-JOIN Nakl N ON N.Nakl_ID = SN.Nakl_ID
-WHERE N.Dat <= @d AND T.IsTovar = 1
-GROUP BY  T.Tovar_ID, T.TovarName
-RETURN 
+	INSERT INTO @table
+    	SELECT T.Tovar_ID, T.TovarName COLLATE SQL_Latin1_General_CP1251_CI_AS, 
+		ROUND( ISNULL(T.Amount, 0) + 
+			ISNULL((
+                			SELECT SUM(SN.Amount)
+                			FROM SostNakl SN
+                			JOIN Nakl N ON SN.Nakl_ID = N.Nakl_ID
+                			WHERE N.InOut = '-' AND N.Dat > @d AND SN.Tovar_ID = T.Tovar_ID ), 0) - 
+				ISNULL((
+                				SELECT SUM(SN.Amount)
+                				FROM SostNakl SN
+                				JOIN Nakl N ON SN.Nakl_ID = N.Nakl_ID
+                				WHERE N.InOut = '+' AND N.Dat > @d AND SN.Tovar_ID = T.Tovar_ID), 0), 0) AS Amount
+    	FROM Tovar T
+    	WHERE T.IsTovar = 1
+	RETURN
 END
+
+

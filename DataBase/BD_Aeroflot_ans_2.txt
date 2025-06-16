@@ -50,3 +50,16 @@ DELETE FROM City
 WHERE NOT EXISTS(SELECT Flight_ID
 FROM Flight
 WHERE City.City_ID = Flight.CityFrom_ID OR City.City_ID = Flight.CityTo_ID)
+
+#7
+В тип самолёта 'А-310' (А - кириллица) добавить такие же посадочные места, которые имеются в 'ТУ-134' и которых там до этого не было.
+
+INSERT INTO Seat (SeatName, PlaneType_ID)
+SELECT S.SeatName, A310.PlaneType_ID
+FROM Seat S
+JOIN PlaneType A310 ON A310.PlaneTypeName LIKE 'А-310'
+JOIN PlaneType TU134 ON TU134.PlaneTypeName LIKE 'ТУ-134'
+WHERE S.PlaneType_ID = TU134.PlaneType_ID AND S.SeatName NOT IN (
+		SELECT SeatName
+		FROM Seat 
+		WHERE PlaneType_ID = A310.PlaneType_ID)
