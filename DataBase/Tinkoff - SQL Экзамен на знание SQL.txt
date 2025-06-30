@@ -1,0 +1,208 @@
+Tinkoff - SQL "Экзамен на знание SQL (лето 2025)"
+#1 - OK 
+Напишите запрос, который выведет название спектакля с самой ранней датой постановки.
+
+SELECT play_name
+FROM plays
+WHERE play_date = (SELECT MIN(play_date) FROM plays)
+
+
+#2
+Напишите запрос, который возвращает имя актера, который прошел наибольшее количество кастингов. Если есть несколько актеров с одинаковым количеством кастингов, выбирайте первого по алфавиту.
+
+#не правильно
+
+#3 - OK
+Напишите запрос, который возвращает средний возраст актеров, успешно прошедших кастинг для спектаклей 2024 года.
+
+#Важно знать о типе данных времени и их функций - date_part
+
+SELECT AVG(A.age)
+FROM actors A
+JOIN castings C ON C.actor_id = A.actor_id
+JOIN plays P ON P.play_id = C.play_id
+WHERE C.was_successful = 1 AND DATE_PART('year', P.play_date) = 2024
+
+#4
+Напишите запрос, который возвращает название спектакля с наибольшим количеством успешных кастингов.
+
+#не правильно
+
+SELECT P.play_name
+FROM plays P
+JOIN castings C ON C.play_id = P.play_id 
+WHERE was_successful = 1 AND was_successful = (SELECT MAX(COUNT(was_successful)) FROM castings)
+
+ИЛИ
+
+SELECT P.play_name
+FROM plays P
+JOIN castings C ON C.play_id = P.play_id
+WHERE was_successful = 1
+GROUP BY P.play_id, P.play_name
+HAVING COUNT(*) = (SELECT MAX(cnt) 
+                    FROM (SELECT COUNT(*) AS cnt
+                        FROM castings 
+                        WHERE was_successful = 1
+                        GROUP BY play_id
+                        )
+                )
+
+ИЛИ
+
+WITH Successful_CTE
+AS (
+    SELECT play_id, COUNT(*) AS cnt
+    FROM castings
+    WHERE was_successful = 1
+    GROUP BY play_id
+)
+WITH Max_successful_CTE
+AS (
+    SELECT MAX(cnt) AS m
+    FROM Successful_CTE
+)
+
+SELECT P.play_name
+FROM plays P
+JOIN Successful_CTE S ON P.play_id = S.play_id
+JOIN Max_successful_CTE MS ON S.cnt = MS.m;
+
+#Tinkoff - SQL "Тест на знание SQL (лето 2025)"
+
+#1
+Какой SQL-конструкции соотвествует следующие условие: вернуть все строки из обеих таблиц, даже нет совпадений?
+1) INEER JOIN
+2) LEFT JOIN
+3) RIGHT JOIN
+4) FULL OUTHER JOIN +
+
+#2
+В каком логическом порядке выполняются операторы SQL?
+SELECT, FROM, WHERE, GROUP BY, HAVING, ORDER BY
+
+#3
+Как можно улучшить производительность сложного запроса?
+1)Разделить запрос на несколько более простых.
+2)Использовать временные таблицы для промежуточных результатов.
+3)Избегать использования оператора DISTINCT, если возможно.
+4)Избегать использования подзапросов, если возможно.
+
+#4
+Какой оператор используется для изменения структуры текущей таблицы?
+1)INSERT
+2)ALTER
+3)UPDATE
+4)DROP
+
+#5
+Таблицы a и b обе содержат колонку id. В таблице а 17 строк, в таблице b 21 строка. Сколько строк выдаст SQL-запрос?
+1) от 17 до 357
+2) от 17 до 38
+3) от 0 до 357
+4) от 17 до 21
+
+#6
+EMP_SALES_RESULT
+emp_name  department   deal_count   total_sales
+Ivanov    Tech		25	    400 000
+Petrov    Tech  	18 	    300 000
+Sidorov   Tech    	30 	    500 000
+Volobuev  Marketing     10  	    150 000
+Petrakov  Mark		20 	    250 000
+Kuznetcov Sales		15 	    200 000
+
+В этой таблице содеражтся данные о сделках каждого сотрудника по отделам за месяц.
+emp_name - имя сотрудника (PK)
+department - отдел
+deal_count - количество сделок
+total_sales - сумма всех сделок
+Какой запрос покажет сотрудников с максимальной суммой продаж в каждом отделе?
+
+1
+SELECT emp_name, department, total_sales
+FROM emp_sales_result
+WHERE total_sales = max(total_sales);
+
+2 +
+SELECT emp_name, department, total_sales
+FROM emp_sales_result AS t1
+WHERE total_sales = (
+    SELECT MAX(t2.total_sales)
+    FROM emp_sales_result AS t2
+    WHERE t1.department = t2.department
+);
+
+3
+SELECT emp_name, department, total_sales
+FROM emp_sales_result AS t1
+WHERE department IN (
+    SELECT MAX(t2.total_sales), department
+    FROM emp_sales_result AS t2
+    WHERE t1.department = t2.department
+);
+
+4
+SELECT emp_name, department, total_sales
+FROM emp_sales_result AS t1
+WHERE total_sales = (
+    SELECT SUM(t2.total_sales)
+    FROM emp_sales_result AS t2
+    WHERE t1.department = t2.department
+);
+
+#7
+Какой запрос выведет имена сотрудников, чьи имена начинаются на 'A', 'B' или 'C', и содержат букву 'е'?
+ 
+1 +
+SELECT emp_name  
+FROM emp_sales_result  
+WHERE (emp_name LIKE 'A%' OR emp_name LIKE 'B%' OR emp_name LIKE 'C%')  
+  AND emp_name LIKE '%e%'; 
+
+2
+SELECT emp_name  
+FROM emp_sales_result  
+WHERE emp_name LIKE 'A%' OR emp_name LIKE 'B%' OR emp_name LIKE 'C%'  
+  AND emp_name LIKE 'e%'; 
+
+3
+SELECT emp_name  
+FROM emp_sales_result  
+WHERE emp_name IN ('A%', 'B%', 'C%')  
+  AND emp_name LIKE '%e%';  
+
+#8
+Что произойдет с данными в таблице products после применения оператора?
+product	category	price	quantity
+Laptop	Electronics	899.99	10
+Smartphone	Electronics	499.99	25
+Tablet	Electronics	299.99	15
+Headphones	Audio	199.99	50
+Equipment		
+Smartwatch	Wearables	249.99	30
+
+Команда:
+UPDATE products SET price = price * 0.9 WHERE category = 'Electronics';  
+
+1)В таблице появится новый столбец price со значением цены, умноженным на 0.9.
+2)У всех продуктов в категории 'Electronics' будет уменьшена цена на 10%. +
+3)Появится ошибка выполнения, так как нельзя использовать оператор UPDATE без указания уникального идентификатора.
+4)В таблице появится новая строка с категорией 'Electronics' со значением цены, уменьшенной на 10%.
+
+#9
+Для какого типа соединения результат по количеству выводимых строк может измениться, если таблицы поменять местами?
+
+inner join
+cross join +
+left join +
+full outer join
+right join +
+
+#10
+Какое из следующих утверждений о операторах UNION и UNION ALL является верным?
+
+1)UNION возвращает только уникальные строки из объединяемых наборов данных, в то время как UNION ALL возвращает все строки, включая дубликаты. +
+2)UNION работает быстрее, чем UNION ALL, так как не выполняет проверку на дубликаты.
+3)Оба оператора требуют, чтобы объединяемые запросы имели одинаковое количество столбцов и соответствующие типы данных. +
+4)UNION может использоваться только для объединения таблиц с одинаковым именем.

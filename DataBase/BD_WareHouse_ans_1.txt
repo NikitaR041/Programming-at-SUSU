@@ -111,3 +111,11 @@ ORDER BY T.TovarName, PL1.DateStart, PL1.DateEnd, PL2.DateStart, PL2.DateEnd
 #8
 Получить таблицу (номер месяца, сумма продаж) для 2015 г. Упорядочить по месяцам. В результате должны присутствовать и месяцы, в которые не было продаж.
 Примечание: один из вариантов решения предполагает создание временной таблицы, содержащей номера месяцев.
+
+
+#9
+Найти отпускную цену товара 'Апельсин' на 15.01.2015.
+SELECT PL.Price
+FROM PriceList PL
+JOIN Tovar T ON T.Tovar_ID = PL.Tovar_ID 
+WHERE T.TovarName LIKE 'Апельсин' AND '20150115' BETWEEN PL.DateStart AND PL.DateEnd
