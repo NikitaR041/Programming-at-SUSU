@@ -69,7 +69,70 @@ JOIN buy_step ON buy_step.step_id = step.step_id
 WHERE buy_step.date_step_end IS NULL AND buy_step.date_step_beg IS NOT NULL
 ORDER BY buy_step.buy_id
 
-#7
+#7 - возможно можно воспользоваться CTE
 В таблице city для каждого города указано количество дней, за которые заказ может быть доставлен в этот город (рассматривается только этап Транспортировка). Для тех заказов, которые прошли этап транспортировки, вывести количество дней за которое заказ реально доставлен в город. А также, если заказ доставлен с опозданием, указать количество дней задержки, в противном случае вывести 0. В результат включить номер заказа (buy_id), а также вычисляемые столбцы Количество_дней и Опоздание. Информацию вывести в отсортированном по номеру заказа виде.
 
+Ответ: - без использования CTE
+SELECT bs.buy_id, DATEDIFF(bs.date_step_end, bs.date_step_beg) AS Количество_дней,
+                  IF(DATEDIFF(bs.date_step_end, bs.date_step_beg) > city.days_delivery,
+                       DATEDIFF(bs.date_step_end, bs.date_step_beg) - city.days_delivery,0) AS Опоздание
+FROM buy_step AS bs
+JOIN buy ON buy.buy_id = bs.buy_id
+JOIN client ON client.client_id = buy.client_id
+JOIN city ON city.city_id = client.city_id
+WHERE bs.step_id = 3 AND bs.date_step_end IS NOT NULL
+ORDER BY bs.buy_id
+
+Ответ: - с использованием CTE 
+WITH transport AS (
+    SELECT 
+        bs.buy_id,
+        DATEDIFF(bs.date_step_end, bs.date_step_beg) AS real_days,
+        city.days_delivery
+    FROM buy_step AS bs
+    JOIN buy ON buy.buy_id = bs.buy_id
+    JOIN client ON client.client_id = buy.client_id
+    JOIN city ON city.city_id = client.city_id
+    WHERE bs.step_id = 3 AND bs.date_step_end IS NOT NULL
+)
+SELECT 
+    buy_id,
+    real_days AS Количество_дней,
+    IF(real_days > days_delivery, real_days - days_delivery, 0) AS Опоздание
+FROM transport
+ORDER BY buy_id;
+
+#8 - Воспользоваться CTE ?
+Выбрать всех клиентов, которые заказывали книги Достоевского, информацию вывести в отсортированном по алфавиту виде. В решении используйте фамилию автора, а не его id.
+
+Ответ: - с использованием CTE
+WITH client_author AS (
+    /*SELECT book.title, buy.buy_id, buy.client_id*/
+    SELECT buy.client_id AS b_c_id
+    FROM book
+    JOIN author ON author.author_id = book.author_id
+    JOIN buy_book ON buy_book.book_id = book.book_id
+    JOIN buy ON buy.buy_id = buy_book.buy_id
+    WHERE author.name_author LIKE 'Достоевский Ф.М.'
+    GROUP BY buy.client_id
+)
+
+SELECT client.name_client
+FROM client
+JOIN client_author ON client_author.b_c_id = client.client_id
+ORDER BY client.name_client;
+
+#9
+Ответ:
+
+#
+Ответ:
+
+#
+Ответ:
+
+#
+Ответ:
+
+#
 Ответ:
