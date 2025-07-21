@@ -122,17 +122,56 @@ FROM client
 JOIN client_author ON client_author.b_c_id = client.client_id
 ORDER BY client.name_client;
 
-#9
+#9 - hard
+Вывести жанр (или жанры), в котором было заказано больше всего экземпляров книг, указать это количество. Последний столбец назвать Количество.
 Ответ:
 
-#
-Ответ:
+#10
+Сравнить ежемесячную выручку от продажи книг за текущий и предыдущий годы. Для этого вывести год, месяц, сумму выручки в отсортированном сначала по возрастанию месяцев, затем по возрастанию лет виде. Название столбцов: Год, Месяц, Сумма.
 
-#
 Ответ:
+SELECT YEAR(BA.date_payment) AS Год, MONTHNAME(BA.date_payment) AS Месяц, SUM(BA.price*BA.amount) AS Сумма
+FROM buy_archive BA
+GROUP BY Год, Месяц
 
-#
-Ответ:
+/*либо UNION*/
+UNION ALL 
 
-#
+SELECT YEAR(BS.date_step_end) AS Год, MONTHNAME(BS.date_step_end) AS Месяц, SUM(book.price*BB.amount) AS Сумма
+FROM book
+JOIN buy_book BB ON BB.book_id = book.book_id
+JOIN buy ON buy.buy_id = BB.buy_id
+JOIN buy_step BS ON BS.buy_id = buy.buy_id
+WHERE BS.step_id = 1 AND BS.date_step_end IS NOT NULL
+GROUP BY Год, Месяц
+ORDER BY Месяц, Год
+
+#11
+Для каждой отдельной книги необходимо вывести информацию о количестве проданных экземпляров и их стоимости за 2020 и 2019 год . За 2020 год проданными считать те экземпляры, которые уже оплачены. Вычисляемые столбцы назвать Количество и Сумма. Информацию отсортировать по убыванию стоимости.
+
 Ответ:
+/*
+Здесь интересно что оказывается если делать по принципу прошлого задания, то будут две отдельные таблицы за 2019 и 2020, которые мы можем соединить при помощи UNION ALL или UNION
+
+В этом задании можно заметить, что мы должны соединить не две таблицы, а их строки, чтобы просуммировать "количество" и "сумма". - можно еще сделать CTE ;)
+*/
+WITH join_archive_current AS (
+    SELECT book.title, BA.amount AS Количество, BA.price*BA.amount AS Сумма
+    FROM buy_archive BA
+    JOIN book ON book.book_id = BA.book_id
+
+    UNION ALL
+
+    SELECT book.title, BB.amount AS Количество, book.price*BB.amount AS Сумма
+    FROM book
+    JOIN buy_book BB ON BB.book_id = book.book_id
+    JOIN buy ON buy.buy_id = BB.buy_id
+    JOIN buy_step BS ON BS.buy_id = buy.buy_id
+    WHERE BS.step_id = 1 AND BS.date_step_end IS NOT NULL
+)
+SELECT title, SUM(Количество) AS Количество, SUM(Сумма) AS Сумма
+FROM join_archive_current
+GROUP BY title
+ORDER BY Сумма DESC
+
+
