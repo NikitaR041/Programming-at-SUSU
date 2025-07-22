@@ -55,3 +55,64 @@ FROM subject S
 LEFT JOIN attempt A ON A.subject_id = S.subject_id
 GROUP BY S.name_subject
 ORDER BY Количество DESC, S.name_subject ASC
+
+#6
+Случайным образом отберите 3 вопроса по дисциплине «Основы баз данных». В результат включите столбцы question_id и name_question.
+Для выбора случайных вопросов можно отсортировать вопросы в случайном порядке:
+ORDER BY RAND()
+
+Ответ:
+SELECT Q.question_id, Q.name_question
+FROM question Q
+JOIN subject S ON S.subject_id = Q.subject_id AND S.name_subject LIKE 'Основы баз данных'
+ORDER BY RAND()
+LIMIT 3
+
+#7
+Вывести вопросы, которые были включены в тест для Семенова Ивана по дисциплине «Основы SQL» 2020-05-17  (значение attempt_id для этой попытки равно 7). Указать, какой ответ дал студент и правильный он или нет (вывести Верно или Неверно). В результат включить вопрос, ответ и вычисляемый столбец  Результат.
+
+Ответ:
+SELECT Q.name_question, A.name_answer, IF(is_correct, 'Верно', 'Неверно') AS Результат 
+FROM testing T
+JOIN answer A ON A.answer_id = T.answer_id
+JOIN question Q ON Q.question_id = T.question_id
+WHERE T.attempt_id = 7
+
+#8
+Посчитать результаты тестирования. Результат попытки вычислить как количество правильных ответов, деленное на 3 (количество вопросов в каждой попытке) и умноженное на 100. Результат округлить до двух знаков после запятой. Вывести фамилию студента, название предмета, дату и результат. Последний столбец назвать Результат. Информацию отсортировать сначала по фамилии студента, потом по убыванию даты попытки.
+
+Пояснение:
+В запрос не рекомендуется включать таблицу question, нужно связать answer непосредственно с testing. Если же в этом запросе использовать связь testing - question - answer и считать верные ответы, то получится, что считаются ВЕРНЫЕ ответы на вопросы, занесенные в таблицу question, а не верные ответы, которые дал пользователь.
+
+Ответ:
+SELECT S.name_student, SU.name_subject, ATT.date_attempt, ROUND(SUM(A.is_correct/3*100),2)AS Результат
+FROM attempt ATT
+JOIN subject SU ON SU.subject_id = ATT.subject_id
+JOIN student S ON S.student_id = ATT.student_id
+JOIN testing T ON T.attempt_id = ATT.attempt_id
+JOIN answer A ON A.answer_id = T.answer_id
+GROUP BY S.name_student, SU.name_subject, ATT.date_attempt
+ORDER BY S.name_student ASC, ATT.date_attempt DESC
+
+#9
+Для каждого вопроса вывести процент успешных решений, то есть отношение количества верных ответов к общему количеству ответов, значение округлить до 2-х знаков после запятой. Также вывести название предмета, к которому относится вопрос, и общее количество ответов на этот вопрос. В результат включить название дисциплины, вопросы по ней (столбец назвать Вопрос), а также два вычисляемых столбца Всего_ответов и Успешность. Информацию отсортировать сначала по названию дисциплины, потом по убыванию успешности, а потом по тексту вопроса в алфавитном порядке.
+
+Поскольку тексты вопросов могут быть длинными, обрезать их 30 символов и добавить многоточие "...".
+
+Полезные функции:
+substr(строка, индекс_начальный, индекс_конечный)- обрезать строки
+concat(строка1, строка2) - склеивать (конкатенировать) строки
+
+Ответ:
+SELECT 
+  S.name_subject AS name_subject,
+  CONCAT(LEFT(Q.name_question, 30), '...') AS Вопрос,
+  COUNT(T.testing_id) AS Всего_ответов,
+/*AVG(is_correct) вместо SUM(A.is_correct = TRUE) / COUNT(T.testing_id)*/
+  ROUND(SUM(A.is_correct = TRUE) / COUNT(T.testing_id) * 100, 2) AS Успешность
+FROM question Q
+JOIN subject S ON S.subject_id = Q.subject_id
+JOIN testing T ON T.question_id = Q.question_id
+JOIN answer A ON A.answer_id = T.answer_id
+GROUP BY Q.question_id
+ORDER BY S.name_subject ASC, Успешность DESC, Q.name_question ASC;
