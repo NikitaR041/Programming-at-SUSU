@@ -78,7 +78,7 @@ select * from testing;
 #3
 Студент прошел тестирование (то есть все его ответы занесены в таблицу testing), далее необходимо вычислить результат(запрос) и занести его в таблицу attempt для соответствующей попытки.  Результат попытки вычислить как количество правильных ответов, деленное на 3 (количество вопросов в каждой попытке) и умноженное на 100. Результат округлить до целого.
 
- Будем считать, что мы знаем id попытки,  для которой вычисляется результат, в нашем случае это 8. В таблицу testing занесены следующие ответы пользователя:
+Будем считать, что мы знаем id попытки,  для которой вычисляется результат, в нашем случае это 8. В таблицу testing занесены следующие ответы пользователя:
 
 +------------+------------+-------------+-----------+
 | testing_id | attempt_id | question_id | answer_id |
@@ -88,12 +88,53 @@ select * from testing;
 | 24         | 8          | 8           | 22        |
 +------------+------------+-------------+-----------+
 
+Пояснение:
+Используйте вложенный запрос для вычисления результатов всех попыток по таблице testing, а в таблице attempt обновляйте только запись с id равным 8.
+
 Ответ:
+UPDATE attempt
+SET result = (
+    SELECT ROUND(SUM(A.is_correct) / 3 * 100, 2)
+    FROM testing T
+    JOIN answer A ON A.answer_id = T.answer_id
+    WHERE T.attempt_id = 8
+)
+WHERE attempt_id = 8;
+
+
+SELECT * FROM attempt;
 
 #4
+Удалить из таблицы attempt все попытки, выполненные раньше 1 мая 2020 года. Также удалить и все соответствующие этим попыткам вопросы из таблицы testing, которая создавалась следующим запросом:
+
+CREATE TABLE testing (
+    testing_id INT PRIMARY KEY AUTO_INCREMENT, 
+    attempt_id INT, 
+    question_id INT, 
+    answer_id INT,
+    FOREIGN KEY (attempt_id)  REFERENCES attempt (attempt_id) ON DELETE CASCADE
+);
 
 Ответ:
+DELETE FROM attempt ATT
+WHERE ATT.date_attempt < '2020-05-01';
 
-#5
+SELECT * FROM attempt;
+SELECT * FROM testing;
 
-Ответ:
+#5 - Задание на придумывание
+/*
+Вывести всех студентов, у которых результат меньше чем на 50 набранных баллов по всем учебным предметам (т.е. <50 набранных баллов).
+Вывести на экран ФИО студента, предмет, вопрос, результат и ответ студента по этому вопросу.
+*/
+WITH my_table AS (
+    SELECT SU.subject_id AS идишник, SU.name_subject, Q.name_question, A.name_answer
+    FROM subject SU
+    JOIN question Q ON Q.subject_id = SU.subject_id
+    JOIN answer A ON A.question_id = Q.question_id
+)
+SELECT S.name_student, MT.name_subject, MT.name_question, MT.name_answer
+FROM student S
+JOIN attempt ATT ON ATT.student_id = S.student_id
+JOIN my_table MT ON MT.идишник = ATT.subject_id
+WHERE ATT.result < 50;
