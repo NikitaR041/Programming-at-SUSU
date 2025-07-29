@@ -1,0 +1,30 @@
+#1
+Вывести абитуриентов, которые хотят поступать на образовательную программу «Мехатроника и робототехника» в отсортированном по фамилиям виде.
+
+Ответ:
+SELECT E.name_enrollee
+FROM program_enrollee PE
+JOIN program P ON P.program_id = PE.program_id AND P.name_program LIKE 'Мехатроника и робототехника'
+JOIN enrollee E ON E.enrollee_id = PE.enrollee_id
+ORDER BY E.name_enrollee ASC
+
+#2
+Вывести образовательные программы, на которые для поступления необходим предмет «Информатика». Программы отсортировать в обратном алфавитном порядке.
+
+Ответ:
+SELECT P.name_program
+FROM program_subject PS
+JOIN subject S ON S.subject_id = PS.subject_id 
+JOIN program P ON P.program_id = PS.program_id
+WHERE S.name_subject LIKE 'Информатика'
+ORDER BY P.name_program DESC
+
+#3
+Выведите количество абитуриентов, сдавших ЕГЭ по каждому предмету, максимальное, минимальное и среднее значение баллов по предмету ЕГЭ. Вычисляемые столбцы назвать Количество, Максимум, Минимум, Среднее. Информацию отсортировать по названию предмета в алфавитном порядке, среднее значение округлить до одного знака после запятой.
+
+Ответ:
+SELECT S.name_subject, COUNT(ES.enrollee_id) AS Количество, MAX(ES.result) AS Максимум, MIN(ES.result) AS Минимум, ROUND(AVG(ES.result),1) AS Среднее
+FROM enrollee_subject ES
+JOIN subject S ON S.subject_id = ES.subject_id
+GROUP BY S.name_subject
+ORDER BY S.name_subject ASC
