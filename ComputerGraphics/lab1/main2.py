@@ -45,8 +45,6 @@ def draw_slider(rect, value, min_val, max_val, label):
     # По умолчанию ползунок расположен по середине
     ratio = (value - min_val) / (max_val - min_val) # Значение [0;1]
     handle_x = rect.x + int(ratio * rect.width)
-    # handle_x = rect.x + rect.width
-    # handle_y = rect.y + rect.height // 2
     handle_y = rect.y
     pygame.draw.circle(screen, BLUE, (handle_x, handle_y), handle_radius)
     # Подпись
