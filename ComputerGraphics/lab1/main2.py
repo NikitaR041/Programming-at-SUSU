@@ -19,9 +19,13 @@ running = True
 # Значение по умолчанию 
 size = 400 # Длина треугольника
 depth = 4 # Глубина рекурсии
+
+# Состояния ползунков и кнопок
+dragging1 = False
+dragging2 = False
 mode = "triangle" # Треугольник Сперанского (иначе квадрат Сперанского)
 
-# Параметры слайдеров
+# Параметры ползунков
 slider_width = 300
 slider_height = 5
 handle_radius = 12
@@ -33,9 +37,6 @@ slider2_rect = pygame.Rect(50, HEIGHT - 50, slider_width, slider_height)
 # Объекты кнопок
 button_triangle = pygame.Rect(650, HEIGHT - 120, 150, 40)
 button_square = pygame.Rect(650, HEIGHT - 70, 150, 40)
-
-dragging1 = False
-dragging2 = False
 
 """Рисуем слайдер и возвращаем позицию ручки"""
 def draw_slider(rect, value, min_val, max_val, label):
