@@ -30,7 +30,7 @@ slider_width = 300
 slider_height = 5
 handle_radius = 12
 
-# Объекты ползунков (позже их используем для вырисовки на экране)
+# Объекты ползунков
 slider1_rect = pygame.Rect(50, HEIGHT - 100, slider_width, slider_height)
 slider2_rect = pygame.Rect(50, HEIGHT - 50, slider_width, slider_height)
  
@@ -38,46 +38,45 @@ slider2_rect = pygame.Rect(50, HEIGHT - 50, slider_width, slider_height)
 button_triangle = pygame.Rect(650, HEIGHT - 120, 150, 40)
 button_square = pygame.Rect(650, HEIGHT - 70, 150, 40)
 
-"""Рисуем слайдер и возвращаем позицию ручки"""
-def draw_slider(rect, value, min_val, max_val, label):
-    # Рисуем прямоугольник - видимую полоску
+# Функция, рисующая ползунок 
+def drawSlider(rect, value, min_val, max_val, label):
     pygame.draw.rect(screen, GRAY, rect)
-    # Рисуем и располагаем кружочек (курсор)
     # По умолчанию ползунок расположен по середине
     ratio = (value - min_val) / (max_val - min_val) # Значение [0;1]
     handle_x = rect.x + int(ratio * rect.width)
     handle_y = rect.y
     pygame.draw.circle(screen, BLUE, (handle_x, handle_y), handle_radius)
-    # Подпись
+
     font = pygame.font.SysFont(None, 24)
     txt = font.render(f"{label}: {value}", True, BLACK)
     screen.blit(txt, (rect.x + rect.width + 20, rect.y - 10))
     return pygame.Rect(handle_x - handle_radius, handle_y - handle_radius, handle_radius*2, handle_radius*2)
 
-"""Рисуем кнопки"""
-def draw_button(rect, text, active):
+# Функция, рисующая кнопку
+def drawButton(rect, text, active):
     color = BLUE if active else GRAY
     pygame.draw.rect(screen, color, rect)
     font = pygame.font.SysFont(None, 28)
     txt = font.render(text, True, WHITE)
     screen.blit(txt, (rect.x + 10, rect.y + 8))
 
-# Метод, который вычисляет новую длину треугольника по двум точкам
+# Функция, реализующая рекурсивное построение треугольников
 def midpoint(p1, p2):
     return ((p1[0]+p2[0])/2, (p1[1]+p2[1])/2)
 
-def sierpinski_triangle(screen, A, B, C, depth):
+def drawTriangle(screen, A, B, C, depth):
     if depth == 0:
         pygame.draw.polygon(screen, BLACK, [A, B, C], 0)
     else:
         m12 = midpoint(A, B)
         m23 = midpoint(B, C)
         m31 = midpoint(C, A)
-        sierpinski_triangle(screen, A, m12, m31, depth-1)
-        sierpinski_triangle(screen, m12, B, m23, depth-1)
-        sierpinski_triangle(screen, m31, m23, C, depth-1)
+        drawTriangle(screen, A, m12, m31, depth-1)
+        drawTriangle(screen, m12, B, m23, depth-1)
+        drawTriangle(screen, m31, m23, C, depth-1)
 
-def sierpinski_square(surface, x, y, size, depth):
+# Функция, реализующая рекурсивное построение квадратов
+def drawSquare(surface, x, y, size, depth):
     if depth == 0:
         pygame.draw.rect(surface, BLACK, (x, y, size, size))
     else:
@@ -86,15 +85,13 @@ def sierpinski_square(surface, x, y, size, depth):
             for j in range(3):
                 if i == 1 and j == 1:  # пропускаем центр
                     continue
-                sierpinski_square(surface, x + i*new_size, y + j*new_size, new_size, depth-1)
-
+                drawSquare(surface, x + i*new_size, y + j*new_size, new_size, depth-1)
 
 # Основной цикл
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-
         elif event.type == pygame.MOUSEBUTTONDOWN:
             if handle1.collidepoint(event.pos):
                 dragging1 = True
@@ -104,10 +101,8 @@ while running:
                 mode = "triangle"
             elif button_square.collidepoint(event.pos):
                 mode = "square"
-
         elif event.type == pygame.MOUSEBUTTONUP:
             dragging1 = dragging2 = False
-
         elif event.type == pygame.MOUSEMOTION:
             if dragging1:
                 # Изменяем size
@@ -119,27 +114,21 @@ while running:
                 rel_x = max(slider2_rect.left, min(event.pos[0], slider2_rect.right))
                 ratio = (rel_x - slider2_rect.left) / slider2_rect.width
                 depth = int(1 + ratio * 7)  # от 1 до 8
-
     screen.fill(WHITE)
-
     if mode == "triangle":
-        # Вершины треугольника под размер size
-        height = int(size * 0.866)  # высота равностороннего
-        A = (WIDTH/2, 10) # Вверхний угол
-        B = (WIDTH/2 - size/2, 10+height) # Левый угол
-        C = (WIDTH/2 + size/2,  10+height) # Правый угол
-
-        # Рисуем треугольник
-        sierpinski_triangle(screen, A, B, C, depth)
+        height = int(size * 0.866)
+        A = (WIDTH/2, 10)
+        B = (WIDTH/2 - size/2, 10+height)
+        C = (WIDTH/2 + size/2,  10+height)
+        drawTriangle(screen, A, B, C, depth)
     else:
-        sierpinski_square(screen, WIDTH//2 - size//2, 50, size, depth)
+        drawSquare(screen, WIDTH//2 - size//2, 50, size, depth)
 
-    # Слайдеры (возвращают прямоугольники ручек)
-    handle1 = draw_slider(slider1_rect, size, 100, 700, "Size")
-    handle2 = draw_slider(slider2_rect, depth, 1, 8, "Depth")
+    handle1 = drawSlider(slider1_rect, size, 100, 700, "Size")
+    handle2 = drawSlider(slider2_rect, depth, 1, 8, "Depth")
 
-    draw_button(button_triangle, "Треугольник", mode == "triangle")
-    draw_button(button_square, "Квадрат", mode == "square")
+    drawButton(button_triangle, "Треугольник", mode == "triangle")
+    drawButton(button_square, "Квадрат", mode == "square")
 
     pygame.display.flip()
     clock.tick(60)
