@@ -1,0 +1,124 @@
+object Form1: TForm1
+  Left = 0
+  Top = 0
+  Caption = #1057#1083#1086#1078#1077#1085#1080#1077' '#1076#1074#1091#1093' '#1095#1080#1089#1077#1083
+  ClientHeight = 368
+  ClientWidth = 586
+  Color = clAqua
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clBlueviolet
+  Font.Height = -12
+  Font.Name = 'Segoe UI'
+  Font.Style = []
+  Menu = MainMenu1
+  TextHeight = 15
+  object Label1: TLabel
+    Left = 16
+    Top = 96
+    Width = 102
+    Height = 15
+    Caption = #1055#1077#1088#1074#1086#1077' '#1089#1083#1072#1075#1072#1077#1084#1086#1077
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -12
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentFont = False
+  end
+  object Label3: TLabel
+    Left = 376
+    Top = 96
+    Width = 38
+    Height = 15
+    Caption = #1057#1091#1084#1084#1072
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -12
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentFont = False
+  end
+  object Label2: TLabel
+    Left = 176
+    Top = 96
+    Width = 100
+    Height = 15
+    Caption = #1042#1090#1086#1088#1086#1077' '#1089#1083#1072#1075#1072#1077#1084#1086#1077
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -12
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentFont = False
+  end
+  object Edit1: TEdit
+    Left = 16
+    Top = 128
+    Width = 121
+    Height = 23
+    TabOrder = 0
+  end
+  object Edit2: TEdit
+    Left = 176
+    Top = 128
+    Width = 121
+    Height = 23
+    TabOrder = 1
+  end
+  object Button1: TButton
+    Left = 104
+    Top = 168
+    Width = 105
+    Height = 33
+    Caption = #1057#1083#1086#1078#1080#1090#1100
+    TabOrder = 2
+    OnClick = Button1Click
+  end
+  object Edit3: TEdit
+    Left = 376
+    Top = 128
+    Width = 121
+    Height = 23
+    ReadOnly = True
+    TabOrder = 3
+  end
+  object MainMenu1: TMainMenu
+    Left = 568
+    Top = 344
+    object asdasdasd1: TMenuItem
+      Caption = #1055#1091#1085#1082#1090' 1'
+      object N111: TMenuItem
+        Caption = #1055#1091#1085#1082#1090' 1.1'
+        OnClick = N111Click
+      end
+      object N2: TMenuItem
+        Caption = '-'
+      end
+      object N3: TMenuItem
+        Caption = #1055#1091#1085#1082#1090' 1.2'
+        OnClick = N3Click
+      end
+    end
+    object N21: TMenuItem
+      Caption = #1055#1091#1085#1082#1090' 2'
+      OnClick = N21Click
+    end
+    object N1: TMenuItem
+      Caption = #1042#1099#1093#1086#1076' '#1080#1079' '#1087#1088#1086#1075#1088#1072#1084#1084#1099
+      OnClick = N1Click
+    end
+    object N4: TMenuItem
+      Caption = #1060#1086#1088#1084#1099
+      object N11: TMenuItem
+        Caption = '1'
+        OnClick = N11Click
+      end
+      object N5: TMenuItem
+        Caption = '-'
+      end
+      object N22: TMenuItem
+        Caption = '2'
+      end
+    end
+  end
+end

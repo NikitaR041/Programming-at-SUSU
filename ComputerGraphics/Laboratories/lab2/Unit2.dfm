@@ -1,0 +1,187 @@
+object Form2: TForm2
+  Left = 0
+  Top = 0
+  Caption = #1050#1086#1084#1087#1083#1077#1082#1090#1072#1094#1080#1103' '#1082#1086#1084#1087#1100#1102#1090#1077#1088#1072
+  ClientHeight = 514
+  ClientWidth = 729
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -12
+  Font.Name = 'Segoe UI'
+  Font.Style = []
+  Menu = MainMenu1
+  TextHeight = 15
+  object Label1: TLabel
+    Left = 48
+    Top = 40
+    Width = 25
+    Height = 15
+    Caption = #1044#1072#1090#1072
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -12
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentFont = False
+  end
+  object Label2: TLabel
+    Left = 328
+    Top = 40
+    Width = 75
+    Height = 15
+    Caption = #1050#1091#1088#1089' '#1076#1086#1083#1083#1072#1088#1072
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -12
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentFont = False
+  end
+  object Label3: TLabel
+    Left = 200
+    Top = 115
+    Width = 37
+    Height = 15
+    Caption = #1062#1077#1085#1072' $'
+  end
+  object Label4: TLabel
+    Left = 39
+    Top = 144
+    Width = 40
+    Height = 15
+    Caption = #1050#1086#1088#1087#1091#1089
+  end
+  object Label5: TLabel
+    Left = 39
+    Top = 184
+    Width = 107
+    Height = 15
+    Caption = #1052#1072#1077#1090#1088#1080#1085#1089#1082#1072#1103' '#1087#1083#1072#1090#1072
+  end
+  object Label6: TLabel
+    Left = 39
+    Top = 229
+    Width = 62
+    Height = 15
+    Caption = #1055#1088#1086#1094#1077#1089#1089#1086#1088
+  end
+  object Label7: TLabel
+    Left = 39
+    Top = 269
+    Width = 76
+    Height = 15
+    Caption = #1046#1077#1089#1090#1082#1080#1081' '#1076#1080#1089#1082
+  end
+  object Label8: TLabel
+    Left = 39
+    Top = 309
+    Width = 63
+    Height = 15
+    Caption = #1050#1083#1072#1074#1080#1072#1090#1091#1088#1072
+  end
+  object Label9: TLabel
+    Left = 39
+    Top = 349
+    Width = 37
+    Height = 15
+    Caption = #1052#1099#1096#1100
+  end
+  object Label11: TLabel
+    Left = 392
+    Top = 115
+    Width = 50
+    Height = 15
+    Caption = #1048#1090#1086#1075#1086' ($)'
+  end
+  object Label12: TLabel
+    Left = 552
+    Top = 115
+    Width = 64
+    Height = 15
+    Caption = #1048#1090#1086#1075#1086' ('#1056#1091#1073')'
+  end
+  object Edit1: TEdit
+    Left = 96
+    Top = 37
+    Width = 121
+    Height = 23
+    TabOrder = 0
+  end
+  object Edit2: TEdit
+    Left = 424
+    Top = 37
+    Width = 121
+    Height = 23
+    TabOrder = 1
+  end
+  object Edit3: TEdit
+    Left = 160
+    Top = 136
+    Width = 121
+    Height = 23
+    TabOrder = 2
+  end
+  object Edit4: TEdit
+    Left = 160
+    Top = 181
+    Width = 121
+    Height = 23
+    TabOrder = 3
+  end
+  object Edit5: TEdit
+    Left = 160
+    Top = 226
+    Width = 121
+    Height = 23
+    TabOrder = 4
+  end
+  object Edit6: TEdit
+    Left = 160
+    Top = 266
+    Width = 121
+    Height = 23
+    TabOrder = 5
+  end
+  object Edit7: TEdit
+    Left = 160
+    Top = 306
+    Width = 121
+    Height = 23
+    TabOrder = 6
+  end
+  object Edit8: TEdit
+    Left = 160
+    Top = 346
+    Width = 121
+    Height = 23
+    TabOrder = 7
+  end
+  object Button1: TButton
+    Left = 32
+    Top = 392
+    Width = 249
+    Height = 25
+    Caption = #1042#1099#1095#1080#1089#1083#1080#1090#1100
+    TabOrder = 8
+    OnClick = Button1Click
+  end
+  object Edit10: TEdit
+    Left = 392
+    Top = 136
+    Width = 121
+    Height = 23
+    TabOrder = 9
+  end
+  object Edit11: TEdit
+    Left = 552
+    Top = 136
+    Width = 121
+    Height = 23
+    TabOrder = 10
+  end
+  object MainMenu1: TMainMenu
+    Left = 136
+    Top = 464
+  end
+end
