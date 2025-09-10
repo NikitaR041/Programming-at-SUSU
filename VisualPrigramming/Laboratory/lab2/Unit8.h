@@ -1,40 +1,29 @@
 //---------------------------------------------------------------------------
 
-#ifndef Unit1H
-#define Unit1H
+#ifndef Unit8H
+#define Unit8H
 //---------------------------------------------------------------------------
 #include <System.Classes.hpp>
 #include <Vcl.Controls.hpp>
 #include <Vcl.StdCtrls.hpp>
 #include <Vcl.Forms.hpp>
-#include <Vcl.Menus.hpp>
 //---------------------------------------------------------------------------
-class TForm1 : public TForm
+class TForm8 : public TForm
 {
 __published:	// IDE-managed Components
-	TMainMenu *MainMenu1;
-	TMenuItem *asdasdasd1;
-	TMenuItem *N21;
-	TMenuItem *N1;
-	TMenuItem *N111;
-	TMenuItem *N2;
-	TMenuItem *N3;
-	TEdit *Edit1;
-	TEdit *Edit2;
+	TScrollBar *RedSB;
+	TScrollBar *GreenSB;
+	TScrollBar *BlueSB;
 	TLabel *Label1;
 	TLabel *Label2;
-	TButton *Button1;
 	TLabel *Label3;
-	TEdit *Edit3;
-	void __fastcall N111Click(TObject *Sender);
-	void __fastcall N3Click(TObject *Sender);
-	void __fastcall N21Click(TObject *Sender);
-	void __fastcall N1Click(TObject *Sender);
+	TLabel *Label4;
+	void __fastcall RedSBChange(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
-	__fastcall TForm1(TComponent* Owner);
+	__fastcall TForm8(TComponent* Owner);
 };
 //---------------------------------------------------------------------------
-extern PACKAGE TForm1 *Form1;
+extern PACKAGE TForm8 *Form8;
 //---------------------------------------------------------------------------
 #endif
