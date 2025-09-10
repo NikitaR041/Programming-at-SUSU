@@ -8,6 +8,8 @@
 #include "Unit3.h"
 #include "Unit4.h"
 #include "Unit5.h"
+#include "Unit6.h"
+#include "Unit7.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
@@ -67,6 +69,18 @@ void __fastcall TForm1::N31Click(TObject *Sender)
 void __fastcall TForm1::N41Click(TObject *Sender)
 {
 	Form5->ShowModal();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm1::N51Click(TObject *Sender)
+{
+	Form6->ShowModal();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm1::N61Click(TObject *Sender)
+{
+    Form7->ShowModal();
 }
 //---------------------------------------------------------------------------
 

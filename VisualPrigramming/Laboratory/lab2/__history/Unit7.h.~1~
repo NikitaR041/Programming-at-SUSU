@@ -1,34 +1,21 @@
 //---------------------------------------------------------------------------
 
-#ifndef Unit1H
-#define Unit1H
+#ifndef Unit7H
+#define Unit7H
 //---------------------------------------------------------------------------
 #include <System.Classes.hpp>
 #include <Vcl.Controls.hpp>
 #include <Vcl.StdCtrls.hpp>
 #include <Vcl.Forms.hpp>
-#include <Vcl.Menus.hpp>
 //---------------------------------------------------------------------------
-class TForm1 : public TForm
+class TForm7 : public TForm
 {
 __published:	// IDE-managed Components
-	TMainMenu *MainMenu1;
-	TMenuItem *asdasdasd1;
-	TMenuItem *N21;
-	TMenuItem *N1;
-	TMenuItem *N111;
-	TMenuItem *N2;
-	TMenuItem *N3;
-	TLabel *Label1;
-	void __fastcall N111Click(TObject *Sender);
-	void __fastcall N3Click(TObject *Sender);
-	void __fastcall N21Click(TObject *Sender);
-	void __fastcall N1Click(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
-	__fastcall TForm1(TComponent* Owner);
+	__fastcall TForm7(TComponent* Owner);
 };
 //---------------------------------------------------------------------------
-extern PACKAGE TForm1 *Form1;
+extern PACKAGE TForm7 *Form7;
 //---------------------------------------------------------------------------
 #endif
