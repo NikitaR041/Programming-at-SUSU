@@ -3,70 +3,75 @@
 #include <vcl.h>
 #pragma hdrstop
 
-#include "Unit1.h"
-#include "Unit2.h"
 #include "Unit3.h"
-#include "Unit4.h"
-#include "Unit5.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
-TForm1 *Form1;
+TForm3 *Form3;
 //---------------------------------------------------------------------------
-__fastcall TForm1::TForm1(TComponent* Owner)
+__fastcall TForm3::TForm3(TComponent* Owner)
 	: TForm(Owner)
 {
 }
 //---------------------------------------------------------------------------
-void __fastcall TForm1::N111Click(TObject *Sender)
+
+void __fastcall TForm3::N4Click(TObject *Sender)
 {
-	Application->MessageBoxW(L"Пункт 1.1", L"", MB_OK);
-}
-//---------------------------------------------------------------------------
-void __fastcall TForm1::N3Click(TObject *Sender)
-{
-	Application->MessageBoxW(L"Пункт 1.2", L"", MB_OK);
-}
-//---------------------------------------------------------------------------
-void __fastcall TForm1::N21Click(TObject *Sender)
-{
-	Application->MessageBoxW(L"Пункт 2", L"", MB_OK);
-}
-//---------------------------------------------------------------------------
-void __fastcall TForm1::N1Click(TObject *Sender)
-{
-	//Выход из программы
-	Close();
-}
-//---------------------------------------------------------------------------
-void __fastcall TForm1::Button1Click(TObject *Sender)
-{
-	Edit3->Text = Edit1->Text.ToInt( ) + Edit2->Text.ToInt( );
-}
-//---------------------------------------------------------------------------
-void __fastcall TForm1::N11Click(TObject *Sender)
-{
-	Form2->ShowModal();
+    Memo1->Clear();
 }
 //---------------------------------------------------------------------------
 
-
-
-void __fastcall TForm1::N22Click(TObject *Sender)
+void __fastcall TForm3::N5Click(TObject *Sender)
 {
-	Form3->ShowModal();
+    Memo1->Lines->SaveToFile("document.txt");
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TForm1::N31Click(TObject *Sender)
+void __fastcall TForm3::N7Click(TObject *Sender)
 {
-	Form4->ShowModal();
+    Close();
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TForm1::N41Click(TObject *Sender)
+void __fastcall TForm3::N8Click(TObject *Sender)
 {
-	Form5->ShowModal();
+    Memo1->Undo();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm3::N10Click(TObject *Sender)
+{
+    Memo->CutToClipboard();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm3::N11Click(TObject *Sender)
+{
+    Memo1->CopyToClipboard();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm3::N12Click(TObject *Sender)
+{
+    Memo1->PasteFromClipboard();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm3::N13Click(TObject *Sender)
+{
+    Memo1->ClearSelection();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm3::N15Click(TObject *Sender)
+{
+    Memo1->SelectAll();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm3::N3Click(TObject *Sender)
+{
+    Application->MessageBoxW(L"Здесь можно написать о себе", L"Справка", MB_OK);
 }
 //---------------------------------------------------------------------------
 

@@ -3,14 +3,19 @@
 #include <vcl.h>
 #pragma hdrstop
 
-#include "Unit1.h"
+#include "Unit4.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
-TForm1 *Form1;
+TForm4 *Form4;
 //---------------------------------------------------------------------------
-__fastcall TForm1::TForm1(TComponent* Owner)
+__fastcall TForm4::TForm4(TComponent* Owner)
 	: TForm(Owner)
 {
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm4::CheckBox1Click(TObject *Sender)
+{
+	Edit1->ReadOnly = !CheckBox1->Checked;
 }
 //---------------------------------------------------------------------------

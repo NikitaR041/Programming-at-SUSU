@@ -14,3 +14,65 @@ __fastcall TForm3::TForm3(TComponent* Owner)
 {
 }
 //---------------------------------------------------------------------------
+
+void __fastcall TForm3::N4Click(TObject *Sender)
+{
+    Memo1->Clear();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm3::N5Click(TObject *Sender)
+{
+    Memo1->Lines->SaveToFile("document.txt");
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm3::N7Click(TObject *Sender)
+{
+    Close();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm3::N8Click(TObject *Sender)
+{
+    Memo1->Undo();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm3::N10Click(TObject *Sender)
+{
+    Memo1->CutToClipboard();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm3::N11Click(TObject *Sender)
+{
+    Memo1->CopyToClipboard();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm3::N12Click(TObject *Sender)
+{
+    Memo1->PasteFromClipboard();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm3::N13Click(TObject *Sender)
+{
+    Memo1->ClearSelection();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm3::N15Click(TObject *Sender)
+{
+    Memo1->SelectAll();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm3::N3Click(TObject *Sender)
+{
+    Application->MessageBoxW(L"Здесь можно написать о себе", L"Справка", MB_OK);
+}
+//---------------------------------------------------------------------------
+
+
