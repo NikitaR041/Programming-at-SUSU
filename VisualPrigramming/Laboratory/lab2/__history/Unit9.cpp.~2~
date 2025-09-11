@@ -1,0 +1,23 @@
+//---------------------------------------------------------------------------
+
+#include <vcl.h>
+#pragma hdrstop
+
+#include "Unit9.h"
+//---------------------------------------------------------------------------
+#pragma package(smart_init)
+#pragma resource "*.dfm"
+TForm9 *Form9;
+//---------------------------------------------------------------------------
+__fastcall TForm9::TForm9(TComponent* Owner)
+	: TForm(Owner)
+{
+}
+//------------------------------------------------------------------------------------------------------------------------------------------------void __fastcall TForm9::ArialRBClick(TObject *Sender)
+{
+	if (ArialRB->Checked) Label1->Font->Name = “Arial”;
+	if (CourierRB->Checked) Label1->Font->Name = “Courier”;
+	if (TimesNewRomanRB->Checked) Label1->Font->Name=“Times New Roman”;
+}
+
+//---------------------------------------------------------------------------

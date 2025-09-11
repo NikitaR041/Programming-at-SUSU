@@ -40,6 +40,8 @@ __published:	// IDE-managed Components
 	TMenuItem *N61;
 	TMenuItem *N10;
 	TMenuItem *N71;
+	TMenuItem *N12;
+	TMenuItem *N81;
 	void __fastcall N111Click(TObject *Sender);
 	void __fastcall N3Click(TObject *Sender);
 	void __fastcall N21Click(TObject *Sender);
@@ -52,6 +54,8 @@ __published:	// IDE-managed Components
 	void __fastcall N51Click(TObject *Sender);
 	void __fastcall N61Click(TObject *Sender);
 	void __fastcall N71Click(TObject *Sender);
+	void __fastcall N12Click(TObject *Sender);
+	void __fastcall N81Click(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
 	__fastcall TForm1(TComponent* Owner);

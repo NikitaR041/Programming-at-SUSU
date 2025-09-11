@@ -11,6 +11,7 @@
 #include "Unit6.h"
 #include "Unit7.h"
 #include "Unit8.h"
+#include "Unit9.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
@@ -90,4 +91,14 @@ void __fastcall TForm1::N71Click(TObject *Sender)
     Form8->ShowModal();
 }
 //---------------------------------------------------------------------------
+
+void __fastcall TForm1::N81Click(TObject *Sender)
+{
+	Form9->ShowModal();
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm1::N12Click(TObject *Sender)
+{
+	Application->MessageBoxW(L"N12 Clicked!", L"Info", MB_OK);
+}
 
