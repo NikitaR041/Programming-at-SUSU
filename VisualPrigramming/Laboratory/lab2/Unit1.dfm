@@ -163,6 +163,20 @@ object Form1: TForm1
         Caption = '8'
         OnClick = N81Click
       end
+      object N13: TMenuItem
+        Caption = '-'
+      end
+      object N91: TMenuItem
+        Caption = '9'
+        OnClick = N91Click
+      end
+      object N14: TMenuItem
+        Caption = '-'
+      end
+      object N101: TMenuItem
+        Caption = '10'
+        OnClick = N101Click
+      end
     end
   end
 end

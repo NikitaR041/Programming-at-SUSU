@@ -1,0 +1,36 @@
+//---------------------------------------------------------------------------
+
+#include <vcl.h>
+#pragma hdrstop
+
+#include "Unit10.h"
+//---------------------------------------------------------------------------
+#pragma package(smart_init)
+#pragma resource "*.dfm"
+TForm10 *Form10;
+//---------------------------------------------------------------------------
+__fastcall TForm10::TForm10(TComponent* Owner)
+	: TForm(Owner)
+{
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm10::FontRGClick(TObject *Sender)
+{
+//Попробуем использовать .Trim(), чтобы не учитывать пробелы
+	Label1->Font->Name = FontRG->Items->Strings[FontRG->ItemIndex].Trim();
+//	Label1->Font->Name = FontRG->Items->Strings[FontRG->ItemIndex];
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm10::SizeRGClick(TObject *Sender)
+{
+//Либо использовать эту функцию для того, чтобы не учитывать пробелы
+//Label1->Font->Size = SizeRG->Items->Strings[SizeRG->ItemIndex].Trim().ToInt();
+	Label1->Font->Size = SizeRG->Items->Strings[SizeRG->ItemIndex].ToInt( );
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm10::ColorRGClick(TObject *Sender)
+{
+	TColor Colors[ ] = {clBlack, clWhite, clRed, clGreen, clBlue, clYellow};
+	Label1->Font->Color = Colors[ColorRG->ItemIndex];
+}
+//---------------------------------------------------------------------------

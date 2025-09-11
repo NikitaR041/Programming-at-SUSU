@@ -118,6 +118,50 @@ object Form1: TForm1
       end
       object N22: TMenuItem
         Caption = '2'
+        OnClick = N22Click
+      end
+      object N6: TMenuItem
+        Caption = '-'
+      end
+      object N31: TMenuItem
+        Caption = '3'
+        OnClick = N31Click
+      end
+      object N7: TMenuItem
+        Caption = '-'
+      end
+      object N41: TMenuItem
+        Caption = '4'
+        OnClick = N41Click
+      end
+      object N8: TMenuItem
+        Caption = '-'
+      end
+      object N51: TMenuItem
+        Caption = '5'
+        OnClick = N51Click
+      end
+      object N9: TMenuItem
+        Caption = '-'
+      end
+      object N61: TMenuItem
+        Caption = '6'
+        OnClick = N61Click
+      end
+      object N10: TMenuItem
+        Caption = '-'
+      end
+      object N71: TMenuItem
+        Caption = '7'
+        OnClick = N71Click
+      end
+      object N12: TMenuItem
+        Caption = '-'
+        OnClick = N12Click
+      end
+      object N81: TMenuItem
+        Caption = '8'
+        OnClick = N81Click
       end
     end
   end
