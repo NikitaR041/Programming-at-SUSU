@@ -22,4 +22,5 @@ class SSquare :
                 for j in range(3):
                     if i == 1 and j == 1:  # пропускаем центр
                         continue
-                    self.drawRecursiveS(screen, x + i*new_size, y + j*new_size, new_size, depth-1)
+                    self.drawRecursiveS(screen, x + i*new_size, 
+                                        y + j*new_size, new_size, depth-1)
