@@ -1,6 +1,6 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
-        <ProjectGuid>{89CBC271-2D52-4B1B-8E00-14BD7C58301B}</ProjectGuid>
+        <ProjectGuid>{0BE7D7EE-F2E8-489D-8F53-370FC335B37C}</ProjectGuid>
         <ProjectVersion>20.1</ProjectVersion>
         <FrameworkType>VCL</FrameworkType>
         <AppType>Application</AppType>
@@ -185,22 +185,10 @@
             <PCH>true</PCH>
         </PCHCompile>
         <CppCompile Include="Unit1.cpp">
-            <Form>Form1</Form>
+            <Form>РомановНикитаМаксимович</Form>
             <FormType>dfm</FormType>
             <DependentOn>Unit1.h</DependentOn>
             <BuildOrder>2</BuildOrder>
-        </CppCompile>
-        <CppCompile Include="Unit10.cpp">
-            <Form>Form10</Form>
-            <FormType>dfm</FormType>
-            <DependentOn>Unit10.h</DependentOn>
-            <BuildOrder>11</BuildOrder>
-        </CppCompile>
-        <CppCompile Include="Unit11.cpp">
-            <Form>Form11</Form>
-            <FormType>dfm</FormType>
-            <DependentOn>Unit11.h</DependentOn>
-            <BuildOrder>12</BuildOrder>
         </CppCompile>
         <CppCompile Include="Unit2.cpp">
             <Form>Form2</Form>
@@ -208,59 +196,8 @@
             <DependentOn>Unit2.h</DependentOn>
             <BuildOrder>3</BuildOrder>
         </CppCompile>
-        <CppCompile Include="Unit3.cpp">
-            <Form>Form3</Form>
-            <FormType>dfm</FormType>
-            <DependentOn>Unit3.h</DependentOn>
-            <BuildOrder>4</BuildOrder>
-        </CppCompile>
-        <CppCompile Include="Unit4.cpp">
-            <Form>Form4</Form>
-            <FormType>dfm</FormType>
-            <DependentOn>Unit4.h</DependentOn>
-            <BuildOrder>5</BuildOrder>
-        </CppCompile>
-        <CppCompile Include="Unit5.cpp">
-            <Form>Form5</Form>
-            <FormType>dfm</FormType>
-            <DependentOn>Unit5.h</DependentOn>
-            <BuildOrder>6</BuildOrder>
-        </CppCompile>
-        <CppCompile Include="Unit6.cpp">
-            <Form>Form6</Form>
-            <FormType>dfm</FormType>
-            <DependentOn>Unit6.h</DependentOn>
-            <BuildOrder>7</BuildOrder>
-        </CppCompile>
-        <CppCompile Include="Unit7.cpp">
-            <Form>Form7</Form>
-            <FormType>dfm</FormType>
-            <DependentOn>Unit7.h</DependentOn>
-            <BuildOrder>8</BuildOrder>
-        </CppCompile>
-        <CppCompile Include="Unit8.cpp">
-            <Form>Form8</Form>
-            <FormType>dfm</FormType>
-            <DependentOn>Unit8.h</DependentOn>
-            <BuildOrder>9</BuildOrder>
-        </CppCompile>
-        <CppCompile Include="Unit9.cpp">
-            <Form>Form9</Form>
-            <FormType>dfm</FormType>
-            <DependentOn>Unit9.h</DependentOn>
-            <BuildOrder>10</BuildOrder>
-        </CppCompile>
-        <FormResources Include="Unit6.dfm"/>
-        <FormResources Include="Unit5.dfm"/>
-        <FormResources Include="Unit4.dfm"/>
-        <FormResources Include="Unit9.dfm"/>
-        <FormResources Include="Unit8.dfm"/>
-        <FormResources Include="Unit7.dfm"/>
-        <FormResources Include="Unit3.dfm"/>
         <FormResources Include="Unit1.dfm"/>
         <FormResources Include="Unit2.dfm"/>
-        <FormResources Include="Unit11.dfm"/>
-        <FormResources Include="Unit10.dfm"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

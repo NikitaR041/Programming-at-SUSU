@@ -1,0 +1,52 @@
+//---------------------------------------------------------------------------
+
+#include <vcl.h>
+#pragma hdrstop
+
+#include "Unit1.h"
+#include "Unit2.h"
+#include <math.h>
+//---------------------------------------------------------------------------
+#pragma package(smart_init)
+#pragma resource "*.dfm"
+TРомановНикитаМаксимович *РомановНикитаМаксимович;
+//---------------------------------------------------------------------------
+__fastcall TРомановНикитаМаксимович::TРомановНикитаМаксимович(TComponent* Owner)
+	: TForm(Owner)
+{
+}
+//---------------------------------------------------------------------------
+void __fastcall TРомановНикитаМаксимович::N1Click(TObject *Sender)
+{
+	Form2->ShowModal();
+}
+//---------------------------------------------------------------------------
+void __fastcall TРомановНикитаМаксимович::N2Click(TObject *Sender)
+{
+    Close();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TРомановНикитаМаксимович::Button1Click(TObject *Sender)
+{
+
+    double R1 = Edit1->Text.ToDouble();
+	double R2 = Edit2->Text.ToDouble();
+
+	double result = M_PI * (pow(R1, 2) - pow(R2, 2));
+
+	Edit3->Text = FormatFloat("0.00", result);
+	//Формула площади: pi*(R1^2-R2^2)
+//	Edit3->Text = M_PI*(Edit1->Text.ToInt()*Edit1->Text.ToInt() - Edit2->Text.ToInt()*Edit2->Text.ToInt());
+//	Edit3->Text = FloatToStr(M_PI*(pow(Edit1->Text.ToDouble(), 2) - pow(Edit2->Text.ToDouble(), 2)));
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TРомановНикитаМаксимович::Button2Click(TObject *Sender)
+{
+ 	Edit1->Clear();
+	Edit2->Clear();
+	Edit3->Clear();
+}
+//---------------------------------------------------------------------------
+
