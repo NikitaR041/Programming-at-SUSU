@@ -11,8 +11,8 @@
     </coordinates>
     <panel_attributes>Производитель
 --
-͟Н͟а͟з͟в͟а͟н͟и͟е͟
-Адрес
+Название
+Страна
 
 </panel_attributes>
     <additional_attributes/>
@@ -27,8 +27,8 @@
     </coordinates>
     <panel_attributes>Фирма
 --
-͟Н͟а͟з͟в͟а͟н͟и͟е͟
-Страна</panel_attributes>
+Название
+Адрес</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
