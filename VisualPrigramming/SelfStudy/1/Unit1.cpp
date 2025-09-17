@@ -35,7 +35,6 @@ void __fastcall TРомановНикитаМаксимович::Button1Click(TObject *Sender)
 
 	double result = round(M_PI * (pow(R1, 2) - pow(R2, 2))*100)/100;
 
-//	Edit3->Text = FormatFloat("0.00", result);
 	Edit3->Text = FloatToStr(result);
 }
 //---------------------------------------------------------------------------

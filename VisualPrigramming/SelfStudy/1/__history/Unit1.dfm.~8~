@@ -85,7 +85,6 @@
     Top = 231
     Width = 121
     Height = 23
-    ReadOnly = True
     TabOrder = 3
   end
   object Button2: TButton
