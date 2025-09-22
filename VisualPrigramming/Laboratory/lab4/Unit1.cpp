@@ -3,14 +3,24 @@
 #include <vcl.h>
 #pragma hdrstop
 
-#include "Unit3.h"
+#include "Unit1.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
-TForm3 *Form3;
+TForm1 *Form1;
 //---------------------------------------------------------------------------
-__fastcall TForm3::TForm3(TComponent* Owner)
+__fastcall TForm1::TForm1(TComponent* Owner)
 	: TForm(Owner)
 {
 }
 //---------------------------------------------------------------------------
+void __fastcall TForm1::Button1Click(TObject *Sender)
+{
+	int Rc;
+	Rc = ColorDialog1->Execute( );
+	if (Rc) {
+		Shape1->Brush->Color = ColorDialog1->Color;
+	} // if
+}
+//---------------------------------------------------------------------------
+

@@ -40,9 +40,6 @@ __published:	// IDE-managed Components
 	TMenuItem *N19;
 	TMenuItem *N20;
 	TFindDialog *FindDialog1;
-	TPrinterSetupDialog *PrinterSetupDialog1;
-	TMenuItem *N21;
-	TMenuItem *N22;
 	void __fastcall N4Click(TObject *Sender);
 	void __fastcall N5Click(TObject *Sender);
 	void __fastcall N8Click(TObject *Sender);
@@ -60,7 +57,6 @@ __published:	// IDE-managed Components
 	void __fastcall N19Click(TObject *Sender);
 	void __fastcall N20Click(TObject *Sender);
 	void __fastcall FindDialog1Find(TObject *Sender);
-	void __fastcall N22Click(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
 	__fastcall TForm3(TComponent* Owner);
@@ -71,8 +67,6 @@ public:		// User declarations
 	void SaveAsDocument(void);
 //  ѕо идеи, как здесь глобальна€ переменна€ будем хранить им€ файла, с которым последний раз открывали или сохран€ли документ
 	AnsiString FileName;
-
-    void __fastcall DoFindText();
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TForm3 *Form3;

@@ -21,7 +21,7 @@ object Form3: TForm3
     TabOrder = 0
   end
   object MainMenu1: TMainMenu
-    Left = 56
+    Left = 216
     Top = 200
     object N1: TMenuItem
       Caption = #1060#1072#1081#1083
@@ -50,23 +50,10 @@ object Form3: TForm3
         OnClick = N17Click
       end
       object N18: TMenuItem
-        Caption = #1055#1072#1088#1072#1084#1077#1090#1088#1099' '#1087#1077#1095#1072#1090#1080
-        OnClick = N18Click
-      end
-      object N19: TMenuItem
-        Caption = #1053#1072#1081#1090#1080
-        OnClick = N19Click
-      end
-      object N20: TMenuItem
-        Caption = #1053#1072#1081#1090#1080' '#1076#1072#1083#1077#1077
-        OnClick = N20Click
-      end
-      object N21: TMenuItem
         Caption = '-'
       end
-      object N22: TMenuItem
-        Caption = #1042#1099#1093#1086#1076
-        OnClick = N22Click
+      object N19: TMenuItem
+        Caption = '-'
       end
     end
     object N2: TMenuItem
@@ -112,7 +99,7 @@ object Form3: TForm3
     FileName = '.txt'
     Filter = #1058#1077#1082#1089#1090#1086#1074#1099#1077' '#1076#1086#1082#1091#1084#1077#1085#1090#1099'|*.txt|'#1042#1089#1077' '#1092#1072#1081#1083#1099'|*.*'
     Title = #1054#1090#1082#1088#1099#1090#1080#1077' '#1092#1072#1081#1083#1072
-    Left = 136
+    Left = 304
     Top = 200
   end
   object SaveDialog1: TSaveDialog
@@ -121,7 +108,7 @@ object Form3: TForm3
     Filter = #1058#1077#1082#1089#1090#1086#1074#1099#1077' '#1076#1086#1082#1091#1084#1077#1085#1090#1099'|*.txt|'#1042#1089#1077' '#1092#1072#1081#1083#1099'|*.*'
     Options = [ofOverwritePrompt, ofHideReadOnly, ofEnableSizing]
     Title = #1057#1086#1093#1088#1072#1085#1077#1085#1080#1077' '#1092#1072#1081#1083#1072
-    Left = 216
+    Left = 384
     Top = 200
   end
   object FontDialog1: TFontDialog
@@ -130,20 +117,11 @@ object Form3: TForm3
     Font.Height = -15
     Font.Name = 'Segoe UI'
     Font.Style = []
-    Left = 288
+    Left = 464
     Top = 200
   end
   object PrintDialog1: TPrintDialog
-    Left = 360
+    Left = 528
     Top = 200
-  end
-  object FindDialog1: TFindDialog
-    OnFind = FindDialog1Find
-    Left = 440
-    Top = 200
-  end
-  object PrinterSetupDialog1: TPrinterSetupDialog
-    Left = 360
-    Top = 152
   end
 end

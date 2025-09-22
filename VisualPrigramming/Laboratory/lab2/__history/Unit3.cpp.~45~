@@ -207,20 +207,20 @@ void __fastcall TForm3::N19Click(TObject *Sender)
 
 void __fastcall TForm3::N20Click(TObject *Sender)
 {
-//	FindText();
-	DoFindText();
+	FindText();
+//	DoFindText();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TForm3::FindDialog1Find(TObject *Sender)
 {
-//	FindText();
-	DoFindText();
+	FindText();
+//	DoFindText();
 }
 //---------------------------------------------------------------------------
 
 // ------------------------ Ниже реализована функция FindText() -------------
-void __fastcall TForm3::DoFindText()
+void FindText(void)
 {
     TPoint CaretPos;
     int x, y, i, l;
@@ -234,13 +234,8 @@ void __fastcall TForm3::DoFindText()
     FindStr = Form3->FindDialog1->FindText;
     if (FindStr.IsEmpty()) return;
 
-	SFind = FindStr.c_str();
-//  Здесь ошибка - возвращает тип const char*
-//    SStr = Form3->Memo1->Lines->Text.c_str();
-
-// Здесь с C++ Builder 10.x возвращает wchar_t*
-	SStr = AnsiString(Memo1->Lines->Text).c_str();
-
+    SFind = FindStr.c_str();
+    SStr = Form3->Memo1->Lines->Text.c_str();
 
     // Вычисляем позицию курсора в общем тексте
     l = x;
@@ -277,10 +272,4 @@ void __fastcall TForm3::DoFindText()
     Application->MessageBoxW(L"Не найдено", L"Сообщение", MB_OK);
 }
 
-
-void __fastcall TForm3::N22Click(TObject *Sender)
-{
-    Close();
-}
-//---------------------------------------------------------------------------
 

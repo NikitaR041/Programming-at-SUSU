@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>1899.12.30 00:00:00.000.454,C:\Users\nikit\OneDrive\Документы\Embarcadero\Studio\Projects\Project1.cbproj=D:\Programming-at-SUSU\VisualPrigramming\Laboratory\lab4\Project1.cbproj</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.971,=C:\Users\nikit\OneDrive\Документы\Embarcadero\Studio\Projects\Project1PCH1.h</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.419,C:\Users\nikit\OneDrive\Документы\Embarcadero\Studio\Projects\Project1PCH1.h=D:\Programming-at-SUSU\VisualPrigramming\Laboratory\lab4\Project1PCH1.h</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.439,C:\Users\nikit\OneDrive\Документы\Embarcadero\Studio\Projects\Unit1.h=D:\Programming-at-SUSU\VisualPrigramming\Laboratory\lab4\Unit1.h</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.439,C:\Users\nikit\OneDrive\Документы\Embarcadero\Studio\Projects\Unit1.dfm=D:\Programming-at-SUSU\VisualPrigramming\Laboratory\lab4\Unit1.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.504,=C:\Users\nikit\OneDrive\Документы\Embarcadero\Studio\Projects\Unit1.cpp</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.439,C:\Users\nikit\OneDrive\Документы\Embarcadero\Studio\Projects\Unit1.cpp=D:\Programming-at-SUSU\VisualPrigramming\Laboratory\lab4\Unit1.cpp</Transaction>
+  </Transactions>
+</BorlandProject>

@@ -278,9 +278,3 @@ void __fastcall TForm3::DoFindText()
 }
 
 
-void __fastcall TForm3::N22Click(TObject *Sender)
-{
-    Close();
-}
-//---------------------------------------------------------------------------
-
