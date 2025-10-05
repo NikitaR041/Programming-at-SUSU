@@ -13,7 +13,7 @@ class StorageFormat(Enum):
 
 class BinaryImageEditor:
     #Конструктор по умолчанию 
-    def __init__(self, width=800, height=700):
+    def __init__(self, width=850, height=700):
         pygame.init()
         self.width = width #Ширина окна
         self.height = height #Высота окна
@@ -25,12 +25,15 @@ class BinaryImageEditor:
         self.cell_size = 15   # Размер ячейки в реальном размере
         self.zoom_scale = 4   # Масштаб увеличения
         
-        # Создаем пустое бинарное изображение
+        # Создаем пустое бинарное изображение 
+        # dtype=bool: экономия памяти (1 байт на пиксель вместо 4+)
         self.image_data = np.zeros((self.image_size, self.image_size), dtype=bool)
         
         # Области отображения
-        self.real_view_rect = pygame.Rect(50, 50, self.image_size * self.cell_size, self.image_size * self.cell_size)
-        self.zoom_view_rect = pygame.Rect(550, 50, self.image_size * self.zoom_scale, self.image_size * self.zoom_scale)
+        self.real_view_rect = pygame.Rect(50, 50, self.image_size * self.cell_size, 
+                                          self.image_size * self.cell_size)
+        self.zoom_view_rect = pygame.Rect(550, 50, self.image_size * self.zoom_scale, 
+                                          self.image_size * self.zoom_scale)
         
         # Формат хранения
         self.storage_format = StorageFormat.RLE
@@ -83,24 +86,24 @@ class BinaryImageEditor:
     #Отрисовка интерфейса (кнопки, инструкции, сетки)
     def draw_ui(self):
         # Панель информации
-        info_rect = pygame.Rect(50, 550, 700, 80)
+        info_rect = pygame.Rect(50, 550, 750, 80)
         pygame.draw.rect(self.screen, self.colors['ui_bg'], info_rect)
         pygame.draw.rect(self.screen, self.colors['ui_border'], info_rect, 1)
         
         # Информация о формате хранения
-        format_text = f"Storage Format: {self.storage_format.name}"
+        format_text = f"Формат хранения: {self.storage_format.name}"
         format_surface = self.font.render(format_text, True, (0, 0, 0))
         self.screen.blit(format_surface, (info_rect.x + 10, info_rect.y + 10))
 
         # Инструкции
         instructions = [
-            "Left Click: Draw pixel",
-            "Right Click: Erase pixel",
-            "Ctrl+S: Save image",
-            "Ctrl+O: Load image",
-            "E: Export to PNG",
-            "1: Use RLE format",
-            "2: Use Quadtree format"
+            "Левый клик: Нарисовать пискель",
+            "Правый клик: Удалить пиксель",
+            "Ctrl+S: Сохранить изображение",
+            "Ctrl+O: Загрузить изображение",
+            "E: Экспорт в PNG",
+            "1: Использовать RLE формат",
+            "2: Использовать Quadtree формат"
         ]
         
         count = 0
@@ -108,7 +111,7 @@ class BinaryImageEditor:
         shift_y = info_rect.y
         for i, instruction in enumerate(instructions):
             if count % 2 == 0 and count != 0:
-                shift_x += info_rect.x + 80
+                shift_x += info_rect.x + 130
                 shift_y = info_rect.y - (i * 15)
             text_surface = self.font.render(instruction, True, (0, 0, 0))
             self.screen.blit(text_surface, (shift_x + 10, shift_y + 30 + i * 15))
@@ -164,10 +167,12 @@ class BinaryImageEditor:
         self.screen.fill(self.colors['background'])
         
         # Рисуем изображение в реальном размере
-        self.draw_image_view(self.real_view_rect, self.cell_size, "Real Size")
+        self.draw_image_view(self.real_view_rect, self.cell_size,
+                              "Увеличенный размер изображения")
         
         # Рисуем увеличенное изображение
-        self.draw_image_view(self.zoom_view_rect, self.zoom_scale, "Zoom View")
+        self.draw_image_view(self.zoom_view_rect, self.zoom_scale,
+                              "Исходный размер изображения")
         
         # Рисуем UI элементы
         self.draw_ui()
@@ -226,11 +231,11 @@ class BinaryImageEditor:
     def save_image(self):
         """Сохранение в собственный формат"""
         filename = "image.bin"
-        
         try:
             with open(filename, 'wb') as f:
                 # Заголовок: размер изображения и формат хранения
-                f.write(struct.pack('III', self.image_size, self.image_size, self.storage_format.value))
+                f.write(struct.pack('III', self.image_size, self.image_size, 
+                                    self.storage_format.value))
                 
                 if self.storage_format == StorageFormat.RLE:
                     encoded = self.encode_rle()
