@@ -17,7 +17,8 @@ class BinaryImageEditor:
         pygame.init()
         self.width = width #Ширина окна
         self.height = height #Высота окна
-        self.screen = pygame.display.set_mode((width, height)) #Настройка окна
+        #Настройка окна
+        self.screen = pygame.display.set_mode((width, height)) 
         pygame.display.set_caption("Binary Image Editor") #Название окна
         
         # Параметры изображения
@@ -27,13 +28,16 @@ class BinaryImageEditor:
         
         # Создаем пустое бинарное изображение 
         # dtype=bool: экономия памяти (1 байт на пиксель вместо 4+)
-        self.image_data = np.zeros((self.image_size, self.image_size), dtype=bool)
+        self.image_data = np.zeros((self.image_size, self.image_size)
+                                   , dtype=bool)
         
         # Области отображения
-        self.real_view_rect = pygame.Rect(50, 50, self.image_size * self.cell_size, 
-                                          self.image_size * self.cell_size)
-        self.zoom_view_rect = pygame.Rect(550, 50, self.image_size * self.zoom_scale, 
-                                          self.image_size * self.zoom_scale)
+        self.real_view_rect = pygame.Rect(50, 50,
+                                           self.image_size * self.cell_size,
+                                             self.image_size * self.cell_size)
+        self.zoom_view_rect = pygame.Rect(550, 50,
+                                          self.image_size * self.zoom_scale, 
+                                            self.image_size * self.zoom_scale)
         
         # Формат хранения
         self.storage_format = StorageFormat.RLE
@@ -78,7 +82,9 @@ class BinaryImageEditor:
                         scale - 1,
                         scale - 1
                     )
-                    pygame.draw.rect(self.screen, self.colors['pixel_on'], pixel_rect)
+                    pygame.draw.rect(self.screen, 
+                                     self.colors['pixel_on'],
+                                       pixel_rect)
         # Рисуем заголовок
         title_surface = self.font.render(title, True, (0, 0, 0))
         self.screen.blit(title_surface, (rect.x, rect.y - 20))
@@ -88,12 +94,14 @@ class BinaryImageEditor:
         # Панель информации
         info_rect = pygame.Rect(50, 550, 750, 80)
         pygame.draw.rect(self.screen, self.colors['ui_bg'], info_rect)
-        pygame.draw.rect(self.screen, self.colors['ui_border'], info_rect, 1)
+        pygame.draw.rect(self.screen, self.colors['ui_border'],
+                          info_rect, 1)
         
         # Информация о формате хранения
         format_text = f"Формат хранения: {self.storage_format.name}"
         format_surface = self.font.render(format_text, True, (0, 0, 0))
-        self.screen.blit(format_surface, (info_rect.x + 10, info_rect.y + 10))
+        self.screen.blit(format_surface, (info_rect.x + 10,
+                                           info_rect.y + 10))
 
         # Инструкции
         instructions = [
@@ -114,7 +122,8 @@ class BinaryImageEditor:
                 shift_x += info_rect.x + 130
                 shift_y = info_rect.y - (i * 15)
             text_surface = self.font.render(instruction, True, (0, 0, 0))
-            self.screen.blit(text_surface, (shift_x + 10, shift_y + 30 + i * 15))
+            self.screen.blit(text_surface, (shift_x + 10,
+                                             shift_y + 30 + i * 15))
             count += 1
             
 
@@ -128,15 +137,17 @@ class BinaryImageEditor:
                 self.handle_click(event.pos, event.button)
             
             elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_s and pygame.key.get_mods() & pygame.KMOD_CTRL:
+                if (event.key == pygame.K_s 
+                        and pygame.key.get_mods() & pygame.KMOD_CTRL):
                     self.save_image()
-                elif event.key == pygame.K_o and pygame.key.get_mods() & pygame.KMOD_CTRL:
+                elif (event.key == pygame.K_o
+                        and pygame.key.get_mods() & pygame.KMOD_CTRL):
                     self.load_image()
-                elif event.key == pygame.K_e:
+                elif (event.key == pygame.K_e):
                     self.export_image()
-                elif event.key == pygame.K_1:
+                elif (event.key == pygame.K_1):
                     self.storage_format = StorageFormat.RLE
-                elif event.key == pygame.K_2:
+                elif (event.key == pygame.K_2):
                     self.storage_format = StorageFormat.QUADTREE
         return True
     
@@ -234,8 +245,9 @@ class BinaryImageEditor:
         try:
             with open(filename, 'wb') as f:
                 # Заголовок: размер изображения и формат хранения
-                f.write(struct.pack('III', self.image_size, self.image_size, 
-                                    self.storage_format.value))
+                f.write(struct.pack('III', self.image_size,
+                                     self.image_size, 
+                                        self.storage_format.value))
                 
                 if self.storage_format == StorageFormat.RLE:
                     encoded = self.encode_rle()
@@ -256,10 +268,12 @@ class BinaryImageEditor:
         """Рекурсивное сохранение квадрантного дерева"""
         # Сохраняем тип узла и координаты
         is_leaf = node.is_leaf()
-        f.write(struct.pack('?IIII', is_leaf, node.x, node.y, node.width, node.height))
+        f.write(struct.pack('?IIII', is_leaf, node.x,
+                             node.y, node.width, node.height))
         
         if is_leaf:
-            f.write(struct.pack('?', node.value if node.value is not None else False))
+            f.write(struct.pack('?',
+                            node.value if node.value is not None else False))
         else:
             for child in node.children:
                 self._save_quadtree(f, child)
@@ -277,7 +291,8 @@ class BinaryImageEditor:
         try:
             with open(filename, 'rb') as f:
                 # Читаем заголовок
-                width, height, format_value = struct.unpack('III', f.read(12))
+                width, height, format_value = struct.unpack('III',
+                                                             f.read(12))
                 self.storage_format = StorageFormat(format_value)
                 
                 if self.storage_format == StorageFormat.RLE:
@@ -288,7 +303,8 @@ class BinaryImageEditor:
                         value, count = struct.unpack('?I', f.read(5))
                         encoded.append((value, count))
                     
-                    self.image_data = self.decode_rle(encoded, width, height)
+                    self.image_data = self.decode_rle(encoded,
+                                                       width, height)
                 
                 elif self.storage_format == StorageFormat.QUADTREE:
                     self.quadtree = QuadTree(width, height)
@@ -323,12 +339,16 @@ class BinaryImageEditor:
         """Экспорт в PNG формат"""
         try:
             # Создаем поверхность для экспорта
-            export_surface = pygame.Surface((self.image_size, self.image_size))
+            export_surface = pygame.Surface((self.image_size,
+                                              self.image_size))
             
             # Заполняем пиксели
             for y in range(self.image_size):
                 for x in range(self.image_size):
-                    color = (0, 0, 0) if self.image_data[y, x] else (255, 255, 255)
+                    if self.image_data[y,x]:
+                        color = (0,0,0)
+                    else:
+                        color = (255,255,255)
                     export_surface.set_at((x, y), color)
             
             # Сохраняем как PNG

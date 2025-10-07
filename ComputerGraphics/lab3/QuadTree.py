@@ -43,8 +43,10 @@ class QuadTree:
         
         node.children = [
             self._build_tree(x, y, half_w, half_h, array),  # NW
-            self._build_tree(x + half_w, y, width - half_w, half_h, array),  # NE
-            self._build_tree(x, y + half_h, half_w, height - half_h, array),  # SW
+            self._build_tree(x + half_w, y,
+                              width - half_w, half_h, array),  # NE
+            self._build_tree(x, y + half_h,
+                              half_w, height - half_h, array),  # SW
             self._build_tree(x + half_w, y + half_h, width - half_w, 
                              height - half_h, array)  # SE
         ]
@@ -61,7 +63,8 @@ class QuadTree:
     def _tree_to_array(self, node, array):
         if node.is_leaf():
             if node.value is not None:
-                array[node.y:node.y+node.height, node.x:node.x+node.width] = node.value
+                array[node.y:node.y+node.height,
+                       node.x:node.x+node.width] = node.value
         else:
             for child in node.children:
                 self._tree_to_array(child, array)
