@@ -29,13 +29,26 @@ void __fastcall TРомановНикитаМаксимович::N2Click(TObject *Sender)
 
 void __fastcall TРомановНикитаМаксимович::Button1Click(TObject *Sender)
 {
-	//Формула площади: pi*(R1^2-R2^2)
-	double R1 = Edit1->Text.ToDouble();
-	double R2 = Edit2->Text.ToDouble();
+//  Вычисление треугольника по трем сторонам А, В, С
+	double A = Edit1->Text.ToDouble();
+	double B = Edit2->Text.ToDouble();
+	double C = Edit3->Text.ToDouble();
 
-	double result = round(M_PI * (pow(R1, 2) - pow(R2, 2))*100)/100;
+	// Проверка на положительные значения
+	if (A <= 0 || B <= 0 || C <= 0) {
+		Application->MessageBoxW(L"Стороны должны быть положительными!", L"", MB_OK);
+		return;
+	}
 
-	Edit3->Text = FloatToStr(result);
+	// Проверка на существование треугольника
+	if (A + B <= C || A + C <= B || B + C <= A) {
+		Application->MessageBoxW(L"Треугольник с такими сторонами не существует!", L"", MB_OK);
+		return;
+	}
+
+	double P = (A + B + C) / 2.0; //Вычисление периметра
+	double S = round(sqrt(P*(P-A)*(P-B)*(P-C))*100)/100; //Вычисление площади
+	Edit4->Text = S;
 }
 //---------------------------------------------------------------------------
 
@@ -44,6 +57,14 @@ void __fastcall TРомановНикитаМаксимович::Button2Click(TObject *Sender)
  	Edit1->Clear();
 	Edit2->Clear();
 	Edit3->Clear();
+    Edit4->Clear();
 }
 //---------------------------------------------------------------------------
+
+
+
+
+
+
+
 

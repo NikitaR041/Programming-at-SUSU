@@ -29,9 +29,14 @@ void __fastcall TРомановНикитаМаксимович::N2Click(TObject *Sender)
 
 void __fastcall TРомановНикитаМаксимович::Button1Click(TObject *Sender)
 {
-	//Формула площади: pi*(R1^2-R2^2)
-//	Edit3->Text = 3.14*(Edit1->Text.ToInt()*Edit1->Text.ToInt() - Edit2->Text.ToInt()*Edit2->Text.ToInt());
-	Edit3->Text = FloatToStr(M_PI*(pow(Edit1->Text.ToDouble(), 2) - pow(Edit2->Text.ToDouble(), 2)));
+//  Вычисление треугольника по трем сторонам
+	double A = Edit1->Text.ToDouble();
+	double B = Edit2->Text.ToDouble();
+	double C = Edit3->Text.ToDouble();
+	double P = (A + B + C) / 2.0; //Вычисление периметра
+	double S = round(sqrt(P*(P-A)*(P-B)*(P-C))*100)/100;
+
+	Edit4->Text = S;
 }
 //---------------------------------------------------------------------------
 
@@ -40,6 +45,14 @@ void __fastcall TРомановНикитаМаксимович::Button2Click(TObject *Sender)
  	Edit1->Clear();
 	Edit2->Clear();
 	Edit3->Clear();
+    Edit4->Clear();
 }
 //---------------------------------------------------------------------------
+
+
+
+
+
+
+
 

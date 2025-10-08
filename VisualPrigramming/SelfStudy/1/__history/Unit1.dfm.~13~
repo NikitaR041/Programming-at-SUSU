@@ -13,24 +13,24 @@
   Menu = MainMenu1
   TextHeight = 15
   object Label1: TLabel
-    Left = 96
-    Top = 40
-    Width = 409
-    Height = 45
-    Caption = #1042#1099#1095#1080#1089#1083#1080#1090#1100' '#1087#1083#1086#1097#1072#1076#1100' '#1082#1086#1083#1100#1094#1072
+    Left = 24
+    Top = 72
+    Width = 288
+    Height = 25
+    Caption = #1044#1072#1085#1099' '#1090#1088#1080' '#1089#1090#1086#1088#1086#1085#1099' '#1090#1088#1077#1091#1075#1086#1083#1100#1085#1080#1082#1072' '
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -32
+    Font.Height = -19
     Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
   end
   object Label2: TLabel
-    Left = 138
+    Left = 40
     Top = 128
-    Width = 118
+    Width = 27
     Height = 21
-    Caption = #1042#1085#1077#1096#1085#1077#1077' '#1088#1072#1076#1080#1091#1089
+    Caption = 'a = '
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -16
@@ -39,11 +39,37 @@
     ParentFont = False
   end
   object Label3: TLabel
-    Left = 138
+    Left = 40
     Top = 176
-    Width = 140
+    Width = 28
     Height = 21
-    Caption = #1042#1085#1091#1090#1088#1077#1085#1085#1080#1081' '#1088#1072#1076#1080#1091#1089
+    Caption = 'b = '
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentFont = False
+  end
+  object Label4: TLabel
+    Left = 40
+    Top = 229
+    Width = 26
+    Height = 21
+    Caption = 'c = '
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentFont = False
+  end
+  object Label5: TLabel
+    Left = 42
+    Top = 329
+    Width = 28
+    Height = 21
+    Caption = 'S = '
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -16
@@ -52,11 +78,11 @@
     ParentFont = False
   end
   object Button1: TButton
-    Left = 138
-    Top = 224
-    Width = 207
+    Left = 24
+    Top = 272
+    Width = 249
     Height = 33
-    Caption = #1042#1099#1095#1080#1089#1083#1080#1090#1100' '#1087#1083#1086#1097#1072#1076#1100' '#1082#1086#1083#1100#1094#1072
+    Caption = #1042#1099#1095#1080#1089#1083#1080#1090#1100' '#1087#1083#1086#1097#1072#1076#1100' '#1090#1088#1077#1091#1075#1086#1083#1100#1085#1080#1082#1072
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -16
@@ -67,34 +93,48 @@
     OnClick = Button1Click
   end
   object Edit1: TEdit
-    Left = 360
+    Left = 94
     Top = 130
-    Width = 121
+    Width = 153
     Height = 23
     TabOrder = 1
   end
   object Edit2: TEdit
-    Left = 360
+    Left = 94
     Top = 178
-    Width = 121
+    Width = 153
     Height = 23
     TabOrder = 2
   end
   object Edit3: TEdit
-    Left = 360
+    Left = 94
     Top = 231
-    Width = 121
+    Width = 153
     Height = 23
     TabOrder = 3
   end
   object Button2: TButton
-    Left = 270
-    Top = 288
-    Width = 75
+    Left = 402
+    Top = 130
+    Width = 143
     Height = 25
-    Caption = 'Button2'
+    Caption = #1054#1095#1080#1089#1090#1082#1072
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentFont = False
     TabOrder = 4
     OnClick = Button2Click
+  end
+  object Edit4: TEdit
+    Left = 94
+    Top = 331
+    Width = 153
+    Height = 23
+    ReadOnly = True
+    TabOrder = 5
   end
   object MainMenu1: TMainMenu
     Left = 592

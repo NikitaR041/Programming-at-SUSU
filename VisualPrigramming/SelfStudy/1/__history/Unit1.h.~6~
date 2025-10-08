@@ -23,9 +23,6 @@ __published:	// IDE-managed Components
 	TEdit *Edit2;
 	TEdit *Edit3;
 	TButton *Button2;
-	TLabel *Label4;
-	TEdit *Edit4;
-	TLabel *Label5;
 	void __fastcall N1Click(TObject *Sender);
 	void __fastcall N2Click(TObject *Sender);
 	void __fastcall Button1Click(TObject *Sender);
