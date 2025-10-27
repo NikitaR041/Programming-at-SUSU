@@ -61,7 +61,8 @@ function drawWuLine(x0, y0, x1, y1, color, thickness=1) {
 
     if (steep) {
         for (let x = xPixel1 + 1; x < xPixel2; x++) {
-            for (let t = -Math.floor(thickness / 2); t <= Math.floor(thickness / 2); t++) {
+            for (let t = -Math.floor(thickness / 2); 
+                            t <= Math.floor(thickness / 2); t++) {
                 plot(Math.floor(intery) + t, x, rfpart(intery), color);
                 plot(Math.floor(intery) + t + 1, x, fpart(intery), color);
             }
@@ -69,7 +70,8 @@ function drawWuLine(x0, y0, x1, y1, color, thickness=1) {
         }
     } else {
         for (let x = xPixel1 + 1; x < xPixel2; x++) {
-            for (let t = -Math.floor(thickness / 2); t <= Math.floor(thickness / 2); t++) {
+            for (let t = -Math.floor(thickness / 2); 
+                            t <= Math.floor(thickness / 2); t++) {
                 plot(x, Math.floor(intery) + t, rfpart(intery), color);
                 plot(x, Math.floor(intery) + t + 1, fpart(intery), color);
             }
@@ -100,7 +102,8 @@ function drawStar(n, k, color, thickness) {
         const start = i;
         do {
             const next = (i + k) % n;
-            drawWuLine(points[i].x, points[i].y, points[next].x, points[next].y, color, thickness);
+            drawWuLine(points[i].x, points[i].y, 
+                    points[next].x, points[next].y, color, thickness);
             i = next;
         } while (i !== start);
         visited[i] = true;
@@ -121,9 +124,7 @@ function update() {
 
     drawStar(n, k, color, thickness);
 }
-
 [nSlider, kSlider, thicknessSlider, colorPicker].forEach(slider => {
     slider.addEventListener("input", update);
 });
-
 update();

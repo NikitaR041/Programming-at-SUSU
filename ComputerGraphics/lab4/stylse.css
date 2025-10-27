@@ -3,11 +3,9 @@ body {
     text-align: center;
     background: #f4f4f4;
 }
-
 h2 {
     margin-top: 15px;
 }
-
 .controls {
     display: flex;
     justify-content: center;
@@ -15,7 +13,6 @@ h2 {
     gap: 15px;
     margin: 15px;
 }
-
 .control {
     display: flex;
     flex-direction: column;
@@ -25,7 +22,6 @@ h2 {
     border-radius: 10px;
     box-shadow: 0 0 5px rgba(0,0,0,0.1);
 }
-
 canvas {
     background: white;
     border: 1px solid #ccc;
