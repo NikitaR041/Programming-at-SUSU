@@ -61,7 +61,7 @@ CREATE TABLE cheque (
 	cheque_id SERIAL PRIMARY KEY,
 	shopper_id INTEGER NOT NULL REFERENCES shopper(shopper_id) ON UPDATE CASCADE,
 	date_sale DATE NOT NULL,
-	sale_amount myPriceType NOT NULL
+	sale_amount myPriceType NOT NULL  -- триггер здесь вычисляемое?
 );
 -- Компьютер
 CREATE TABLE computer (
@@ -69,8 +69,8 @@ CREATE TABLE computer (
 	cheque_item_id INTEGER NOT NULL REFERENCES cheque_item(position_id) ON UPDATE CASCADE,
 	name_comp VARCHAR(30) NOT NULL,
 	price myPriceType NOT NULL,
-	warranty_months VARCHAR(30) NOT NULL, --???????
-	build_date DATE NOT NULL-- ????
+	warranty_months myQTY NOT NULL, -- Гарантия : количество месяцев для гарантии
+	build_date DATE NOT NULL -- Дата изготовления 
 );
 -- Состав конфигураций
 CREATE TABLE contant_config (
@@ -87,8 +87,8 @@ CREATE TABLE cheque_item (
 	computer_id INTEGER NULL REFERENCES computer(computer_id) ON UPDATE RESTRICT,
 	accessories_id INTEGER NOT NULL REFERENCES accessories(accessories_id) ON UPDATE RESTRICT,
 	product_kind product_enum NOT NULL, -- типы 'computer' or 'component'
-	count_sale_item myQTY NOT NULL,
-	price_at_sale myPriceType GENERATED ALWAYS AS (count_sale_item * price_at_sale) STORED, --Всегда вычисляемое
+	count_sale_item myQTY NOT NULL, -- Количество проданных товаров данной позиции
+	price_at_sale myPriceType NOT NULL, -- Цена за единицу товара в момент продажи
 	-- Проверка XOR
 	CONSTRAINT receipt_item_xor_check CHECK (
         (computer_id IS NOT NULL AND component_id IS NULL AND product_kind = 'computer')
