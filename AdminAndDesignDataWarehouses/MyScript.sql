@@ -41,10 +41,11 @@ CREATE TABLE accessories (
 	price myPriceType NOT NULL,
 	type_item VARCHAR(30) NOT NULL
 );
+
 -- Значение характеристик
 CREATE TABLE value_characteristic (
-	accessories_id INTEGER NOT NULL REFERENCES accessories(accessories_id) ON UPDATE CASCADE,
-	characteristic_id INTEGER NOT NULL REFERENCES characteristic(characteristic_id) ON UPDATE CASCADE,
+	accessories_id INTEGER NOT NULL REFERENCES accessories(accessories_id) ON DELETE RESTRICT,
+	characteristic_id INTEGER NOT NULL REFERENCES characteristic(characteristic_id) ON DELETE RESTRICT,
 	val INTEGER NOT NULL,
 	PRIMARY KEY (accessories_id, characteristic_id)
 );
@@ -59,33 +60,31 @@ CREATE TABLE characteristic (
 -- Чек
 CREATE TABLE cheque (
 	cheque_id SERIAL PRIMARY KEY,
-	shopper_id INTEGER NOT NULL REFERENCES shopper(shopper_id) ON UPDATE CASCADE,
+	shopper_id INTEGER NOT NULL REFERENCES shopper(shopper_id) ON DELETE RESTRICT,
 	date_sale DATE NOT NULL,
-	sale_amount myPriceType NOT NULL  -- триггер здесь вычисляемое?
 );
 -- Компьютер
 CREATE TABLE computer (
 	computer_id SERIAL PRIMARY KEY,
-	cheque_item_id INTEGER NOT NULL REFERENCES cheque_item(position_id) ON UPDATE CASCADE,
+	cheque_item_id INTEGER NOT NULL REFERENCES cheque_item(position_id) ON DELETE RESTRICT,
 	name_comp VARCHAR(30) NOT NULL,
 	price myPriceType NOT NULL,
-	warranty_months myQTY NOT NULL, -- Гарантия : количество месяцев для гарантии
+	warranty_months DATE NOT NULL, -- Гарантия : количество месяцев для гарантиB
 	build_date DATE NOT NULL -- Дата изготовления 
 );
 -- Состав конфигураций
 CREATE TABLE contant_config (
-	computer_id INTEGER NOT NULL REFERENCES computer(computer_id) ON UPDATE CASCADE,
-	accessories_id INTEGER NOT NULL REFERENCES accessories(accessories_id) ON UPDATE CASCADE,
-	count_item myQTY NOT NULL, -- ??? здесь должен быть инкремент или нет?
+	computer_id INTEGER NOT NULL REFERENCES computer(computer_id) ON DELETE RESTRICT,
+	accessories_id INTEGER NOT NULL REFERENCES accessories(accessories_id) ON DELETE RESTRICT,
+	count_item myQTY NOT NULL,
 	PRIMARY KEY (computer_id, accessories_id) 	
-)
--- product_enum - это перечисление, нужно создать переменную 
+) 
 -- Состав чека
 CREATE TABLE cheque_item (
 	position_id SERIAL PRIMARY KEY,
-	cheque_id INTEGER NULL REFERENCES cheque(cheque_id) ON UPDATE CASCADE,
-	computer_id INTEGER NULL REFERENCES computer(computer_id) ON UPDATE RESTRICT,
-	accessories_id INTEGER NOT NULL REFERENCES accessories(accessories_id) ON UPDATE RESTRICT,
+	cheque_id INTEGER NOT NULL REFERENCES cheque(cheque_id) ON DELETE RESTRICT,
+	computer_id INTEGER NULL REFERENCES computer(computer_id) ON DELETE RESTRICT,
+	accessories_id INTEGER NULL REFERENCES accessories(accessories_id) ON DELETE RESTRICT,
 	product_kind product_enum NOT NULL, -- типы 'computer' or 'component'
 	count_sale_item myQTY NOT NULL, -- Количество проданных товаров данной позиции
 	price_at_sale myPriceType NOT NULL, -- Цена за единицу товара в момент продажи

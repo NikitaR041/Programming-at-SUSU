@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <diagram program="umlet" version="14.3.0-XS">
-  <zoom_level>17</zoom_level>
+  <zoom_level>7</zoom_level>
   <element>
     <id>Entity</id>
     <coordinates>
       <x>0</x>
-      <y>0</y>
-      <w>391</w>
-      <h>170</h>
+      <y>224</y>
+      <w>161</w>
+      <h>70</h>
     </coordinates>
     <panel_attributes>Производитель
 --
@@ -21,10 +21,10 @@ PK	ID_Производитель : SERIAL
   <element>
     <id>Entity</id>
     <coordinates>
-      <x>578</x>
-      <y>0</y>
-      <w>357</w>
-      <h>170</h>
+      <x>238</x>
+      <y>224</y>
+      <w>147</w>
+      <h>70</h>
     </coordinates>
     <panel_attributes>Фирма
 --
@@ -38,10 +38,10 @@ PK	ID_Фирма : SERIAL
   <element>
     <id>Entity</id>
     <coordinates>
-      <x>187</x>
-      <y>306</y>
-      <w>493</w>
-      <h>255</h>
+      <x>77</x>
+      <y>350</y>
+      <w>203</w>
+      <h>105</h>
     </coordinates>
     <panel_attributes>Комплектующие
 --
@@ -60,10 +60,10 @@ FK   ID_Состав_чека : INTEGER SET NULL
   <element>
     <id>Entity</id>
     <coordinates>
-      <x>238</x>
-      <y>697</y>
-      <w>408</w>
-      <h>204</h>
+      <x>98</x>
+      <y>511</y>
+      <w>168</w>
+      <h>84</h>
     </coordinates>
     <panel_attributes>Значение 
 характеристики
@@ -80,10 +80,10 @@ FK  ID_Характеристика : INTEGER
   <element>
     <id>Entity</id>
     <coordinates>
-      <x>187</x>
-      <y>1020</y>
-      <w>476</w>
-      <h>170</h>
+      <x>77</x>
+      <y>644</y>
+      <w>196</w>
+      <h>70</h>
     </coordinates>
     <panel_attributes>Характеристика
 --
@@ -97,10 +97,10 @@ PK	ID_Характеристика : SERIAL
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>595</x>
-      <y>153</y>
-      <w>102</w>
-      <h>187</h>
+      <x>245</x>
+      <y>287</y>
+      <w>42</w>
+      <h>77</h>
     </coordinates>
     <panel_attributes>lt=++-0&lt;</panel_attributes>
     <additional_attributes>40.0;10.0;10.0;90.0</additional_attributes>
@@ -108,10 +108,10 @@ PK	ID_Характеристика : SERIAL
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>170</x>
-      <y>153</y>
-      <w>136</w>
-      <h>187</h>
+      <x>70</x>
+      <y>287</y>
+      <w>56</w>
+      <h>77</h>
     </coordinates>
     <panel_attributes>lt=++-0&lt;</panel_attributes>
     <additional_attributes>10.0;10.0;60.0;90.0</additional_attributes>
@@ -119,10 +119,10 @@ PK	ID_Характеристика : SERIAL
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>425</x>
-      <y>884</y>
-      <w>51</w>
-      <h>170</h>
+      <x>175</x>
+      <y>588</y>
+      <w>21</w>
+      <h>70</h>
     </coordinates>
     <panel_attributes>lt=++-+&lt;</panel_attributes>
     <additional_attributes>10.0;80.0;10.0;10.0</additional_attributes>
@@ -130,10 +130,10 @@ PK	ID_Характеристика : SERIAL
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>425</x>
-      <y>544</y>
-      <w>51</w>
-      <h>187</h>
+      <x>175</x>
+      <y>448</y>
+      <w>21</w>
+      <h>77</h>
     </coordinates>
     <panel_attributes>lt=++-+&lt;</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;90.0</additional_attributes>
@@ -141,10 +141,10 @@ PK	ID_Характеристика : SERIAL
   <element>
     <id>Entity</id>
     <coordinates>
-      <x>799</x>
-      <y>731</y>
-      <w>408</w>
-      <h>170</h>
+      <x>329</x>
+      <y>525</y>
+      <w>168</w>
+      <h>70</h>
     </coordinates>
     <panel_attributes>Состав конфигурации
 --
@@ -161,10 +161,10 @@ FK	ID_Комплектующее : INTEGER
   <element>
     <id>Entity</id>
     <coordinates>
-      <x>1343</x>
-      <y>714</y>
-      <w>493</w>
-      <h>238</h>
+      <x>553</x>
+      <y>518</y>
+      <w>203</w>
+      <h>98</h>
     </coordinates>
     <panel_attributes>Компьютер
 --
@@ -174,7 +174,7 @@ FK   ID_Состав_чека : INTEGER SET NULL
 -
 	Название : VARCHAR(30)
 	Цена : DECIMAL(12,2)
-	Гарантия : VARCHAR(30)
+	Гарантия : DATE
 	Дата изготовления : DATE
 </panel_attributes>
     <additional_attributes/>
@@ -182,10 +182,10 @@ FK   ID_Состав_чека : INTEGER SET NULL
   <element>
     <id>Entity</id>
     <coordinates>
-      <x>1751</x>
-      <y>306</y>
-      <w>663</w>
-      <h>238</h>
+      <x>721</x>
+      <y>350</y>
+      <w>273</w>
+      <h>98</h>
     </coordinates>
     <panel_attributes>Состав чека
 --
@@ -203,10 +203,10 @@ FK	ID_Чека : INTEGER
   <element>
     <id>Entity</id>
     <coordinates>
-      <x>1751</x>
-      <y>0</y>
-      <w>408</w>
-      <h>204</h>
+      <x>721</x>
+      <y>231</y>
+      <w>168</w>
+      <h>63</h>
     </coordinates>
     <panel_attributes>Чек
 --
@@ -215,18 +215,16 @@ PK	ID_Чек : SERIAL
 FK   ID_Покупатель : INTEGER
 -
 	Дата продажи : DATE
-	Сумма продажи
-	(кол-во*цена) : DECIMAL(12,2)
 </panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Entity</id>
     <coordinates>
-      <x>1224</x>
-      <y>0</y>
-      <w>357</w>
-      <h>204</h>
+      <x>504</x>
+      <y>224</y>
+      <w>147</w>
+      <h>84</h>
     </coordinates>
     <panel_attributes>Покупатель
 --
@@ -242,10 +240,10 @@ PK	ID_Покупатель : SERIAL
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1190</x>
-      <y>799</y>
-      <w>187</w>
-      <h>51</h>
+      <x>490</x>
+      <y>553</y>
+      <w>77</w>
+      <h>21</h>
     </coordinates>
     <panel_attributes>lt=++-+&lt;</panel_attributes>
     <additional_attributes>90.0;10.0;10.0;10.0</additional_attributes>
@@ -253,10 +251,10 @@ PK	ID_Покупатель : SERIAL
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>663</x>
-      <y>544</y>
-      <w>170</w>
-      <h>221</h>
+      <x>273</x>
+      <y>448</y>
+      <w>70</w>
+      <h>91</h>
     </coordinates>
     <panel_attributes>lt=++-+&lt;</panel_attributes>
     <additional_attributes>10.0;10.0;80.0;110.0</additional_attributes>
@@ -264,10 +262,10 @@ PK	ID_Покупатель : SERIAL
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1700</x>
-      <y>527</y>
-      <w>170</w>
-      <h>221</h>
+      <x>700</x>
+      <y>441</y>
+      <w>70</w>
+      <h>91</h>
     </coordinates>
     <panel_attributes>lt=++-+&lt;</panel_attributes>
     <additional_attributes>80.0;10.0;10.0;110.0</additional_attributes>
@@ -275,10 +273,10 @@ PK	ID_Покупатель : SERIAL
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>663</x>
-      <y>408</y>
-      <w>1122</w>
-      <h>51</h>
+      <x>273</x>
+      <y>392</y>
+      <w>462</w>
+      <h>21</h>
     </coordinates>
     <panel_attributes>lt=++-+&lt;</panel_attributes>
     <additional_attributes>640.0;10.0;10.0;10.0</additional_attributes>
@@ -286,21 +284,21 @@ PK	ID_Покупатель : SERIAL
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1853</x>
-      <y>187</y>
-      <w>51</w>
-      <h>153</h>
+      <x>763</x>
+      <y>287</y>
+      <w>21</w>
+      <h>77</h>
     </coordinates>
     <panel_attributes>lt=++-+&lt;</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;70.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;90.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1564</x>
-      <y>85</y>
-      <w>221</w>
-      <h>51</h>
+      <x>644</x>
+      <y>259</y>
+      <w>91</w>
+      <h>21</h>
     </coordinates>
     <panel_attributes>lt=++-0&lt;</panel_attributes>
     <additional_attributes>10.0;10.0;110.0;10.0</additional_attributes>
@@ -308,13 +306,13 @@ PK	ID_Покупатель : SERIAL
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1547</x>
-      <y>357</y>
-      <w>272</w>
-      <h>340</h>
+      <x>637</x>
+      <y>371</y>
+      <w>112</w>
+      <h>147</h>
     </coordinates>
     <panel_attributes>XOR
 </panel_attributes>
-    <additional_attributes>140.0;180.0;10.0;10.0</additional_attributes>
+    <additional_attributes>140.0;190.0;10.0;10.0</additional_attributes>
   </element>
 </diagram>
