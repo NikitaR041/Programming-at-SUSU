@@ -30,6 +30,18 @@ fprintf('Метод Зейделя:\n');
 disp(x_seidel);
 fprintf('Количество итераций: %d\n\n', iter_s);
 
+% --- Метод Гаусса (точное решение встроенной функцией) ---
+x_gauss = A \ b;
+fprintf('Метод Гаусса (точное решение):\n');
+disp(x_gauss);
+
+% --- Проверка точности (погрешности) ---
+err_jacobi = norm(x_gauss - x_jacobi, inf);
+err_seidel = norm(x_gauss - x_seidel, inf);
+
+fprintf('\nПогрешность метода Якоби относительно точного решения: %.6e\n', err_jacobi);
+fprintf('Погрешность метода Зейделя относительно точного решения: %.6e\n\n', err_seidel);
+
 % --- Сравнение ---
 if iter_j > iter_s
     fprintf('Метод Зейделя сошёлся быстрее (%d < %d итераций)\n', iter_s, iter_j);
