@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <title>Кубическая кривая Безье — интерактив</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Кубическая кривая Безье — 4 опорные точки</h1>
+
+  <div class="topbar">
+    <div id="coords">Координаты: (x: -, y: -)</div>
+    <button id="resetBtn">Сбросить точки</button>
+    <label>Плотность отрисовки (шаг t): <input id="steps" type="range" min="50" max="1000" value="400"></label>
+  </div>
+
+  <canvas id="c" width="900" height="600"></canvas>
+
+  <p class="hint">Перетащи круги (опорные точки) мышью. Кривая обновляется мгновенно.</p>
+
+  <script src="script.js"></script>
+</body>
+</html>
