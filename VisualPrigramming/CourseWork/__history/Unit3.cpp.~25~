@@ -81,7 +81,7 @@ void __fastcall TForm3::DrawGrid1DrawCell(TObject *Sender, System::LongInt ACol,
 			c->Ellipse(Rect.Left + 5, Rect.Top + 5, Rect.Right - 5, Rect.Bottom - 5);
             break;
         case BLACK_PAWN:
-            c->Brush->Color = clBlack;
+            c->Brush->Color = clGreen;
             c->Ellipse(Rect.Left + 5, Rect.Top + 5, Rect.Right - 5, Rect.Bottom - 5);
             break;
         case WHITE_KING:
@@ -90,7 +90,7 @@ void __fastcall TForm3::DrawGrid1DrawCell(TObject *Sender, System::LongInt ACol,
             c->TextOut(Rect.Left + 15, Rect.Top + 10, "K");
             break;
         case BLACK_KING:
-			c->Brush->Color = clBlack;
+            c->Brush->Color = clGreen;
             c->Ellipse(Rect.Left + 5, Rect.Top + 5, Rect.Right - 5, Rect.Bottom - 5);
             c->Font->Color = clWhite;
             c->TextOut(Rect.Left + 15, Rect.Top + 10, "K");

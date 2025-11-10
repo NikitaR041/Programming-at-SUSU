@@ -16,8 +16,6 @@ __published:	// IDE-managed Components
 	TDrawGrid *DrawGrid1;
 	void __fastcall FormCreate(TObject *Sender);
 	void __fastcall FormResize(TObject *Sender);
-	void __fastcall DrawGrid1DrawCell(TObject *Sender, System::LongInt ACol, System::LongInt ARow,
-          TRect &Rect, TGridDrawState State);
 private:	// User declarations
 public:		// User declarations
 	__fastcall TForm3(TComponent* Owner);
@@ -34,6 +32,7 @@ enum Piece {
 	BLACK_KING = 4   // чёрная дамка
 };
 const int SIZEBOARD = 8;
+int board[SIZEBOARD][SIZEBOARD];
 
 extern int board[SIZEBOARD][SIZEBOARD];
 void InitBoard();

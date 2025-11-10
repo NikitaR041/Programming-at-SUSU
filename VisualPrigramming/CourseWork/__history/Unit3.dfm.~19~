@@ -28,6 +28,5 @@ object Form3: TForm3
     FixedRows = 0
     ScrollBars = ssNone
     TabOrder = 0
-    OnDrawCell = DrawGrid1DrawCell
   end
 end

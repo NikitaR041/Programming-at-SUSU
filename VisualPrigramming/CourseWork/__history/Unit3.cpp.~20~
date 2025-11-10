@@ -8,8 +8,7 @@
 #pragma package(smart_init)
 #pragma resource "*.dfm"
 TForm3 *Form3;
-
-int board[SIZEBOARD][SIZEBOARD];  //Шахматная доска
+int board[SIZEBOARD][SIZEBOARD];
 //---------------------------------------------------------------------------
 __fastcall TForm3::TForm3(TComponent* Owner)
 	: TForm(Owner)
@@ -45,7 +44,6 @@ void __fastcall TForm3::FormResize(TObject *Sender)
 	DrawGrid1->Top  = (ClientHeight - DrawGrid1->Height) / 2;
 }
 //---------------------------------------------------------------------------
-// Функция инициализации шахматной доски и шахмат/дамков
 void InitBoard()
 {
 	for (int y = 0; y < SIZEBOARD; y++) {
@@ -60,42 +58,4 @@ void InitBoard()
         }
     }
 }
-
-void __fastcall TForm3::DrawGrid1DrawCell(TObject *Sender, System::LongInt ACol, System::LongInt ARow,
-          TRect &Rect, TGridDrawState State)
-{
-    TCanvas *c = DrawGrid1->Canvas;
-
-	// Раскраска клеток
-	if ((ACol + ARow) % 2 == 0) {
-		c->Brush->Color = clWhite;
-	} else {
-		c->Brush->Color = clGray;
-	}
-    c->FillRect(Rect);
-
-    // Отрисовка шашек
-    switch (board[ARow][ACol]) {
-        case WHITE_PAWN:
-            c->Brush->Color = clWhite;
-			c->Ellipse(Rect.Left + 5, Rect.Top + 5, Rect.Right - 5, Rect.Bottom - 5);
-            break;
-        case BLACK_PAWN:
-            c->Brush->Color = clBlack;
-            c->Ellipse(Rect.Left + 5, Rect.Top + 5, Rect.Right - 5, Rect.Bottom - 5);
-            break;
-        case WHITE_KING:
-            c->Brush->Color = clWhite;
-            c->Ellipse(Rect.Left + 5, Rect.Top + 5, Rect.Right - 5, Rect.Bottom - 5);
-            c->TextOut(Rect.Left + 15, Rect.Top + 10, "K");
-            break;
-        case BLACK_KING:
-			c->Brush->Color = clBlack;
-            c->Ellipse(Rect.Left + 5, Rect.Top + 5, Rect.Right - 5, Rect.Bottom - 5);
-            c->Font->Color = clWhite;
-            c->TextOut(Rect.Left + 15, Rect.Top + 10, "K");
-            break;
-	}
-}
-//---------------------------------------------------------------------------
 

@@ -15,27 +15,11 @@ class TForm3 : public TForm
 __published:	// IDE-managed Components
 	TDrawGrid *DrawGrid1;
 	void __fastcall FormCreate(TObject *Sender);
-	void __fastcall FormResize(TObject *Sender);
-	void __fastcall DrawGrid1DrawCell(TObject *Sender, System::LongInt ACol, System::LongInt ARow,
-          TRect &Rect, TGridDrawState State);
 private:	// User declarations
 public:		// User declarations
 	__fastcall TForm3(TComponent* Owner);
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TForm3 *Form3;
-
-//Константные свойства игры
-enum Piece {
-	EMPTY = 0,       // пустая клетка
-	WHITE_PAWN = 1,  // белая шашка
-	BLACK_PAWN = 2,  // чёрная шашка
-	WHITE_KING = 3,  // белая дамка
-	BLACK_KING = 4   // чёрная дамка
-};
-const int SIZEBOARD = 8;
-
-extern int board[SIZEBOARD][SIZEBOARD];
-void InitBoard();
 //---------------------------------------------------------------------------
 #endif
