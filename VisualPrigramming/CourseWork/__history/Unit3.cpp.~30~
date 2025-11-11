@@ -36,6 +36,7 @@ void __fastcall TForm3::FormCreate(TObject *Sender)
 
 // Отслеживание при изменении размера формы
 	this->OnResize = FormResize;
+    InitBoard();
 }
 //---------------------------------------------------------------------------
 
@@ -90,12 +91,76 @@ void __fastcall TForm3::DrawGrid1DrawCell(TObject *Sender, System::LongInt ACol,
             c->TextOut(Rect.Left + 15, Rect.Top + 10, "K");
             break;
         case BLACK_KING:
-            c->Brush->Color = clBlack;
-            c->Ellipse(Rect.Left + 5, Rect.Top + 5, Rect.Right - 5, Rect.Bottom - 5);
+			c->Brush->Color = clBlack;
+			c->Ellipse(Rect.Left + 5, Rect.Top + 5, Rect.Right - 5, Rect.Bottom - 5);
             c->Font->Color = clWhite;
             c->TextOut(Rect.Left + 15, Rect.Top + 10, "K");
             break;
 	}
 }
 //---------------------------------------------------------------------------
+
+// ---- Движок ----
+
+//Проверка выбранной шашки - пустая ячейка или не пустая
+bool TForm3::isValideChecker(int x, int y){
+	if (currentPlayer == WHITE_PAWN) {
+		return (board[y][x] == WHITE_PAWN || board[y][x] == WHITE_KING);
+	} else {
+		retunr (board[y][x] == BLACK_PAWN || board[y][x] == BLACK_KIND);
+	}
+}
+
+bool TForm3::isValidMoveChecker(int fromX, int fromY, int toX, int toY){
+
+	// Целевая ячейкка пустая - можно идти
+	if (board[toY][toX] != EMPTY) { return false; }
+
+	// Ход по диагонали - можно идти
+	if ( abs(toX - formX) != abs(toY - fromX) ) { return false; }
+
+	int piece = board[fromY][fromX];
+
+	//Проверкадля обычной шашки
+	if (piece == WHITE_PAWN || piece == BLACK_PAWN) {
+		return isValidPawnMove(formX, formY, toX, toY, piece);
+	}
+	//Проврка для дамки
+
+	return false;
+}
+
+bool TForm3::isValudPawnMove(int fromX, int fromY, int toX, int toY, int piece){
+	int direction = (piece == WHITE_PAWN) ? -1 : 1; //Белые вверх, черные вниз
+	int deltaY = toY- fromY;
+	int deltaX = abs(toX - fromX);
+
+	//Обычный ход на одну клетку
+    if (deltaY == direction && deltaX == 1) {
+        return true;
+    }
+
+    // Ход со взятием (через одну клетку)
+    if (deltaY == 2 * direction && deltaX == 2) {
+        int midX = (fromX + toX) / 2;
+        int midY = (fromY + toY) / 2;
+
+        // Проверяем, что между нами шашка противника
+		if (isOpponentPiece(midX, midY, piece)) {
+            return true;
+        }
+	}
+
+	return false;
+}
+
+//Проверка на шашку противника
+bool TForm3::isOpponentPiece(int x, int y, int myPiece){
+    if (myPiece == WHITE_PAWN || myPiece == WHITE_KING) {
+        return (board[y][x] == BLACK_PAWN || board[y][x] == BLACK_KING);
+    } else {
+        return (board[y][x] == WHITE_PAWN || board[y][x] == WHITE_KING);
+	}
+}
+
 

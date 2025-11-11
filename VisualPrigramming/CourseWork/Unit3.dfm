@@ -5,7 +5,7 @@ object Form3: TForm3
   Caption = 'GameCheckers'
   ClientHeight = 777
   ClientWidth = 944
-  Color = clAqua
+  Color = clBisque
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clInfoBk
   Font.Height = -12
@@ -28,6 +28,7 @@ object Form3: TForm3
     FixedRows = 0
     ScrollBars = ssNone
     TabOrder = 0
+    OnClick = DrawGrid1Click
     OnDrawCell = DrawGrid1DrawCell
   end
 end

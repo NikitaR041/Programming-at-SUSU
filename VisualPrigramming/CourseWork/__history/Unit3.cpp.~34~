@@ -137,7 +137,7 @@ bool isValidMoveChecker(int fromX, int fromY, int toX, int toY){
 	return false;
 }
 
-bool isValudPawnMove(int fromX, int fromY, int toX, int toY, int piece){
+bool TForm3::isValudPawnMove(int fromX, int fromY, int toX, int toY, int piece){
 	int direction = (piece == WHITE_PAWN) ? -1 : 1; //Белые вверх, черные вниз
 	int deltaY = toY- fromY;
 	int deltaX = abs(toX - fromX);
@@ -162,7 +162,7 @@ bool isValudPawnMove(int fromX, int fromY, int toX, int toY, int piece){
 }
 
 //Проверка на шашку противника
-bool isOpponentPiece(int x, int y, int myPiece){
+bool TForm3::isOpponentPiece(int x, int y, int myPiece){
     if (myPiece == WHITE_PAWN || myPiece == WHITE_KING) {
         return (board[y][x] == BLACK_PAWN || board[y][x] == BLACK_KING);
     } else {
@@ -171,7 +171,7 @@ bool isOpponentPiece(int x, int y, int myPiece){
 }
 
 //Выполнение хода и взятия - взятие доработать
-void performMove(int fromX, int fromY, int toX, int toY)
+void TForm3::performMove(int fromX, int fromY, int toX, int toY)
 {
     // Перемещаем шашку
     board[toY][toX] = board[fromY][fromX];
@@ -189,7 +189,7 @@ void performMove(int fromX, int fromY, int toX, int toY)
 }
 
 // Проверка на превращение дамку
-void checkForKing(int x, int y)
+void TForm3::checkForKing(int x, int y)
 {
     if (board[y][x] == WHITE_PAWN && y == 0) {
         board[y][x] = WHITE_KING;

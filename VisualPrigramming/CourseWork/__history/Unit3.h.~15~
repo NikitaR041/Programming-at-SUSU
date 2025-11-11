@@ -41,11 +41,7 @@ const int SIZEBOARD = 8;
 
 extern int board[SIZEBOARD][SIZEBOARD];
 void InitBoard();
-bool isValideChecker(int x,int y);
-bool isValidMoveChecker(int fromX, int fromY, int toX, int toY);
-bool isValudPawnMove(int fromX, int fromY, int toX, int toY, int piece);
-bool isOpponentPiece( int x, int y, int myPiece);
-void performMove( int fromX, int fromY, int toX, int toY);
-void checkForKing( int x, int y);
+bool isValideChecker(x, y);
+bool isValidMoveChecker(fromX, fromY, toX, toY);
 //---------------------------------------------------------------------------
 #endif

@@ -16,7 +16,13 @@ __published:	// IDE-managed Components
 	TDrawGrid *DrawGrid1;
 	void __fastcall FormCreate(TObject *Sender);
 	void __fastcall FormResize(TObject *Sender);
+	void __fastcall DrawGrid1DrawCell(TObject *Sender, System::LongInt ACol, System::LongInt ARow,
+          TRect &Rect, TGridDrawState State);
+	void __fastcall DrawGrid1Click(TObject *Sender);
 private:	// User declarations
+    int selectedX, selectedY;  // Выбранная ячейка
+    bool isSelected;           // Флаг выбора
+	int currentPlayer;         // Текущий игрок (WHITE_PAWN или BLACK_PAWN)
 public:		// User declarations
 	__fastcall TForm3(TComponent* Owner);
 };
@@ -32,9 +38,12 @@ enum Piece {
 	BLACK_KING = 4   // чёрная дамка
 };
 const int SIZEBOARD = 8;
-int board[SIZEBOARD][SIZEBOARD];
 
 extern int board[SIZEBOARD][SIZEBOARD];
 void InitBoard();
+bool isValideChecker(x, y);
+bool isValidMoveChecker(fromX, fromY, toX, toY);
+bool isValudPawnMove(fromX, fromY, toX, toY, piece);
+bool isOpponentPiece(x, y, myPiece);
 //---------------------------------------------------------------------------
 #endif
