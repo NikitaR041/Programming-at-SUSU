@@ -9,6 +9,8 @@
 #include <Vcl.Forms.hpp>
 #include <Vcl.ComCtrls.hpp>
 #include <Vcl.Menus.hpp>
+#include <System.ImageList.hpp>
+#include <Vcl.ImgList.hpp>
 //---------------------------------------------------------------------------
 class TForm1 : public TForm
 {
@@ -16,11 +18,9 @@ __published:	// IDE-managed Components
 	TTabControl *TabControl1;
 	TListBox *ListBox1;
 	TMainMenu *MainMenu1;
+	TMenuItem *N1;
 	TMenuItem *N11;
-	TMenuItem *N12;
-	TMenuItem *N31;
-	TMenuItem *N32;
-	TMenuItem *N51;
+	TImageList *ImageList1;
 	void __fastcall TabControl1Change(TObject *Sender);
 	void __fastcall N11Click(TObject *Sender);
 private:	// User declarations

@@ -25,10 +25,11 @@ void __fastcall TForm2::Button1Click(TObject *Sender)
     if (RadioGroup1->ItemIndex == 1)
     {
         sumDollars *= 1.10; // +10%
-	}
-	double result = Edit1->Text.ToDouble() * sumDollars;
-	Edit9->Text = FloatToStr(result);
-	Edit8->Text = FloatToStr(sumDollars);
+    }
+
+	// Перемножаем на курс (Edit8) и выводим в Edit4
+	double result = Edit9->Text.ToDouble() * sumDollars;
+	Edit8->Text = FloatToStr(result);
 }
 //---------------------------------------------------------------------------
 void __fastcall TForm2::Button2Click(TObject *Sender)
@@ -41,18 +42,17 @@ void __fastcall TForm2::Button2Click(TObject *Sender)
 	// Если выбрана гарантия 3 года (вторая радиокнопка)
 	if (CheckBox1->Checked == true)
 	{
-		sumDollars *= 1.10; // +10%
-	}
+        sumDollars *= 1.10; // +10%
+    }
 
 	// Перемножаем на курс (Edit8) и выводим в Edit4
-	double result = Edit10->Text.ToDouble() * sumDollars;
-	Edit18->Text = FloatToStr(result);
-	Edit17->Text = FloatToStr(sumDollars);
+	double result = Edit18->Text.ToDouble() * sumDollars;
+	Edit17->Text = FloatToStr(result);
 }
 //---------------------------------------------------------------------------
 void __fastcall TForm2::Button3Click(TObject *Sender)
 {
-	double sumDollars =
+    double sumDollars =
 		Edit24->Text.ToDouble() +
 		Edit25->Text.ToDouble() +
 		Edit26->Text.ToDouble();
@@ -60,12 +60,11 @@ void __fastcall TForm2::Button3Click(TObject *Sender)
 	// Если выбрана гарантия 3 года (вторая радиокнопка)
 	if (CheckBox2->Checked == true)
 	{
-		sumDollars *= 1.10; // +10%
-	}
+        sumDollars *= 1.10; // +10%
+    }
 
 	// Перемножаем на курс (Edit8) и выводим в Edit4
-	double result = Edit19->Text.ToDouble() * sumDollars;
-	Edit29->Text = FloatToStr(result);
-	Edit28->Text = FloatToStr(sumDollars);
+    double result = Edit29->Text.ToDouble() * sumDollars;
+	Edit28->Text = FloatToStr(result);
 }
 //---------------------------------------------------------------------------

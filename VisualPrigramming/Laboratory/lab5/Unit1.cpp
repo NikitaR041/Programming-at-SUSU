@@ -33,22 +33,22 @@ __fastcall TForm1::TForm1(TComponent* Owner)
 void __fastcall TForm1::TabControl1Change(TObject *Sender)
 {
 	ListBox1->Items->Clear( );
-	if (TabControl1->TabIndex == 0) {
+		if (TabControl1->TabIndex == 0) {
 		ListBox1->Items->Add(A[0]);
 		ListBox1->Items->Add(A[1]);
 		ListBox1->Items->Add(A[2]);
 	} // if
-	if (TabControl1->TabIndex == 1) {
+		if (TabControl1->TabIndex == 1) {
 		ListBox1->Items->Add(B[0]);
 	} // if
-	if (TabControl1->TabIndex == 2) {
+		if (TabControl1->TabIndex == 2) {
 		ListBox1->Items->Add(C[0]);
 		ListBox1->Items->Add(C[1]);
-} // if
+	} // if
 }
 //---------------------------------------------------------------------------
 void __fastcall TForm1::N11Click(TObject *Sender)
 {
-    Form2->ShowModal();
+	Form2->ShowModal();
 }
 //---------------------------------------------------------------------------
