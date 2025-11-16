@@ -28,7 +28,7 @@ object Form3: TForm3
     FixedRows = 0
     ScrollBars = ssNone
     TabOrder = 0
-    OnClick = DrawGrid1Click
     OnDrawCell = DrawGrid1DrawCell
+    OnMouseDown = DrawGrid1MouseDown
   end
 end

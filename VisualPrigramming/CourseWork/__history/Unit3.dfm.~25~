@@ -1,10 +1,11 @@
 object Form3: TForm3
   Left = 0
   Top = 0
+  BorderStyle = bsDialog
   Caption = 'GameCheckers'
-  ClientHeight = 711
-  ClientWidth = 884
-  Color = clAqua
+  ClientHeight = 777
+  ClientWidth = 944
+  Color = clBisque
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clInfoBk
   Font.Height = -12
@@ -12,12 +13,13 @@ object Form3: TForm3
   Font.Style = []
   Position = poScreenCenter
   OnCreate = FormCreate
+  OnResize = FormResize
   TextHeight = 15
   object DrawGrid1: TDrawGrid
-    Left = 72
-    Top = 0
-    Width = 721
-    Height = 713
+    Left = 136
+    Top = 72
+    Width = 651
+    Height = 651
     ColCount = 8
     DefaultColWidth = 80
     DefaultRowHeight = 80
@@ -26,5 +28,7 @@ object Form3: TForm3
     FixedRows = 0
     ScrollBars = ssNone
     TabOrder = 0
+    OnClick = DrawGrid1Click
+    OnDrawCell = DrawGrid1DrawCell
   end
 end

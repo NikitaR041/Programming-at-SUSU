@@ -19,12 +19,15 @@ __published:	// IDE-managed Components
 	void __fastcall DrawGrid1DrawCell(TObject *Sender, System::LongInt ACol, System::LongInt ARow,
           TRect &Rect, TGridDrawState State);
 	void __fastcall DrawGrid1Click(TObject *Sender);
+	void __fastcall DrawGrid1MouseDown(TObject *Sender, TMouseButton Button, TShiftState Shift,
+          int X, int Y);
 private:	// User declarations
-    int selectedX, selectedY;  // Выбранная ячейка
+	int selectedX, selectedY;  // Выбранная ячейка
     bool isSelected;           // Флаг выбора
 	int currentPlayer;         // Текущий игрок (WHITE_PAWN или BLACK_PAWN)
 public:		// User declarations
 	__fastcall TForm3(TComponent* Owner);
+
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TForm3 *Form3;
@@ -40,6 +43,47 @@ enum Piece {
 const int SIZEBOARD = 8;
 
 extern int board[SIZEBOARD][SIZEBOARD];
+// --- Проверки координат ---
+bool inBounds(int x, int y);
+bool isEmpty(int x, int y);
+
+// --- Проверка принадлежности шашки игроку ---
+bool isValideChecker(int x, int y);
+
+// --- Проверка шашки противника ---
+bool isOpponentPiece(int x, int y, int myPiece);
+
+// --- Геометрия хода ---
+bool isDiagonal(int fromX, int fromY, int toX, int toY);
+
+// --- Простой ход (без взятия) ---
+bool canMoveSimple(int fromX, int fromY, int toX, int toY);
+
+// --- Ход со взятием ---
+bool canCaptureMove(int fromX, int fromY, int toX, int toY);
+
+// --- Проверка возможности взятия для клетки ---
+bool hasCapture(int x, int y);
+
+// --- Проверка возможности взятия у текущего игрока ---
+bool playerHasAnyCapture(int playerPiece);
+
+// --- Выполнение хода ---
+void performMove(int fromX, int fromY, int toX, int toY);
+
+// --- Проверка превращения в дамку ---
+void checkForKing(int x, int y);
+
+// --- Смена игрока ---
+void switchPlayer();
+
+// --- Инициализация доски ---
 void InitBoard();
+//bool isValideChecker(int x,int y);
+//bool isValidMoveChecker(int fromX, int fromY, int toX, int toY);
+//bool isValudPawnMove(int fromX, int fromY, int toX, int toY, int piece);
+//bool isOpponentPiece( int x, int y, int myPiece);
+//void performMove( int fromX, int fromY, int toX, int toY);
+//void checkForKing( int x, int y);
 //---------------------------------------------------------------------------
 #endif

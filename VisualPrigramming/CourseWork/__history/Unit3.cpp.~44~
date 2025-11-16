@@ -403,9 +403,8 @@ void __fastcall TForm3::DrawGrid1MouseDown(TObject *Sender, TMouseButton Button,
     if (!inBounds(xCell, yCell)) return;
 
     // Если нет выбора — пытаемся выбрать шашку
-	if (!isSelected) {
-
-		if (isValideChecker(xCell, yCell)) {
+    if (!isSelected) {
+        if (isValidChecker(xCell, yCell)) {
             // Если существует обязательное взятие у любого шашки текущего игрока,
             // запрещаем выбор шашки, у которой нет взятия (правило обязательного взятия)
             if (playerHasAnyCapture(currentPlayer) && !hasCapture(xCell, yCell)) {

@@ -18,6 +18,9 @@ __published:	// IDE-managed Components
 	void __fastcall FormResize(TObject *Sender);
 	void __fastcall DrawGrid1DrawCell(TObject *Sender, System::LongInt ACol, System::LongInt ARow,
           TRect &Rect, TGridDrawState State);
+	void __fastcall DrawGrid1Click(TObject *Sender);
+	void __fastcall DrawGrid1MouseDown(TObject *Sender, TMouseButton Button, TShiftState Shift,
+          int X, int Y);
 private:	// User declarations
     int selectedX, selectedY;  // Выбранная ячейка
     bool isSelected;           // Флаг выбора
@@ -40,5 +43,20 @@ const int SIZEBOARD = 8;
 
 extern int board[SIZEBOARD][SIZEBOARD];
 void InitBoard();
+bool inBounds(x, y);
+bool isEmpty(x, y);
+bool isValideChecker(x, y);
+bool isOpponentPiece(x, y, myPiece);
+bool isDiagonal(fromX, fromY, toX, toY);
+bool canMoveSimple(fromX, fromY, toX, toY);
+bool canCaptureMove(fromX, fromY, toX, toY);
+bool hasCapture(x, y);
+bool playerHasAnyCapture(playerPiece);
+//bool isValideChecker(int x,int y);
+//bool isValidMoveChecker(int fromX, int fromY, int toX, int toY);
+//bool isValudPawnMove(int fromX, int fromY, int toX, int toY, int piece);
+//bool isOpponentPiece( int x, int y, int myPiece);
+//void performMove( int fromX, int fromY, int toX, int toY);
+//void checkForKing( int x, int y);
 //---------------------------------------------------------------------------
 #endif
