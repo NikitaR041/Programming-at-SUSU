@@ -1,10 +1,7 @@
-// Affine animation: movement + rotation + scaling of a square with bouncing at canvas edges.
-// Save as script.js and open index.html
-
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
-// Controls
+//Контроллеры
 const startBtn = document.getElementById('startBtn');
 const pauseBtn = document.getElementById('pauseBtn');
 const resetBtn = document.getElementById('resetBtn');
@@ -23,29 +20,33 @@ const scaleVal = document.getElementById('scaleVal');
 let width = canvas.width;
 let height = canvas.height;
 
-// Square state
+//Свойства типа square
 let square = {
-  x: width / 2,     // center x
-  y: height / 2,    // center y
-  size: 120,        // base side length
-  angle: 0,         // current rotation angle (radians)
-  rotationSpeed: parseFloat(rotRange.value), // angular speed (rad/frame)
-  vx: parseFloat(velRange.value),  // speed x (pixels per frame)
-  vy: parseFloat(velRange.value),  // speed y
-  scale: 1.0,       // current scale
+  x: width / 2,  // центр x
+  y: height / 2, // центр y
+  size: 120,     // Базовая длина
+  angle: 0,    // Текущий угол поворота
+  //Угловая скорость (радианах/кадр)
+  rotationSpeed: parseFloat(rotRange.value),
+  //Скорость по х и у (pixels per frame)
+  vx: parseFloat(velRange.value),  
+  vy: parseFloat(velRange.value), 
+  scale: 1.0,   // Корректный размер
   minScale: parseFloat(minScaleInp.value),
   maxScale: parseFloat(maxScaleInp.value),
   scaleSpeed: parseFloat(scaleSpeedRange.value),
-  growing: true     // whether currently increasing scale
+  growing: true // Увеличение масшата в Real-time
 };
 
 let running = true;
 let rafId = null;
 
-// Utility: compute coordinates of square corners (after scale & rotation), returns array of points
+// Метод, вычисляет координаты углов квадрата 
+// (после масштабирования и поворота),
+//  возвращает массив точек
 function getSquareCorners(sq) {
   const half = (sq.size * sq.scale) / 2;
-  // local corners relative to center (CCW)
+  //локальные углы относительно центра (CCW)
   const local = [
     { x: -half, y: -half },
     { x: half, y: -half },
@@ -62,7 +63,6 @@ function getSquareCorners(sq) {
   });
 }
 
-// Check collision: find axis-aligned bbox from rotated corners and compare to canvas bounds
 function checkAndResolveCollisions(sq) {
   const corners = getSquareCorners(sq);
   let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
@@ -73,17 +73,14 @@ function checkAndResolveCollisions(sq) {
     if (c.y > maxY) maxY = c.y;
   }
 
-  // if outside on left or right -> reverse vx
   if (minX <= 0 && sq.vx < 0) {
     sq.vx = -sq.vx;
-    // push inside
     sq.x += Math.abs(0 - minX) + 1;
   } else if (maxX >= width && sq.vx > 0) {
     sq.vx = -sq.vx;
     sq.x -= Math.abs(maxX - width) + 1;
   }
 
-  // if outside on top or bottom -> reverse vy
   if (minY <= 0 && sq.vy < 0) {
     sq.vy = -sq.vy;
     sq.y += Math.abs(0 - minY) + 1;
@@ -93,7 +90,6 @@ function checkAndResolveCollisions(sq) {
   }
 }
 
-// Draw helper: axes for debugging optionally
 function drawAxes() {
   ctx.save();
   ctx.strokeStyle = 'rgba(0,0,0,0.06)';
@@ -104,7 +100,6 @@ function drawAxes() {
   ctx.restore();
 }
 
-// Draw square with current affine transforms (translate->rotate->scale->draw centered rect)
 function drawSquare(sq) {
   ctx.save();
   ctx.translate(sq.x, sq.y);
@@ -113,23 +108,18 @@ function drawSquare(sq) {
 
   ctx.fillStyle = '#2e86de';
   ctx.strokeStyle = '#1b4f72';
-  ctx.lineWidth = 3 / Math.max(1, sq.scale); // keep stroke visible when scaled
+  ctx.lineWidth = 3 / Math.max(1, sq.scale); 
   ctx.fillRect(-sq.size / 2, -sq.size / 2, sq.size, sq.size);
   ctx.strokeRect(-sq.size / 2, -sq.size / 2, sq.size, sq.size);
   ctx.restore();
 }
 
-// Main animation step
 function step() {
-  // Update physics / transforms
-  // Move
   square.x += square.vx;
   square.y += square.vy;
 
-  // Rotate (clockwise -> increase angle)
   square.angle += square.rotationSpeed;
 
-  // Scale oscillation
   if (square.growing) {
     square.scale += square.scaleSpeed;
     if (square.scale >= square.maxScale) {
@@ -144,28 +134,12 @@ function step() {
     }
   }
 
-  // Collision with boundaries (based on rotated bbox)
   checkAndResolveCollisions(square);
 }
 
-// Render frame
 function render() {
   ctx.clearRect(0, 0, width, height);
-
-  // optional grid / axes
-  // drawAxes();
-
-  // draw square
   drawSquare(square);
-
-  // debug outline of bbox (for clarity)
-  /* const corners = getSquareCorners(square);
-  ctx.beginPath();
-  ctx.strokeStyle = 'rgba(0,0,0,0.15)';
-  ctx.moveTo(corners[0].x, corners[0].y);
-  corners.slice(1).forEach(c => ctx.lineTo(c.x, c.y));
-  ctx.closePath();
-  ctx.stroke(); */
 }
 
 function loop() {
@@ -175,7 +149,6 @@ function loop() {
   rafId = requestAnimationFrame(loop);
 }
 
-// Controls behavior
 startBtn.addEventListener('click', () => {
   if (!running) {
     running = true;
@@ -187,14 +160,13 @@ pauseBtn.addEventListener('click', () => {
   if (rafId) cancelAnimationFrame(rafId);
 });
 resetBtn.addEventListener('click', () => {
-  // reset to center with default params
   square.x = width / 2;
   square.y = height / 2;
   square.size = 120;
   square.angle = 0;
   square.scale = 1.0;
   square.vx = parseFloat(velRange.value);
-  square.vy = parseFloat(velRange.value) * 0.7; // slightly different vy
+  square.vy = parseFloat(velRange.value) * 0.7; 
   square.minScale = parseFloat(minScaleInp.value);
   square.maxScale = parseFloat(maxScaleInp.value);
   square.scaleSpeed = parseFloat(scaleSpeedRange.value);
@@ -202,11 +174,9 @@ resetBtn.addEventListener('click', () => {
   square.growing = true;
 });
 
-// Ranges & display updates
 velRange.addEventListener('input', () => {
   const v = parseFloat(velRange.value);
   velVal.textContent = v.toFixed(1);
-  // Update both components proportionally, keep sign
   square.vx = (square.vx >= 0 ? 1 : -1) * v;
   square.vy = (square.vy >= 0 ? 1 : -1) * v * 0.7;
 });
@@ -231,20 +201,14 @@ maxScaleInp.addEventListener('change', () => {
   if (v > square.minScale) square.maxScale = v;
 });
 
-// resize handling (keeps canvas size constants; update width/height vars if needed)
 window.addEventListener('resize', () => {
-  // Optionally adapt canvas to new window
-  // For now keep fixed size; if adapting, update width/height
 });
 
-// initialize velocities display
 velVal.textContent = parseFloat(velRange.value).toFixed(1);
 rotVal.textContent = parseFloat(rotRange.value).toFixed(2);
 scaleVal.textContent = parseFloat(scaleSpeedRange.value).toFixed(3);
 
-// initial velocities
 square.vx = parseFloat(velRange.value);
 square.vy = parseFloat(velRange.value) * 0.7;
 
-// start animation
 rafId = requestAnimationFrame(loop);
