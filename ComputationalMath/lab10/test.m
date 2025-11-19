@@ -26,7 +26,6 @@ for i = 1:length(interval)
                 point(1).^2 + point(2).^2 - 1];
        Jac = [cos(point(1) + point(2)) - 1.2, cos(point(1) + point(2));
                             2*point(1), 2*point(2)];
-       
        if abs(det(Jac)) < 1e-10
             fprintf('Матрица Якоби вырождена на итерации %d det = %.2e\n', iter);
             break;
