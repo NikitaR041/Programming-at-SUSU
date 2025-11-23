@@ -1,0 +1,105 @@
+
+See5 [Release 2.11a]  	Sun Nov 23 11:31:26 2025
+--------------------
+
+Class specified by attribute `Beverage_category'
+
+Read 242 cases (18 attributes) from USR.data
+
+Decision tree:
+
+VitaminC_DV > 5:
+:...Dietary_Fibre_g > 5: Smoothies (9)
+:   Dietary_Fibre_g <= 5:
+:   :...Total_Carbohydrates_g <= 47: Shaken Iced Beverages (3)
+:       Total_Carbohydrates_g > 47:
+:       :...Caffeine_mg <= 12: Frappuccino Blended Creme (9)
+:           Caffeine_mg > 12: Tazo Tea Drinks (10)
+VitaminC_DV <= 5:
+:...Total_Carbohydrates_g > 137:
+    :...Calcium_DV <= 25:
+    :   :...Caffeine_mg <= 32: Frappuccino Blended Creme (5/1)
+    :   :   Caffeine_mg > 32: [S1]
+    :   Calcium_DV > 25:
+    :   :...Caffeine_mg <= 135: Signature Espresso Drinks (9/1)
+    :       Caffeine_mg > 135:
+    :       :...Sugars_g <= 48: Classic Espresso Drinks (20/4)
+    :           Sugars_g > 48: Signature Espresso Drinks (6)
+    Total_Carbohydrates_g <= 137:
+    :...Sugars_g <= 14:
+        :...Cholesterol_mg > 0: Classic Espresso Drinks (32/3)
+        :   Cholesterol_mg <= 0:
+        :   :...Total_Fat_g <= 0: Tazo Tea Drinks (4)
+        :       Total_Fat_g > 0: Coffee (4)
+        Sugars_g > 14:
+        :...VitaminA_DV <= 5:
+            :...Cholesterol_mg <= 34: Shaken Iced Beverages (14/1)
+            :   Cholesterol_mg > 34: Signature Espresso Drinks (4)
+            VitaminA_DV > 5:
+            :...Calcium_DV <= 12:
+                :...Sugars_g <= 28: Tazo Tea Drinks (6)
+                :   Sugars_g > 28: Shaken Iced Beverages (2)
+                Calcium_DV > 12:
+                :...Trans_Fat_g <= 0.4: Tazo Tea Drinks (19/2)
+                    Trans_Fat_g > 0.4:
+                    :...Caffeine_mg <= 5: Tazo Tea Drinks (4.5)
+                        Caffeine_mg > 5:
+                        :...Sugars_g <= 29: [S2]
+                            Sugars_g > 29: [S3]
+
+SubTree [S1]
+
+Cholesterol_mg <= 34: Frappuccino Light Blended Coffee (8)
+Cholesterol_mg > 34: Frappuccino Blended Coffee (39/4)
+
+SubTree [S2]
+
+Caffeine_mg <= 80: Signature Espresso Drinks (15.6/3.6)
+Caffeine_mg > 80: Classic Espresso Drinks (8.3/1.3)
+
+SubTree [S3]
+
+Protein_g <= 9: Tazo Tea Drinks (5.7)
+Protein_g > 9: Signature Espresso Drinks (5/1)
+
+
+Evaluation on training data (242 cases):
+
+	    Decision Tree   
+	  ----------------  
+	  Size      Errors  
+
+	    23   22( 9.1%)   <<
+
+
+	   (a)   (b)   (c)   (d)   (e)   (f)   (g)   (h)   (i)   (j)   (k)    <-classified as
+	  ----  ----  ----  ----  ----  ----  ----  ----  ----  ----  ----
+	     4                                                                (a): class Coffee
+	          52     4                             2                      (b): class Classic Espresso Drinks
+	           6    34                                                    (c): class Signature Espresso Drinks
+	                      35                                   1          (d): class Frappuccino Blended Coffee
+	                       4     8                                        (e): class Frappuccino Light Blended Coffee
+	                                  18                                  (f): class Shaken Iced Beverages
+	                                         9                            (g): class Smoothies
+	           2     2                 1          47                      (h): class Tazo Tea Drinks
+	                                                                      (i): class Hot Chocolate
+	                                                          13          (j): class Frappuccino Blended Creme
+	                                                                      (k): class Protein Blended Beverages
+
+
+	Attribute usage:
+
+	    100%  VitaminC_DV
+	     96%  Total_Carbohydrates_g
+	     65%  Calcium_DV
+	     62%  Sugars_g
+	     59%  Caffeine_mg
+	     44%  Cholesterol_mg
+	     35%  VitaminA_DV
+	     24%  Trans_Fat_g
+	     14%  Dietary_Fibre_g
+	      5%  Protein_g
+	      3%  Total_Fat_g
+
+
+Time: 0.1 secs
