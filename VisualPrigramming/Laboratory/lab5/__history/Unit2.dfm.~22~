@@ -10,7 +10,6 @@ object Form2: TForm2
   Font.Height = -12
   Font.Name = 'Segoe UI'
   Font.Style = []
-  Position = poScreenCenter
   TextHeight = 15
   object PageControl1: TPageControl
     Left = 0
@@ -439,7 +438,7 @@ object Form2: TForm2
       object Label35: TLabel
         Left = 560
         Top = 208
-        Width = 6
+        Width = 34
         Height = 15
         Caption = '$'
       end

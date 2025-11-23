@@ -196,8 +196,50 @@
             <DependentOn>Unit2.h</DependentOn>
             <BuildOrder>3</BuildOrder>
         </CppCompile>
-        <FormResources Include="Unit1.dfm"/>
+        <CppCompile Include="Unit3.cpp">
+            <Form>Form3</Form>
+            <FormType>dfm</FormType>
+            <DependentOn>Unit3.h</DependentOn>
+            <BuildOrder>4</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="Unit4.cpp">
+            <Form>Form4</Form>
+            <FormType>dfm</FormType>
+            <DependentOn>Unit4.h</DependentOn>
+            <BuildOrder>5</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="Unit5.cpp">
+            <Form>Form5</Form>
+            <FormType>dfm</FormType>
+            <DependentOn>Unit5.h</DependentOn>
+            <BuildOrder>6</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="Unit6.cpp">
+            <Form>Form6</Form>
+            <FormType>dfm</FormType>
+            <DependentOn>Unit6.h</DependentOn>
+            <BuildOrder>7</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="Unit7.cpp">
+            <Form>Form7</Form>
+            <FormType>dfm</FormType>
+            <DependentOn>Unit7.h</DependentOn>
+            <BuildOrder>8</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="Unit8.cpp">
+            <Form>Form8</Form>
+            <FormType>dfm</FormType>
+            <DependentOn>Unit8.h</DependentOn>
+            <BuildOrder>9</BuildOrder>
+        </CppCompile>
         <FormResources Include="Unit2.dfm"/>
+        <FormResources Include="Unit1.dfm"/>
+        <FormResources Include="Unit3.dfm"/>
+        <FormResources Include="Unit4.dfm"/>
+        <FormResources Include="Unit5.dfm"/>
+        <FormResources Include="Unit6.dfm"/>
+        <FormResources Include="Unit7.dfm"/>
+        <FormResources Include="Unit8.dfm"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

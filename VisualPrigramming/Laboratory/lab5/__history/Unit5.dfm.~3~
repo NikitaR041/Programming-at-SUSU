@@ -1,0 +1,63 @@
+object Form5: TForm5
+  Left = 0
+  Top = 0
+  Caption = 'Form5'
+  ClientHeight = 441
+  ClientWidth = 624
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -12
+  Font.Name = 'Segoe UI'
+  Font.Style = []
+  TextHeight = 15
+  object Animate1: TAnimate
+    Left = 32
+    Top = 24
+    Width = 272
+    Height = 60
+    CommonAVI = aviRecycleFile
+    StopFrame = 24
+  end
+  object Animate2: TAnimate
+    Left = 32
+    Top = 104
+    Width = 272
+    Height = 60
+    CommonAVI = aviCopyFile
+    StopFrame = 22
+  end
+  object Animate3: TAnimate
+    Left = 32
+    Top = 202
+    Width = 80
+    Height = 50
+    CommonAVI = aviFindFolder
+    StopFrame = 27
+  end
+  object Animate4: TAnimate
+    Left = 32
+    Top = 280
+    Width = 272
+    Height = 60
+    CommonAVI = aviRecycleFile
+    StopFrame = 24
+  end
+  object Animate5: TAnimate
+    Left = 416
+    Top = 24
+    Width = 16
+    Height = 16
+    CommonAVI = aviFindFile
+    StopFrame = 8
+  end
+  object Button1: TButton
+    Left = 416
+    Top = 202
+    Width = 75
+    Height = 25
+    Caption = #1040#1085#1080#1084#1072#1094#1080#1103
+    TabOrder = 5
+    OnClick = Button1Click
+  end
+end
