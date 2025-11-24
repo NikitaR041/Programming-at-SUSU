@@ -1,0 +1,9 @@
+
+See5 [Release 2.11a]  	Mon Nov 24 01:32:19 2025
+--------------------
+
+*** line 1 of `USR.names': bad class threshold `ignore'
+
+*** line 3 of `USR.names': attribute `Reference_Water_Cut' has only one value `continuousю'
+
+*** line 12 of `USR.names': target attribute `Nominal_Water_Cut' not found or type `ignore'
