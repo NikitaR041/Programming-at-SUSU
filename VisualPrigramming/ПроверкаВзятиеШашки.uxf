@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <diagram program="umlet" version="14.3.0-XS">
-  <zoom_level>7</zoom_level>
+  <zoom_level>11</zoom_level>
   <element>
     <id>FCBlock</id>
     <coordinates>
-      <x>371</x>
-      <y>7</y>
-      <w>140</w>
-      <h>42</h>
+      <x>308</x>
+      <y>0</y>
+      <w>220</w>
+      <h>66</h>
     </coordinates>
     <panel_attributes>type=()
 Начало</panel_attributes>
@@ -16,10 +16,10 @@
   <element>
     <id>FCBlock</id>
     <coordinates>
-      <x>378</x>
-      <y>812</y>
-      <w>140</w>
-      <h>42</h>
+      <x>308</x>
+      <y>1265</y>
+      <w>220</w>
+      <h>66</h>
     </coordinates>
     <panel_attributes>type=()
 Конец</panel_attributes>
@@ -28,10 +28,10 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>434</x>
-      <y>42</y>
-      <w>21</w>
-      <h>49</h>
+      <x>407</x>
+      <y>55</y>
+      <w>33</w>
+      <h>77</h>
     </coordinates>
     <panel_attributes>lt=-</panel_attributes>
     <additional_attributes>10.0;50.0;10.0;10.0</additional_attributes>
@@ -39,10 +39,10 @@
   <element>
     <id>FCBlock</id>
     <coordinates>
-      <x>371</x>
-      <y>77</y>
-      <w>140</w>
-      <h>42</h>
+      <x>308</x>
+      <y>110</y>
+      <w>220</w>
+      <h>66</h>
     </coordinates>
     <panel_attributes>type=[]
 Вычисление координат 
@@ -52,10 +52,10 @@
   <element>
     <id>FCBlock</id>
     <coordinates>
-      <x>371</x>
-      <y>217</y>
-      <w>140</w>
-      <h>42</h>
+      <x>308</x>
+      <y>330</y>
+      <w>220</w>
+      <h>66</h>
     </coordinates>
     <panel_attributes>type=[]
 Установить направление
@@ -65,10 +65,10 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>434</x>
-      <y>182</y>
-      <w>21</w>
-      <h>49</h>
+      <x>407</x>
+      <y>275</y>
+      <w>33</w>
+      <h>77</h>
     </coordinates>
     <panel_attributes>lt=-</panel_attributes>
     <additional_attributes>10.0;50.0;10.0;10.0</additional_attributes>
@@ -76,10 +76,10 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>504</x>
-      <y>231</y>
-      <w>42</w>
-      <h>21</h>
+      <x>517</x>
+      <y>352</y>
+      <w>66</w>
+      <h>33</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
     <additional_attributes>40.0;10.0;10.0;10.0</additional_attributes>
@@ -87,10 +87,10 @@
   <element>
     <id>FCBlock</id>
     <coordinates>
-      <x>532</x>
-      <y>217</y>
-      <w>259</w>
-      <h>42</h>
+      <x>561</x>
+      <y>330</y>
+      <w>407</w>
+      <h>66</h>
     </coordinates>
     <panel_attributes>type=[
 halign=left
@@ -102,22 +102,22 @@ halign=left
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>322</x>
-      <y>399</y>
-      <w>140</w>
-      <h>287</h>
+      <x>407</x>
+      <y>693</y>
+      <w>55</w>
+      <h>374</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 m2=Нет</panel_attributes>
-    <additional_attributes>180.0;390.0;180.0;350.0;30.0;350.0;30.0;10.0;50.0;10.0</additional_attributes>
+    <additional_attributes>10.0;320.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>434</x>
-      <y>252</y>
-      <w>21</w>
-      <h>49</h>
+      <x>407</x>
+      <y>385</y>
+      <w>33</w>
+      <h>77</h>
     </coordinates>
     <panel_attributes>lt=-</panel_attributes>
     <additional_attributes>10.0;50.0;10.0;10.0</additional_attributes>
@@ -125,10 +125,10 @@ m2=Нет</panel_attributes>
   <element>
     <id>FCBlock</id>
     <coordinates>
-      <x>371</x>
-      <y>287</y>
-      <w>140</w>
-      <h>42</h>
+      <x>308</x>
+      <y>440</y>
+      <w>220</w>
+      <h>66</h>
     </coordinates>
     <panel_attributes>type=/\
 Цикл обработки направлений
@@ -138,10 +138,10 @@ m2=Нет</panel_attributes>
   <element>
     <id>FCBlock</id>
     <coordinates>
-      <x>371</x>
-      <y>147</y>
-      <w>140</w>
-      <h>42</h>
+      <x>308</x>
+      <y>220</y>
+      <w>220</w>
+      <h>66</h>
     </coordinates>
     <panel_attributes>type=[]
 Определение типа шашки
@@ -151,10 +151,10 @@ m2=Нет</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>434</x>
-      <y>112</y>
-      <w>21</w>
-      <h>49</h>
+      <x>407</x>
+      <y>165</y>
+      <w>33</w>
+      <h>77</h>
     </coordinates>
     <panel_attributes>lt=-</panel_attributes>
     <additional_attributes>10.0;50.0;10.0;10.0</additional_attributes>
@@ -162,10 +162,10 @@ m2=Нет</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>434</x>
-      <y>322</y>
-      <w>21</w>
-      <h>49</h>
+      <x>407</x>
+      <y>495</y>
+      <w>33</w>
+      <h>77</h>
     </coordinates>
     <panel_attributes>lt=-</panel_attributes>
     <additional_attributes>10.0;50.0;10.0;10.0</additional_attributes>
@@ -173,10 +173,10 @@ m2=Нет</panel_attributes>
   <element>
     <id>FCBlock</id>
     <coordinates>
-      <x>357</x>
-      <y>357</y>
-      <w>168</w>
-      <h>98</h>
+      <x>286</x>
+      <y>550</y>
+      <w>264</w>
+      <h>154</h>
     </coordinates>
     <panel_attributes>type=&lt;&gt;
 Для каждого направления 
@@ -186,22 +186,22 @@ m2=Нет</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>518</x>
-      <y>399</y>
-      <w>112</w>
-      <h>49</h>
+      <x>539</x>
+      <y>616</y>
+      <w>176</w>
+      <h>88</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 Да</panel_attributes>
-    <additional_attributes>120.0;50.0;120.0;10.0;10.0;10.0</additional_attributes>
+    <additional_attributes>120.0;60.0;120.0;10.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>FCBlock</id>
     <coordinates>
-      <x>518</x>
-      <y>434</y>
-      <w>168</w>
-      <h>98</h>
+      <x>539</x>
+      <y>682</y>
+      <w>264</w>
+      <h>154</h>
     </coordinates>
     <panel_attributes>type=&lt;&gt;
 На соседней клетке
@@ -211,22 +211,22 @@ m2=Нет</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>679</x>
-      <y>476</y>
-      <w>133</w>
-      <h>49</h>
+      <x>792</x>
+      <y>748</y>
+      <w>209</w>
+      <h>66</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 Да</panel_attributes>
-    <additional_attributes>150.0;50.0;150.0;10.0;10.0;10.0</additional_attributes>
+    <additional_attributes>150.0;40.0;150.0;10.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>FCBlock</id>
     <coordinates>
-      <x>700</x>
-      <y>511</y>
-      <w>168</w>
-      <h>98</h>
+      <x>825</x>
+      <y>792</y>
+      <w>264</w>
+      <h>154</h>
     </coordinates>
     <panel_attributes>type=&lt;&gt;
 Следующая клетка
@@ -236,10 +236,10 @@ m2=Нет</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>861</x>
-      <y>553</y>
-      <w>133</w>
-      <h>49</h>
+      <x>1078</x>
+      <y>858</y>
+      <w>209</w>
+      <h>77</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 Да</panel_attributes>
@@ -248,10 +248,10 @@ m2=Нет</panel_attributes>
   <element>
     <id>FCBlock</id>
     <coordinates>
-      <x>896</x>
-      <y>588</y>
-      <w>140</w>
-      <h>42</h>
+      <x>1133</x>
+      <y>913</y>
+      <w>220</w>
+      <h>66</h>
     </coordinates>
     <panel_attributes>type=[]
 Установление флага
@@ -261,45 +261,45 @@ canCapture = true</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>336</x>
-      <y>469</y>
-      <w>196</w>
-      <h>28</h>
+      <x>407</x>
+      <y>737</y>
+      <w>154</w>
+      <h>44</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 Нет</panel_attributes>
-    <additional_attributes>10.0;20.0;260.0;20.0</additional_attributes>
+    <additional_attributes>10.0;20.0;120.0;20.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>336</x>
-      <y>546</y>
-      <w>378</w>
-      <h>28</h>
+      <x>418</x>
+      <y>847</y>
+      <w>429</w>
+      <h>44</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 Нет</panel_attributes>
-    <additional_attributes>10.0;20.0;520.0;20.0</additional_attributes>
+    <additional_attributes>10.0;20.0;370.0;20.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>441</x>
-      <y>623</y>
-      <w>539</w>
-      <h>35</h>
+      <x>407</x>
+      <y>968</y>
+      <w>858</w>
+      <h>55</h>
     </coordinates>
     <panel_attributes>lt=-</panel_attributes>
-    <additional_attributes>10.0;30.0;750.0;30.0;750.0;10.0</additional_attributes>
+    <additional_attributes>10.0;30.0;760.0;30.0;760.0;10.0</additional_attributes>
   </element>
   <element>
     <id>FCBlock</id>
     <coordinates>
-      <x>378</x>
-      <y>672</y>
-      <w>140</w>
-      <h>42</h>
+      <x>308</x>
+      <y>1045</y>
+      <w>220</w>
+      <h>66</h>
     </coordinates>
     <panel_attributes>type=\/
 Цикл обработки направлений</panel_attributes>
@@ -308,10 +308,10 @@ canCapture = true</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>441</x>
-      <y>707</y>
-      <w>21</w>
-      <h>49</h>
+      <x>407</x>
+      <y>1100</y>
+      <w>33</w>
+      <h>77</h>
     </coordinates>
     <panel_attributes>lt=-</panel_attributes>
     <additional_attributes>10.0;50.0;10.0;10.0</additional_attributes>
@@ -319,10 +319,10 @@ canCapture = true</panel_attributes>
   <element>
     <id>FCBlock</id>
     <coordinates>
-      <x>378</x>
-      <y>742</y>
-      <w>140</w>
-      <h>42</h>
+      <x>308</x>
+      <y>1155</y>
+      <w>220</w>
+      <h>66</h>
     </coordinates>
     <panel_attributes>type=[]
 Вывести результат проверки</panel_attributes>
@@ -331,10 +331,10 @@ canCapture = true</panel_attributes>
   <element>
     <id>FCBlock</id>
     <coordinates>
-      <x>546</x>
-      <y>742</y>
-      <w>259</w>
-      <h>42</h>
+      <x>572</x>
+      <y>1155</y>
+      <w>407</w>
+      <h>66</h>
     </coordinates>
     <panel_attributes>type=[
 halign=left
@@ -345,10 +345,10 @@ halign=left
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>511</x>
-      <y>756</y>
-      <w>49</w>
-      <h>21</h>
+      <x>517</x>
+      <y>1177</y>
+      <w>77</w>
+      <h>33</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
     <additional_attributes>50.0;10.0;10.0;10.0</additional_attributes>
@@ -356,10 +356,10 @@ halign=left
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>441</x>
-      <y>777</y>
-      <w>21</w>
-      <h>49</h>
+      <x>407</x>
+      <y>1210</y>
+      <w>33</w>
+      <h>77</h>
     </coordinates>
     <panel_attributes>lt=-</panel_attributes>
     <additional_attributes>10.0;50.0;10.0;10.0</additional_attributes>

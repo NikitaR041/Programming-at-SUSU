@@ -1,0 +1,59 @@
+//---------------------------------------------------------------------------
+
+#include <vcl.h>
+#pragma hdrstop
+
+#include "Unit1.h"
+#include "Unit2.h"
+//---------------------------------------------------------------------------
+#pragma package(smart_init)
+#pragma resource "*.dfm"
+TForm1 *Form1;
+//---------------------------------------------------------------------------
+__fastcall TForm1::TForm1(TComponent* Owner)
+	: TForm(Owner)
+{
+	for (int c = 0; c < 8; ++c)
+		for (int r = 0; r < 8; ++r)
+			CellColors[c][r] = CurrentColor;
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm1::N2Click(TObject *Sender)
+{
+    Close();
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm1::N1Click(TObject *Sender)
+{
+    Form2->ShowModal();
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm1::StringGrid1DrawCell(TObject *Sender, System::LongInt ACol,
+          System::LongInt ARow, TRect &Rect, TGridDrawState State)
+{
+	TColor bg = (CellColors[ACol][ARow] == CurrentColor) ? StringGrid1->Color : CellColors[ACol][ARow];
+
+	StringGrid1->Canvas->Brush->Color = bg;
+	StringGrid1->Canvas->FillRect(Rect);
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm1::StringGrid1MouseDown(TObject *Sender, TMouseButton Button,
+		  TShiftState Shift, int X, int Y)
+{
+	if (Button != mbLeft) return;
+
+	int ACol, ARow;
+	StringGrid1->MouseToCell(X, Y, ACol, ARow);
+
+//	if ((ACol < 0) || (ARow < 0) || (ACol >= 8) || (ARow >= 8)) return;
+
+	if (CellColors[ACol][ARow] != CurrentColor) return;
+
+	// Показываем диалог выбора цвета
+	if (ColorDialog1->Execute())
+	{
+		CellColors[ACol][ARow] = ColorDialog1->Color;
+		StringGrid1->Invalidate(); //перерисовать всю сетку
+	}
+}
+//---------------------------------------------------------------------------
