@@ -66,7 +66,6 @@ CREATE TABLE cheque (
 -- Компьютер
 CREATE TABLE computer (
 	computer_id SERIAL PRIMARY KEY,
-	cheque_item_id INTEGER NOT NULL REFERENCES cheque_item(position_id) ON DELETE RESTRICT,
 	name_comp VARCHAR(30) NOT NULL,
 	price myPriceType NOT NULL,
 	warranty_months DATE NOT NULL, -- Гарантия : количество месяцев для гарантиB
@@ -85,14 +84,14 @@ CREATE TABLE cheque_item (
 	cheque_id INTEGER NOT NULL REFERENCES cheque(cheque_id) ON DELETE RESTRICT,
 	computer_id INTEGER NULL REFERENCES computer(computer_id) ON DELETE RESTRICT,
 	accessories_id INTEGER NULL REFERENCES accessories(accessories_id) ON DELETE RESTRICT,
-	product_kind product_enum NOT NULL, -- типы 'computer' or 'component'
+	product_kind product_enum NOT NULL, -- типы 'computer' or 'accessories'
 	count_sale_item myQTY NOT NULL, -- Количество проданных товаров данной позиции
 	price_at_sale myPriceType NOT NULL, -- Цена за единицу товара в момент продажи
 	-- Проверка XOR
 	CONSTRAINT receipt_item_xor_check CHECK (
-        (computer_id IS NOT NULL AND component_id IS NULL AND product_kind = 'computer')
+        (computer_id IS NOT NULL AND accessories_id  IS NULL AND product_kind = 'computer')
         OR
-        (accessories_id IS NOT NULL AND accessories_id IS NULL AND product_kind = 'component')
+        (accessories_id IS NOT NULL AND computer_id  IS NULL AND product_kind = 'accessories') -- computer_id или accessories_id ?
     )
 );
 -- Покупатель
@@ -102,3 +101,79 @@ CREATE TABLE shopper (
 	fio_number VARCHAR(12) NOT NULL UNIQUE, 
 	emal VARCHAR(30) NOT NULL UNIQUE
 );
+
+-- Здесь создание триггеров и пользовательских функций
+-- Триггерная функция
+CREATE OR REPLACE FUNCTION check_item_quantity()
+RETURNS TRIGGER AS $$
+DECLARE
+	-- Количество найденных строк
+    exists_count INTEGER;
+BEGIN
+    -- Проверка для комплектующих
+    IF NEW.product_kind = 'accessories' THEN
+        SELECT COUNT(*) INTO exists_count
+        FROM accessories
+        WHERE accessories_id = NEW.accessories_id;
+
+        IF exists_count = 0 THEN
+            NEW.count_sale_item := 0;
+        END IF;
+    END IF;
+
+    -- Проверка для компьютеров
+    IF NEW.product_kind = 'computer' THEN
+        SELECT COUNT(*) INTO exists_count
+        FROM computer
+        WHERE computer_id = NEW.computer_id;
+
+        IF exists_count = 0 THEN
+            NEW.count_sale_item := 0;
+        END IF;
+    END IF;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Создание объекта триггерной функции
+CREATE TRIGGER trg_check_item_quantity
+BEFORE INSERT OR UPDATE ON cheque_item
+FOR EACH ROW
+EXECUTE FUNCTION check_item_quantity();
+
+-- Функция, возвращающее вычисленную сумму чека 
+-- Нет поля отдельного суммы 
+CREATE OR REPLACE FUNCTION get_cheque_total(p_cheque_id INTEGER)
+RETURNS myPriceType AS $$
+DECLARE
+    total myPriceType;
+BEGIN
+    SELECT COALESCE(SUM(count_sale_item * price_at_sale), 0)
+    INTO total
+    FROM cheque_item
+    WHERE cheque_id = p_cheque_id;
+
+    RETURN total;
+END;
+$$ LANGUAGE plpgsql;
+-- Пример использования
+-- SELECT get_cheque_total(5);
+
+-- Функция, возвращающее полную конфигурацию компьютера
+CREATE OR REPLACE FUNCTION get_computer_configuration(p_computer_id INTEGER)
+RETURNS TABLE(
+    component_name VARCHAR,
+    quantity INTEGER
+) AS $$
+BEGIN
+    RETURN QUERY -- Возвращает таблицу
+    SELECT a.name_item, cc.count_item
+    FROM contant_config cc
+    JOIN accessories a ON a.accessories_id = cc.accessories_id
+    WHERE cc.computer_id = p_computer_id;
+END;
+$$ LANGUAGE plpgsql;
+-- Пример использования:
+-- SELECT * FROM get_computer_configuration(3);
+
