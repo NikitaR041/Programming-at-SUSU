@@ -9,6 +9,7 @@
 #include <Vcl.Forms.hpp>
 #include <Vcl.ExtCtrls.hpp>
 #include <Vcl.Grids.hpp>
+#include <Vcl.Menus.hpp>
 //---------------------------------------------------------------------------
 class TForm3 : public TForm
 {

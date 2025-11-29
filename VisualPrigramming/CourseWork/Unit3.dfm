@@ -1,9 +1,8 @@
 object Form3: TForm3
   Left = 0
   Top = 0
-  BorderStyle = bsDialog
   Caption = 'GameCheckers'
-  ClientHeight = 777
+  ClientHeight = 802
   ClientWidth = 944
   Color = clBisque
   Font.Charset = DEFAULT_CHARSET
@@ -12,12 +11,13 @@ object Form3: TForm3
   Font.Name = 'Segoe UI'
   Font.Style = []
   Position = poScreenCenter
+  Visible = True
   OnCreate = FormCreate
   OnResize = FormResize
   TextHeight = 15
   object DrawGrid1: TDrawGrid
-    Left = 136
-    Top = 72
+    Left = 112
+    Top = 80
     Width = 651
     Height = 651
     ColCount = 8

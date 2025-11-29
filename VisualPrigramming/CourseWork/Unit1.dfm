@@ -10,7 +10,6 @@ object Form1: TForm1
   Font.Height = -12
   Font.Name = 'Segoe UI'
   Font.Style = []
-  Menu = MainMenu1
   Position = poScreenCenter
   TextHeight = 15
   object Label1: TLabel
@@ -70,9 +69,5 @@ object Form1: TForm1
     ParentFont = False
     TabOrder = 2
     OnClick = Button3Click
-  end
-  object MainMenu1: TMainMenu
-    Left = 576
-    Top = 400
   end
 end
