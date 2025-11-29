@@ -31,28 +31,12 @@ Tn4 = TreeView1->Items->AddChild(Tn3, "ÅÒ-112");
 Tn4->SelectedIndex = 1;
 Tn4 = TreeView1->Items->AddChild(Tn3, "ÅÒ-113");
 Tn4->SelectedIndex = 1;
-
 Tn3 = TreeView1->Items->AddChild(Tn2, "2 êóðñ");
 Tn3->SelectedIndex = 1;
-Tn4 = TreeView1->Items->AddChild(Tn3, "ÅÒ-212");
-Tn4->SelectedIndex = 1;
-Tn4 = TreeView1->Items->AddChild(Tn3, "ÅÒ-213");
-Tn4->SelectedIndex = 1;
 Tn3 = TreeView1->Items->AddChild(Tn2, "3 êóðñ");
 Tn3->SelectedIndex = 1;
-
-Tn4 = TreeView1->Items->AddChild(Tn3, "ÅÒ-312");
-Tn4->SelectedIndex = 1;
-Tn4 = TreeView1->Items->AddChild(Tn3, "ÅÒ-313");
-Tn4->SelectedIndex = 1;
-
 Tn3 = TreeView1->Items->AddChild(Tn2, "4 êóðñ");
 Tn3->SelectedIndex = 1;
-Tn4 = TreeView1->Items->AddChild(Tn3, "ÅÒ-412");
-Tn4->SelectedIndex = 1;
-Tn4 = TreeView1->Items->AddChild(Tn3, "ÅÒ-413");
-Tn4->SelectedIndex = 1;
-
 Tn3 = TreeView1->Items->AddChild(Tn2, "5 êóðñ");
 
 

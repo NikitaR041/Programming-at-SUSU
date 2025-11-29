@@ -68,6 +68,10 @@ object Form1: TForm1
         Caption = #1044#1077#1088#1077#1074#1086'/'#1050#1072#1090#1072#1083#1086#1075#1055#1072#1087#1086#1082
         OnClick = N6Click
       end
+      object ListView1: TMenuItem
+        Caption = #1050#1086#1084#1087#1086#1085#1077#1085#1090' ListView'
+        OnClick = ListView1Click
+      end
     end
   end
   object ImageList1: TImageList

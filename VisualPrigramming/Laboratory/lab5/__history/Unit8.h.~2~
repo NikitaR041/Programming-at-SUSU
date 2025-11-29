@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------
 
-#ifndef Unit1H
-#define Unit1H
+#ifndef Unit8H
+#define Unit8H
 //---------------------------------------------------------------------------
 #include <System.Classes.hpp>
 #include <Vcl.Controls.hpp>
@@ -9,16 +9,15 @@
 #include <Vcl.Forms.hpp>
 #include <Vcl.ComCtrls.hpp>
 //---------------------------------------------------------------------------
-class TForm1 : public TForm
+class TForm8 : public TForm
 {
 __published:	// IDE-managed Components
-	TTabControl *TabControl1;
-	void __fastcall TabControl1Change(TObject *Sender);
+	TTreeView *TreeView1;
 private:	// User declarations
 public:		// User declarations
-	__fastcall TForm1(TComponent* Owner);
+	__fastcall TForm8(TComponent* Owner);
 };
 //---------------------------------------------------------------------------
-extern PACKAGE TForm1 *Form1;
+extern PACKAGE TForm8 *Form8;
 //---------------------------------------------------------------------------
 #endif

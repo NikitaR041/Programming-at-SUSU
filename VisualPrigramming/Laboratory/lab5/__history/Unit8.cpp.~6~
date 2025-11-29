@@ -48,11 +48,6 @@ Tn4->SelectedIndex = 1;
 
 Tn3 = TreeView1->Items->AddChild(Tn2, "4 курс");
 Tn3->SelectedIndex = 1;
-Tn4 = TreeView1->Items->AddChild(Tn3, "ЕТ-412");
-Tn4->SelectedIndex = 1;
-Tn4 = TreeView1->Items->AddChild(Tn3, "ЕТ-413");
-Tn4->SelectedIndex = 1;
-
 Tn3 = TreeView1->Items->AddChild(Tn2, "5 курс");
 
 

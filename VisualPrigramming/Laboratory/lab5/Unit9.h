@@ -1,27 +1,21 @@
 //---------------------------------------------------------------------------
 
-#ifndef Unit8H
-#define Unit8H
+#ifndef Unit9H
+#define Unit9H
 //---------------------------------------------------------------------------
 #include <System.Classes.hpp>
 #include <Vcl.Controls.hpp>
 #include <Vcl.StdCtrls.hpp>
 #include <Vcl.Forms.hpp>
-#include <Vcl.ComCtrls.hpp>
-#include <System.ImageList.hpp>
-#include <Vcl.ImgList.hpp>
 //---------------------------------------------------------------------------
-class TForm8 : public TForm
+class TForm9 : public TForm
 {
 __published:	// IDE-managed Components
-	TTreeView *TreeView1;
-	TImageList *ImageList1;
-	void __fastcall FormActivate(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
-	__fastcall TForm8(TComponent* Owner);
+	__fastcall TForm9(TComponent* Owner);
 };
 //---------------------------------------------------------------------------
-extern PACKAGE TForm8 *Form8;
+extern PACKAGE TForm9 *Form9;
 //---------------------------------------------------------------------------
 #endif

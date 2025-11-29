@@ -25,35 +25,19 @@ Tn2->SelectedIndex = 1;
 Tn2 = TreeView1->Items->AddChild(Tn1, "Информатика в экономике");
 Tn2->SelectedIndex = 1;
 
-Tn3 = TreeView1->Items->AddChild(Tn2, "1 курс");
+Tn3 = TreeVeiw1->Items->AddChild(Tn2, "1 курс");
 Tn3->SelectedIndex = 1;
 Tn4 = TreeView1->Items->AddChild(Tn3, "ЕТ-112");
 Tn4->SelectedIndex = 1;
 Tn4 = TreeView1->Items->AddChild(Tn3, "ЕТ-113");
 Tn4->SelectedIndex = 1;
-
-Tn3 = TreeView1->Items->AddChild(Tn2, "2 курс");
+Tn3 = TreeVeiw1->Items->AddChild(Tn2, "2 курс");
 Tn3->SelectedIndex = 1;
-Tn4 = TreeView1->Items->AddChild(Tn3, "ЕТ-212");
-Tn4->SelectedIndex = 1;
-Tn4 = TreeView1->Items->AddChild(Tn3, "ЕТ-213");
-Tn4->SelectedIndex = 1;
-Tn3 = TreeView1->Items->AddChild(Tn2, "3 курс");
+Tn3 = TreeVeiw1->Items->AddChild(Tn2, "3 курс");
 Tn3->SelectedIndex = 1;
-
-Tn4 = TreeView1->Items->AddChild(Tn3, "ЕТ-312");
-Tn4->SelectedIndex = 1;
-Tn4 = TreeView1->Items->AddChild(Tn3, "ЕТ-313");
-Tn4->SelectedIndex = 1;
-
-Tn3 = TreeView1->Items->AddChild(Tn2, "4 курс");
+Tn3 = TreeVeiw1->Items->AddChild(Tn2, "4 курс");
 Tn3->SelectedIndex = 1;
-Tn4 = TreeView1->Items->AddChild(Tn3, "ЕТ-412");
-Tn4->SelectedIndex = 1;
-Tn4 = TreeView1->Items->AddChild(Tn3, "ЕТ-413");
-Tn4->SelectedIndex = 1;
-
-Tn3 = TreeView1->Items->AddChild(Tn2, "5 курс");
+Tn3 = TreeVeiw1->Items->AddChild(Tn2, "5 курс");
 
 
 Tn2 = TreeView1->Items->AddChild(Tn1, "Менеджмент");
