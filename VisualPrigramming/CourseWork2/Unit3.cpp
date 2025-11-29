@@ -1,0 +1,426 @@
+//---------------------------------------------------------------------------
+
+#include <vcl.h>
+#pragma hdrstop
+
+#include "Unit3.h"
+#include "Unit2.h"
+#include "Unit4.h"
+//---------------------------------------------------------------------------
+#pragma package(smart_init)
+#pragma resource "*.dfm"
+TForm3 *Form3;
+int board[SIZEBOARD][SIZEBOARD];  //Шахматная доска
+//---------------------------------------------------------------------------
+__fastcall TForm3::TForm3(TComponent* Owner)
+	: TForm(Owner)
+{
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm3::FormCreate(TObject *Sender)
+{
+	//Инициализация игры
+	whiteTime = 5 * 60;
+	blackTime = 5 * 60;
+
+	InitBoard();
+	isSelected = false;
+	selectedX = selectedY = -1;
+	currentPlayer = WHITE_PAWN;
+}
+//---------------------------------------------------------------------------
+// Функция инициализации шахматной доски и шахмат/дамков
+void TForm3::InitBoard()
+{
+	for (int y = 0; y < SIZEBOARD; y++) {
+		for (int x = 0; x < SIZEBOARD; x++) {
+			if ((x + y) % 2 == 1) { // шашки стоят только на тёмных клетках
+				if (y < 3) board[y][x] = BLACK_PAWN;
+				else if (y > 4) board[y][x] = WHITE_PAWN;
+				else board[y][x] = EMPTY;
+			} else {
+				board[y][x] = EMPTY;
+			}
+		}
+	}
+}
+
+// ------ Работа с таймером ------
+
+// Функция для обновление таймеров
+void TForm3::UpdateTimerLabel(int seconds)
+{
+    int m = seconds / 60;
+    int s = seconds % 60;
+
+	LabelTimer->Caption = Format("%02d:%02d", ARRAYOFCONST((m, s)));
+}
+
+// Функция обработки таймера для белыш шашек
+void TForm3::StartWhiteTimer()
+{
+    TimerBlack->Enabled = false;
+
+    whiteTime = 5 * 60; // новая партия — заново
+    UpdateTimerLabel(whiteTime);
+
+    LabelTurn->Caption = "Ход белых";
+    TimerWhite->Enabled = true;
+}
+
+// Функция обработки таймера для черных шашек
+void TForm3::StartBlackTimer()
+{
+    TimerWhite->Enabled = false;
+
+    blackTime = 5 * 60;
+    UpdateTimerLabel(blackTime);
+
+    LabelTurn->Caption = "Ход черных";
+    TimerBlack->Enabled = true;
+}
+
+// Обработчик таймера для белых шашек
+void __fastcall TForm3::TimerWhiteTimer(TObject *Sender)
+{
+    whiteTime--;
+
+    UpdateTimerLabel(whiteTime);
+
+    if (whiteTime <= 0)
+    {
+        TimerWhite->Enabled = false;
+        TimerBlack->Enabled = false;
+        LoseByTimeout(WHITE_PAWN);
+	}
+}
+//---------------------------------------------------------------------------
+
+// Обрабочик таймера для черных шашек
+void __fastcall TForm3::TimerBlackTimer(TObject *Sender)
+{
+    blackTime--;
+
+    UpdateTimerLabel(blackTime);
+
+    if (blackTime <= 0)
+    {
+        TimerWhite->Enabled = false;
+		TimerBlack->Enabled = false;
+		LoseByTimeout(BLACK_PAWN);
+	}
+}
+// Функция проигрыша по времени
+void TForm3::LoseByTimeout(int whoLost)
+{
+	if (whoLost == WHITE_PAWN)
+		Application->MessageBox(L"Время белых истекло! Победа чёрных.", L"Заголовок", MB_OK);
+	else
+		Application->MessageBox(L"Время чёрных истекло! Победа белых.", L"Заголовок", MB_OK);
+	Close();
+}
+
+// ------- Работа с таблицей -------
+//---------------------------------------------------------------------------
+void __fastcall TForm3::DrawGrid1DrawCell(TObject *Sender, System::LongInt ACol, System::LongInt ARow,
+		  TRect &Rect, TGridDrawState State)
+{
+	TCanvas *c = DrawGrid1->Canvas;
+
+	// Раскраска клеток
+	if ((ACol + ARow) % 2 == 0) {
+		c->Brush->Color = clWhite;
+	} else {
+		c->Brush->Color = clGray;
+	}
+	c->FillRect(Rect);
+
+	// Если выбранная шашка — подсветим (обводка)
+	if (isSelected && ACol == selectedX && ARow == selectedY) {
+		c->Pen->Color = clRed;
+		c->Brush->Style = bsClear;
+		c->Rectangle(Rect.Left, Rect.Top, Rect.Right, Rect.Bottom);
+		c->Brush->Style = bsSolid;
+		c->Pen->Color = clBlack;
+	}
+
+	// Отрисовка шашек
+	switch (board[ARow][ACol]) {
+		case WHITE_PAWN:
+			c->Brush->Color = clWhite;
+			c->Ellipse(Rect.Left + 5, Rect.Top + 5, Rect.Right - 5, Rect.Bottom - 5);
+			break;
+		case BLACK_PAWN:
+			c->Brush->Color = clBlack;
+			c->Ellipse(Rect.Left + 5, Rect.Top + 5, Rect.Right - 5, Rect.Bottom - 5);
+			break;
+		case WHITE_KING:
+			c->Brush->Color = clWhite;
+			c->Ellipse(Rect.Left + 5, Rect.Top + 5, Rect.Right - 5, Rect.Bottom - 5);
+			// Обозначение дамки
+			c->Font->Color = clBlack;
+			c->TextOut(Rect.Left + 35, Rect.Top + 35, "K");
+			//Здесь планируется как-то обозначать дамку
+			break;
+		case BLACK_KING:
+			c->Brush->Color = clBlack;
+			c->Ellipse(Rect.Left + 5, Rect.Top + 5, Rect.Right - 5, Rect.Bottom - 5);
+			// Обозначение дамки
+			c->Font->Color = clWhite;
+			c->TextOut(Rect.Left + 35, Rect.Top + 35, "K");
+			//Здесь планируется как-то обозначать дамку
+			break;
+	}
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm3::DrawGrid1MouseDown(TObject *Sender, TMouseButton Button, TShiftState Shift,
+		  int X, int Y)
+{
+	int colWidth = DrawGrid1->DefaultColWidth;
+	int rowHeight = DrawGrid1->DefaultRowHeight;
+	int xCell = X / colWidth;
+	int yCell = Y / rowHeight;
+
+	if (!inBounds(xCell, yCell)) return;
+
+	// Если нет выбора — пытаемся выбрать шашку
+	if (!isSelected) {
+		if (isValideChecker(xCell, yCell)) {
+			//Обязательно бить шашку противника
+			if (playerHasAnyCapture(currentPlayer) && !hasCapture(xCell, yCell)) {
+				// Можно показать сообщение или звук — но пока просто игнорируем выбор
+				return;
+			}
+			selectedX = xCell;
+			selectedY = yCell;
+			isSelected = true;
+			DrawGrid1->Repaint();
+		}
+		return;
+	}
+
+	// Если уже выбранна шашка — пытаемся сделать ход в xCell,yCell
+	if (isSelected) {
+		// Если кликнули по той же клетке — снять выделение
+		if (xCell == selectedX && yCell == selectedY) {
+			isSelected = false;
+			DrawGrid1->Repaint();
+			return;
+		}
+
+		// Сначала проверяем прыжок (взятие) — если есть вообще у игрока обязательное взятие, простые ходы запрещены
+		bool anyCaptureExists = playerHasAnyCapture(currentPlayer);
+
+		if (canCaptureMove(selectedX, selectedY, xCell, yCell)) {
+			performMove(selectedX, selectedY, xCell, yCell);
+			return;
+		}
+
+		// Если есть обязательное взятие, простой ход запрещён
+		if (anyCaptureExists) {
+			isSelected = false;
+			DrawGrid1->Repaint();
+			return;
+		}
+
+		// Простой ход
+		if (canMoveSimple(selectedX, selectedY, xCell, yCell)) {
+			performMove(selectedX, selectedY, xCell, yCell);
+			return;
+		}
+
+		// Ничего не получилось — снять выбор
+		isSelected = false;
+		DrawGrid1->Repaint();
+	}
+}
+//---------------------------------------------------------------------------
+
+// ---- Движок ----
+
+//Функция, возвращающая логический тип - шашка на шахматной доске?
+inline bool TForm3::inBounds(int x, int y) {
+	return x >= 0 && x < SIZEBOARD && y >= 0 && y < SIZEBOARD;
+}
+
+//Функция, возвращающая логический тип - выбранная ячейка пуста ли ?
+bool TForm3::isEmpty(int x, int y) {
+	if (!inBounds(x,y)) return false;
+	return board[y][x] == EMPTY;
+}
+
+//Проверка выбранной шашки - пустая ячейка или не пустая
+bool TForm3::isValideChecker(int x, int y){
+	if (!inBounds(x,y)) return false;
+	if (currentPlayer == WHITE_PAWN) {
+		return board[y][x] == WHITE_PAWN || board[y][x] == WHITE_KING;
+	} else {
+		return board[y][x] == BLACK_PAWN || board[y][x] == BLACK_KING;
+	}
+}
+
+//Проверка на шашку противника
+bool TForm3::isOpponentPiece(int x, int y, int myPiece){
+	if (!inBounds(x,y)) return false;
+	if (myPiece == WHITE_PAWN || myPiece == WHITE_KING)
+		return board[y][x] == BLACK_PAWN || board[y][x] == BLACK_KING;
+	else
+		return board[y][x] == WHITE_PAWN || board[y][x] == WHITE_KING;
+}
+
+bool TForm3::isDiagonal(int fromX, int fromY, int toX, int toY) {
+	return std::abs(toX - fromX) == std::abs(toY - fromY);
+}
+
+// Функция обработки простого хода (без взятия)
+bool TForm3::canMoveSimple(int fromX, int fromY, int toX, int toY) {
+	if (!inBounds(fromX, fromY) || !inBounds(toX, toY)) return false;
+	if (!isEmpty(toX, toY)) return false;
+	if (!isDiagonal(fromX, fromY, toX, toY)) return false;
+
+	int piece = board[fromY][fromX];
+	int dx = std::abs(toX - fromX);
+	int dy = toY - fromY;
+
+	// Для простоты: дамка может ходить на 1 клетку (ограничение)
+	if (piece == WHITE_KING || piece == BLACK_KING) {
+		if (dx == 1 && std::abs(dy) == 1) return true;
+		return false;
+	}
+
+	// Обычные пешки: белые - вверх (y--), черные - вниз (y++)
+	int direction = (piece == WHITE_PAWN) ? -1 : 1;
+	if (dx == 1 && dy == direction) return true;
+
+	return false;
+}
+
+// Функция обработки хода со взятием (перескок через 1 фигуру)
+bool TForm3::canCaptureMove(int fromX, int fromY, int toX, int toY) {
+	if (!inBounds(fromX, fromY) || !inBounds(toX, toY)) return false;
+	if (!isEmpty(toX, toY)) return false;
+	if (!isDiagonal(fromX, fromY, toX, toY)) return false;
+
+	int dx = std::abs(toX - fromX);
+	int dyAbs = std::abs(toY - fromY);
+	if (dx != 2 || dyAbs != 2) return false; // прыжок через одну клетку
+
+	int midX = (fromX + toX) / 2;
+	int midY = (fromY + toY) / 2;
+	int piece = board[fromY][fromX];
+
+	if (isOpponentPiece(midX, midY, piece)) return true;
+	return false;
+}
+
+// Функция проверки: с данной клетки возможен ли любой прыжок
+bool TForm3::hasCapture(int x, int y) {
+	if (!inBounds(x,y)) return false;
+	int piece = board[y][x];
+	if (piece == EMPTY) return false;
+
+	// Проверяем 4 направлений на прыжок
+	const int dx[4] = { -2, 2, -2, 2 };
+	const int dy[4] = { -2, -2, 2, 2 };
+	for (int i = 0; i < 4; ++i) {
+		int nx = x + dx[i];
+		int ny = y + dy[i];
+		if (inBounds(nx, ny) && canCaptureMove(x,y,nx,ny)) return true;
+	}
+	return false;
+}
+
+// Функция проверки: есть ли у текущего игрока вообще возможность бить
+bool TForm3::playerHasAnyCapture(int playerPiece) {
+	for (int y = 0; y < SIZEBOARD; ++y)
+		for (int x = 0; x < SIZEBOARD; ++x) {
+			if (playerPiece == WHITE_PAWN) {
+				if (board[y][x] == WHITE_PAWN || board[y][x] == WHITE_KING) {
+					if (hasCapture(x,y)) return true;
+				}
+			} else {
+				if (board[y][x] == BLACK_PAWN || board[y][x] == BLACK_KING) {
+					if (hasCapture(x,y)) return true;
+				}
+			}
+		}
+	return false;
+}
+
+// Функция обработки хода шашки с (fromX, fromY) на (toX, toY)
+void TForm3::performMove(int fromX, int fromY, int toX, int toY) {
+	if (!inBounds(fromX, fromY) || !inBounds(toX, toY)) return;
+
+	int piece = board[fromY][fromX];
+
+	// Выполнение перемещения
+	board[toY][toX] = piece;
+	board[fromY][fromX] = EMPTY;
+
+	bool wasCapture = false;
+	// Если это прыжок — удаляем фигуру посредине
+	if (std::abs(toX - fromX) == 2) {
+		int midX = (fromX + toX) / 2;
+		int midY = (fromY + toY) / 2;
+		board[midY][midX] = EMPTY;
+		wasCapture = true;
+	}
+
+	// Проверка превращения в дамку
+	checkForKing(toX, toY);
+
+	// Если был прыжок — проверить, есть ли последующие прыжки с новой позиции
+	if (wasCapture && hasCapture(toX, toY)) {
+		// Оставляем пользователя выбирать дальнейший прыжок с той же шашки
+		selectedX = toX;
+		selectedY = toY;
+		isSelected = true;
+		DrawGrid1->Repaint();
+		return;
+	}
+
+	// Иначе — переход хода
+	isSelected = false;
+	switchPlayer();
+	DrawGrid1->Repaint();
+}
+
+// Функция обработки превращения шашки в дамку
+void TForm3::checkForKing(int x, int y) {
+	if (!inBounds(x,y)) return;
+	if (board[y][x] == WHITE_PAWN && y == 0) board[y][x] = WHITE_KING;
+	else if (board[y][x] == BLACK_PAWN && y == SIZEBOARD - 1) board[y][x] = BLACK_KING;
+}
+
+// Функция обработки смена игрока
+void TForm3::switchPlayer() {
+    if (currentPlayer == WHITE_PAWN)
+    {
+        currentPlayer = BLACK_PAWN;
+        StartBlackTimer();
+    }
+    else
+    {
+        currentPlayer = WHITE_PAWN;
+        StartWhiteTimer();
+    }
+}
+
+//---------------------------------------------------------------------------
+void __fastcall TForm3::N9Click(TObject *Sender)
+{
+	Form2->ShowModal();
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm3::N3Click(TObject *Sender)
+{
+    Close();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm3::N8Click(TObject *Sender)
+{
+    Form4->ShowModal();
+}
+//---------------------------------------------------------------------------
+
