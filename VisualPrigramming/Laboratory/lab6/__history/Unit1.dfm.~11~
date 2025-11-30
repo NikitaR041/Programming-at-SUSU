@@ -46,10 +46,6 @@ object Form1: TForm1
         Caption = 'ClientSocket and ServerSocket'
         OnClick = ClientSocketandServerSocket1Click
       end
-      object WebBrouser1: TMenuItem
-        Caption = 'WebBrouser'
-        OnClick = WebBrouser1Click
-      end
     end
   end
 end

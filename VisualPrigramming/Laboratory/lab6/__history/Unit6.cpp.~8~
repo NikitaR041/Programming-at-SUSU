@@ -3,52 +3,55 @@
 #include <vcl.h>
 #pragma hdrstop
 
-#include "Unit1.h"
-#include "Unit2.h"
-#include "Unit3.h"
-#include "Unit4.h"
-#include "Unit5.h"
 #include "Unit6.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
+#pragma link "SHDocVw_OCX"
 #pragma resource "*.dfm"
-TForm1 *Form1;
+TForm6 *Form6;
 //---------------------------------------------------------------------------
-__fastcall TForm1::TForm1(TComponent* Owner)
+__fastcall TForm6::TForm6(TComponent* Owner)
 	: TForm(Owner)
 {
 }
 //---------------------------------------------------------------------------
-void __fastcall TForm1::Timer1Timer(TObject *Sender)
+void __fastcall TForm6::ComboBox1Click(TObject *Sender)
 {
-    Edit1->Text = Time().TimeString();
+	wchar_t s1[100];
+	StringToWideChar(ComboBox1->Text, s1, 100);
+	if (ComboBox1->Text != “”) {
+		CppWebBrowser1->Navigate(s1);
+	} // if
 }
+//---------------------------------------------------------------------------
+void __fastcall TForm6::ComboBox1KeyDown(TObject *Sender, WORD &Key, TShiftState Shift)
 
-//---------------------------------------------------------------------------
-void __fastcall TForm1::N11Click(TObject *Sender)
 {
-	Form2->ShowModal();
+	if (Key == VK_RETURN) {
+	Key = 0;
+	if (ComboBox1->Text == “”) return;
+		ComboBox1->Items->Insert(0, ComboBox1->Text);
+		ComboBox1Click(Sender);
+	} // if
 }
 //---------------------------------------------------------------------------
-void __fastcall TForm1::MouseandPaintBox1Click(TObject *Sender)
+void __fastcall TForm6::ComboBox1DblClick(TObject *Sender)
 {
-    Form3->ShowModal();
+    ComboBox1Click(Sender);
 }
 //---------------------------------------------------------------------------
-void __fastcall TForm1::imerandPaintBox1Click(TObject *Sender)
+void __fastcall TForm6::Button1Click(TObject *Sender)
 {
-    Form4->ShowModal();
+	CppWebBrowser1->Refrech( );
 }
 //---------------------------------------------------------------------------
-void __fastcall TForm1::ClientSocketandServerSocket1Click(TObject *Sender)
+void __fastcall TForm6::Button2Click(TObject *Sender)
 {
-    Form5->ShowModal();
+    CppWebBrowser1->Stop( );
 }
 //---------------------------------------------------------------------------
-
-void __fastcall TForm1::WebBrouser1Click(TObject *Sender)
+void __fastcall TForm6::Button3Click(TObject *Sender)
 {
-    Form6->ShowModal();
+    CppWebBrowser1->GoHome( );
 }
 //---------------------------------------------------------------------------
-

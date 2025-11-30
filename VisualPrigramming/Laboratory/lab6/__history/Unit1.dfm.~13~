@@ -11,6 +11,7 @@ object Form1: TForm1
   Font.Name = 'Segoe UI'
   Font.Style = []
   Menu = MainMenu1
+  Position = poScreenCenter
   TextHeight = 15
   object Edit1: TEdit
     Left = 152
@@ -29,9 +30,25 @@ object Form1: TForm1
     Top = 184
     object N1: TMenuItem
       Caption = #1054#1082#1085#1072
-      OnClick = N1Click
       object N11: TMenuItem
-        Caption = '1'
+        Caption = 'PaintBox'
+        OnClick = N11Click
+      end
+      object MouseandPaintBox1: TMenuItem
+        Caption = 'Mouse and PaintBox'
+        OnClick = MouseandPaintBox1Click
+      end
+      object imerandPaintBox1: TMenuItem
+        Caption = 'Timer and PaintBox'
+        OnClick = imerandPaintBox1Click
+      end
+      object ClientSocketandServerSocket1: TMenuItem
+        Caption = 'ClientSocket and ServerSocket'
+        OnClick = ClientSocketandServerSocket1Click
+      end
+      object WebBrouser1: TMenuItem
+        Caption = 'WebBrouser'
+        OnClick = WebBrouser1Click
       end
     end
   end

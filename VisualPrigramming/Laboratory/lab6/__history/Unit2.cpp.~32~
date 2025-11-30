@@ -17,6 +17,9 @@ __fastcall TForm2::TForm2(TComponent* Owner)
 void __fastcall TForm2::PaintBox1Paint(TObject *Sender)
 {
 	DrawStar(PaintBox1->Canvas, PaintBox1->Width/2, PaintBox1->Height/2, 250);
+	DrawCrescent(PaintBox1->Canvas, PaintBox1->Width/2-30, PaintBox1->Height/2 - 30, 40);
+
+
 }
 //---------------------------------------------------------------------------
 void TForm2::DrawStar(TCanvas *c, int cx, int cy, int R)
@@ -31,19 +34,43 @@ void TForm2::DrawStar(TCanvas *c, int cx, int cy, int R)
 		double angle = -pi / 2 + i * 2 * pi / 5; // старт сверху
 		p[i].x = cx+ R * cos(angle);
 		p[i].y = cy + R * sin(angle);
-	}
+    }
 
 	c->Pen->Color = clRed;
-	c->Pen->Width = 3;
+    c->Pen->Width = 3;
 
-	// –исуем звезду: кажда€ точка соедин€етс€ с точкой через одну
-	c->MoveTo(p[0].x, p[0].y);
+    // –исуем звезду: кажда€ точка соедин€етс€ с точкой через одну
+    c->MoveTo(p[0].x, p[0].y);
 
-	int order[6] = {0, 2, 4, 1, 3, 0}; // пор€док обхода вершин
+    int order[6] = {0, 2, 4, 1, 3, 0}; // пор€док обхода вершин
 
-	for (int i = 1; i < 6; i++)
-	{
+    for (int i = 1; i < 6; i++)
+    {
 		c->LineTo(p[order[i]].x, p[order[i]].y);
-	}
+    }
 }
 
+void TForm2::DrawCrescent(TCanvas *c, int cx, int cy, int R)
+{
+	// цвет луны
+	c->Brush->Color = clYellow;
+	c->Pen->Color = clYellow;
+
+	// перва€ (основна€) окружность Ч больша€
+	c->Ellipse(cx - R, cy - R, cx + R, cy + R);
+
+    // включаем режим удалени€ части изображени€
+	//c->Brush->Color = clBlack;    // "фон" (стираем)
+    //c->Pen->Color = clBlack;
+
+    // втора€, смещЄнна€ окружность
+//    c->Ellipse(cx - R + offset, cy - R, cx + R + offset, cy + R);
+}
+
+void TForm2::DrawMolot(TCanvas *c)
+{
+	// цвет луны
+	c->Brush->Color = clYellow;
+	c->Pen->Color = clYellow;
+	PaintBox1->Canvas->rectablge(40, 40, 80, 80);
+}

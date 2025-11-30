@@ -20,14 +20,10 @@ __published:	// IDE-managed Components
 	TMenuItem *N11;
 	TMenuItem *MouseandPaintBox1;
 	TMenuItem *imerandPaintBox1;
-	TMenuItem *ClientSocketandServerSocket1;
-	TMenuItem *WebBrouser1;
 	void __fastcall Timer1Timer(TObject *Sender);
 	void __fastcall N11Click(TObject *Sender);
 	void __fastcall MouseandPaintBox1Click(TObject *Sender);
 	void __fastcall imerandPaintBox1Click(TObject *Sender);
-	void __fastcall ClientSocketandServerSocket1Click(TObject *Sender);
-	void __fastcall WebBrouser1Click(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
 	__fastcall TForm1(TComponent* Owner);

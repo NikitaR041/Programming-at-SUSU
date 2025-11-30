@@ -15,7 +15,9 @@ __published:	// IDE-managed Components
 	TPaintBox *PaintBox1;
 	void __fastcall PaintBox1Paint(TObject *Sender);
 private:	// User declarations
-	void DrawStar(TCanvas *c, int cx, int cy, int R);
+	void DrawRedStar(TCanvas *c, int cx, int cy, int R);
+	void DrawSickle(TCanvas *c, int cx, int cy);
+    void DrawHammer(TCanvas *c, int cx, int cy);
 public:		// User declarations
 	__fastcall TForm2(TComponent* Owner);
 };

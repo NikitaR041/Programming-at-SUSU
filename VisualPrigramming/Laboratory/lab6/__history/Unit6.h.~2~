@@ -1,25 +1,24 @@
 //---------------------------------------------------------------------------
 
-#ifndef Unit2H
-#define Unit2H
+#ifndef Unit6H
+#define Unit6H
 //---------------------------------------------------------------------------
 #include <System.Classes.hpp>
 #include <Vcl.Controls.hpp>
 #include <Vcl.StdCtrls.hpp>
 #include <Vcl.Forms.hpp>
-#include <Vcl.ExtCtrls.hpp>
+#include "SHDocVw_OCX.h"
+#include <Vcl.OleCtrls.hpp>
 //---------------------------------------------------------------------------
-class TForm2 : public TForm
+class TForm6 : public TForm
 {
 __published:	// IDE-managed Components
-	TPaintBox *PaintBox1;
-	void __fastcall PaintBox1Paint(TObject *Sender);
+	TCppWebBrowser *CppWebBrowser1;
 private:	// User declarations
-	void DrawStar(TCanvas *c, int cx, int cy, int R);
 public:		// User declarations
-	__fastcall TForm2(TComponent* Owner);
+	__fastcall TForm6(TComponent* Owner);
 };
 //---------------------------------------------------------------------------
-extern PACKAGE TForm2 *Form2;
+extern PACKAGE TForm6 *Form6;
 //---------------------------------------------------------------------------
 #endif
