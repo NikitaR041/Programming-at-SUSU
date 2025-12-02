@@ -9,6 +9,7 @@
 #include <Vcl.Forms.hpp>
 #include <Vcl.Grids.hpp>
 #include <Vcl.Menus.hpp>
+#include <Vcl.ExtCtrls.hpp>
 //---------------------------------------------------------------------------
 class TForm3 : public TForm
 {
@@ -18,12 +19,29 @@ __published:	// IDE-managed Components
 	TMenuItem *N1;
 	TMenuItem *N2;
 	TMenuItem *N3;
+	TMenuItem *N4;
+	TMenuItem *N5;
+	TMenuItem *N6;
+	TMenuItem *N7;
+	TMenuItem *N8;
+	TMenuItem *N9;
+	TLabel *LabelTurn;
+	TTimer *TimerWhite;
+	TLabel *LabelTimer;
+	TTimer *TimerBlack;
 	void __fastcall FormCreate(TObject *Sender);
 	void __fastcall DrawGrid1DrawCell(TObject *Sender, System::LongInt ACol, System::LongInt ARow,
           TRect &Rect, TGridDrawState State);
 	void __fastcall DrawGrid1MouseDown(TObject *Sender, TMouseButton Button, TShiftState Shift,
           int X, int Y);
+	void __fastcall N9Click(TObject *Sender);
+	void __fastcall TimerWhiteTimer(TObject *Sender);
+	void __fastcall TimerBlackTimer(TObject *Sender);
+	void __fastcall N3Click(TObject *Sender);
+	void __fastcall N8Click(TObject *Sender);
 private:	// User declarations
+	int whiteTime;       // секунды для белых
+	int blackTime;       // секунды для чёрных
 	int selectedX, selectedY;  // Выбранная ячейка
 	bool isSelected;           // Флаг выбора
 	int currentPlayer;         // Текущий игрок (WHITE_PAWN или BLACK_PAWN)
@@ -62,8 +80,20 @@ private:	// User declarations
 	// Смена игрока
 	void switchPlayer();
 
+    bool playerHasPieces(int player);
+
 	// Инициализация доски
 	void InitBoard();
+
+	// Запуск таймера для белых и черных
+	void StartWhiteTimer();
+	void StartBlackTimer();
+	// Обновление метки с информацией о текущем ходе
+	void UpdateTimerLabel(int seconds);
+	// Обработка проигрыша по истечении времени
+	void LoseByTimeout(int whoLost);
+	// Обновление метки таймера в формате MM:SS
+	void UpdateTurnLabel();
 
 public:		// User declarations
 	__fastcall TForm3(TComponent* Owner);

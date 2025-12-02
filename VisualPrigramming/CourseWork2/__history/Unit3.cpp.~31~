@@ -20,14 +20,13 @@ __fastcall TForm3::TForm3(TComponent* Owner)
 void __fastcall TForm3::FormCreate(TObject *Sender)
 {
 	//Инициализация игры
-	// По 5 минут на игрока
 	whiteTime = 5 * 60;
 	blackTime = 5 * 60;
 
 	InitBoard();
 	isSelected = false;
 	selectedX = selectedY = -1;
-	currentPlayer = WHITE_PAWN; //Начинают белые шашки
+	currentPlayer = WHITE_PAWN;
 }
 //---------------------------------------------------------------------------
 // Функция инициализации шахматной доски и шахмат/дамков
@@ -81,7 +80,7 @@ void TForm3::StartBlackTimer()
     TimerBlack->Enabled = true;
 }
 
-// Обработчик таймера для белых шашек
+// Функция обработки таймера для белых шашек
 void __fastcall TForm3::TimerWhiteTimer(TObject *Sender)
 {
     whiteTime--;
@@ -263,17 +262,18 @@ bool TForm3::isValideChecker(int x, int y){
 //Проверка на шашку противника
 bool TForm3::isOpponentPiece(int x, int y, int myPiece){
 	if (!inBounds(x,y)) return false;
-	if (myPiece == WHITE_PAWN || myPiece == WHITE_KING)
+	if (myPiece == WHITE_PAWN || myPiece == WHITE_KING) {
 		return board[y][x] == BLACK_PAWN || board[y][x] == BLACK_KING;
-	else
+	} else {
 		return board[y][x] == WHITE_PAWN || board[y][x] == WHITE_KING;
+	}
 }
 
 bool TForm3::isDiagonal(int fromX, int fromY, int toX, int toY) {
 	return std::abs(toX - fromX) == std::abs(toY - fromY);
 }
 
-// Простой ход (без взятия)
+// Функция обработки простого хода (без взятия)
 bool TForm3::canMoveSimple(int fromX, int fromY, int toX, int toY) {
 	if (!inBounds(fromX, fromY) || !inBounds(toX, toY)) return false;
 	if (!isEmpty(toX, toY)) return false;
@@ -296,7 +296,7 @@ bool TForm3::canMoveSimple(int fromX, int fromY, int toX, int toY) {
 	return false;
 }
 
-// Ход со взятием (перескок через 1 фигуру)
+// Функция обработки хода со взятием (перескок через 1 фигуру)
 bool TForm3::canCaptureMove(int fromX, int fromY, int toX, int toY) {
 	if (!inBounds(fromX, fromY) || !inBounds(toX, toY)) return false;
 	if (!isEmpty(toX, toY)) return false;
@@ -314,7 +314,7 @@ bool TForm3::canCaptureMove(int fromX, int fromY, int toX, int toY) {
 	return false;
 }
 
-// Проверка: с данной клетки возможен ли любой прыжок
+// Функция проверки: с данной клетки возможен ли любой прыжок
 bool TForm3::hasCapture(int x, int y) {
 	if (!inBounds(x,y)) return false;
 	int piece = board[y][x];
@@ -331,7 +331,7 @@ bool TForm3::hasCapture(int x, int y) {
 	return false;
 }
 
-// Проверка: есть ли у текущего игрока вообще возможность бить
+// Функция проверки: есть ли у текущего игрока вообще возможность бить
 bool TForm3::playerHasAnyCapture(int playerPiece) {
 	for (int y = 0; y < SIZEBOARD; ++y)
 		for (int x = 0; x < SIZEBOARD; ++x) {
@@ -348,9 +348,7 @@ bool TForm3::playerHasAnyCapture(int playerPiece) {
 	return false;
 }
 
-// Выполнение хода; если сделан прыжок — удаляет взятую шашку.
-// После выполнения: если прыжок был и возможны дальнейшие прыжки — не меняем игрока.
-// Иначе — выполняем switchPlayer().
+// Функция обработки хода шашки с (fromX, fromY) на (toX, toY)
 void TForm3::performMove(int fromX, int fromY, int toX, int toY) {
 	if (!inBounds(fromX, fromY) || !inBounds(toX, toY)) return;
 
@@ -388,14 +386,14 @@ void TForm3::performMove(int fromX, int fromY, int toX, int toY) {
 	DrawGrid1->Repaint();
 }
 
-// Превращение в дамку (русские шашки: белые на y==0, черные на y==7)
+// Функция обработки превращения шашки в дамку
 void TForm3::checkForKing(int x, int y) {
 	if (!inBounds(x,y)) return;
 	if (board[y][x] == WHITE_PAWN && y == 0) board[y][x] = WHITE_KING;
 	else if (board[y][x] == BLACK_PAWN && y == SIZEBOARD - 1) board[y][x] = BLACK_KING;
 }
 
-// Смена игрока
+// Функция обработки смена игрока
 void TForm3::switchPlayer() {
     if (currentPlayer == WHITE_PAWN)
     {
@@ -418,6 +416,12 @@ void __fastcall TForm3::N9Click(TObject *Sender)
 void __fastcall TForm3::N3Click(TObject *Sender)
 {
     Close();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm3::N8Click(TObject *Sender)
+{
+    Form4->ShowModal();
 }
 //---------------------------------------------------------------------------
 

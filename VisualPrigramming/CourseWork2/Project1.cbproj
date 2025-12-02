@@ -177,6 +177,12 @@
         <AppDPIAwarenessMode>PerMonitorV2</AppDPIAwarenessMode>
     </PropertyGroup>
     <ItemGroup>
+        <CppCompile Include="CheckersEngine.cpp">
+            <BuildOrder>6</BuildOrder>
+        </CppCompile>
+        <None Include="CheckersEngine.h">
+            <BuildOrder>7</BuildOrder>
+        </None>
         <CppCompile Include="Project1.cpp">
             <BuildOrder>0</BuildOrder>
         </CppCompile>
@@ -208,10 +214,10 @@
             <DependentOn>Unit4.h</DependentOn>
             <BuildOrder>5</BuildOrder>
         </CppCompile>
-        <FormResources Include="Unit3.dfm"/>
         <FormResources Include="Unit2.dfm"/>
-        <FormResources Include="Unit1.dfm"/>
+        <FormResources Include="Unit3.dfm"/>
         <FormResources Include="Unit4.dfm"/>
+        <FormResources Include="Unit1.dfm"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

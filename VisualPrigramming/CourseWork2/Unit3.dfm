@@ -32,7 +32,7 @@ object Form3: TForm3
   object LabelTimer: TLabel
     Left = 136
     Top = 18
-    Width = 105
+    Width = 9
     Height = 45
     Alignment = taCenter
     Font.Charset = DEFAULT_CHARSET

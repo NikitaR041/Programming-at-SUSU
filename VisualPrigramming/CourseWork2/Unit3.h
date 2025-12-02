@@ -80,11 +80,16 @@ private:	// User declarations
 	// Смена игрока
 	void switchPlayer();
 
+	bool playerHasPieces(int player);
+    bool playerHasMoves(int player);
+
 	// Инициализация доски
 	void InitBoard();
+    // Перезапуск игры
+	void ResetGame();
 
 	// Запуск таймера для белых и черных
-    void StartWhiteTimer();
+	void StartWhiteTimer();
 	void StartBlackTimer();
 	// Обновление метки с информацией о текущем ходе
 	void UpdateTimerLabel(int seconds);
@@ -92,7 +97,6 @@ private:	// User declarations
 	void LoseByTimeout(int whoLost);
 	// Обновление метки таймера в формате MM:SS
 	void UpdateTurnLabel();
-
 
 public:		// User declarations
 	__fastcall TForm3(TComponent* Owner);
