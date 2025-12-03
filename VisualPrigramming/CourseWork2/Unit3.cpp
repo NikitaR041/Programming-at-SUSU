@@ -411,21 +411,21 @@ void TForm3::performMove(int fromX, int fromY, int toX, int toY) {
 			Application->MessageBox(L"Черные победили! У белых не осталось шашек.", L"", MB_OK);
 //			Application->ShowMassageW(L"Черные победили! У белых не осталось шашек.", L"", MB_OK);
 		}
-		//ResetGame(); // если есть функция перезапуска
-		ResetGame();
+		ResetGame(); // если есть функция перезапуска
+
 		Close();
 
 		//return;
 	}
+
 	// --- Проверка: может ли противник сделать ход ---
-	else if (!playerHasMoves(opponent))
+	if (!playerHasMoves(opponent))
 	{
 		if (currentPlayer == WHITE_PAWN) {
 			Application->MessageBox(L"Белые победили! У черных нет ходов.", L"", MB_OK);
 		}else{
 			Application->MessageBox(L"Черные победили! У белых нет ходов.", L"", MB_OK);
 		}
-		//Close();
 		ResetGame();
 		Close();
 		//		return;

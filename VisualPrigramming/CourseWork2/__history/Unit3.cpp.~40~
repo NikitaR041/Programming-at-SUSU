@@ -45,6 +45,23 @@ void TForm3::InitBoard()
 	}
 }
 
+void TForm3::ResetGame()
+{
+	for (int y = 0; y < SIZEBOARD; y++)
+		for (int x = 0; x < SIZEBOARD; x++)
+			board[y][x] = EMPTY;
+
+	InitBoard();
+
+	currentPlayer = WHITE_PAWN;
+
+	isSelected = false;
+	selectedX = selectedY = -1;
+	currentPlayer = WHITE_PAWN;
+
+}
+
+
 // ------ Работа с таймером ------
 
 // Функция для обновление таймеров
@@ -80,7 +97,7 @@ void TForm3::StartBlackTimer()
     TimerBlack->Enabled = true;
 }
 
-// Обработчик таймера для белых шашек
+// Функция обработки таймера для белых шашек
 void __fastcall TForm3::TimerWhiteTimer(TObject *Sender)
 {
     whiteTime--;
@@ -238,173 +255,6 @@ void __fastcall TForm3::DrawGrid1MouseDown(TObject *Sender, TMouseButton Button,
 
 // ---- Движок ----
 
-//Функция, возвращающая логический тип - шашка на шахматной доске?
-inline bool TForm3::inBounds(int x, int y) {
-	return x >= 0 && x < SIZEBOARD && y >= 0 && y < SIZEBOARD;
-}
-
-//Функция, возвращающая логический тип - выбранная ячейка пуста ли ?
-bool TForm3::isEmpty(int x, int y) {
-	if (!inBounds(x,y)) return false;
-	return board[y][x] == EMPTY;
-}
-
-//Проверка выбранной шашки - пустая ячейка или не пустая
-bool TForm3::isValideChecker(int x, int y){
-	if (!inBounds(x,y)) return false;
-	if (currentPlayer == WHITE_PAWN) {
-		return board[y][x] == WHITE_PAWN || board[y][x] == WHITE_KING;
-	} else {
-		return board[y][x] == BLACK_PAWN || board[y][x] == BLACK_KING;
-	}
-}
-
-//Проверка на шашку противника
-bool TForm3::isOpponentPiece(int x, int y, int myPiece){
-	if (!inBounds(x,y)) return false;
-	if (myPiece == WHITE_PAWN || myPiece == WHITE_KING)
-		return board[y][x] == BLACK_PAWN || board[y][x] == BLACK_KING;
-	else
-		return board[y][x] == WHITE_PAWN || board[y][x] == WHITE_KING;
-}
-
-bool TForm3::isDiagonal(int fromX, int fromY, int toX, int toY) {
-	return std::abs(toX - fromX) == std::abs(toY - fromY);
-}
-
-// Функция обработки простого хода (без взятия)
-bool TForm3::canMoveSimple(int fromX, int fromY, int toX, int toY) {
-	if (!inBounds(fromX, fromY) || !inBounds(toX, toY)) return false;
-	if (!isEmpty(toX, toY)) return false;
-	if (!isDiagonal(fromX, fromY, toX, toY)) return false;
-
-	int piece = board[fromY][fromX];
-	int dx = std::abs(toX - fromX);
-	int dy = toY - fromY;
-
-	// Для простоты: дамка может ходить на 1 клетку (ограничение)
-	if (piece == WHITE_KING || piece == BLACK_KING) {
-		if (dx == 1 && std::abs(dy) == 1) return true;
-		return false;
-	}
-
-	// Обычные пешки: белые - вверх (y--), черные - вниз (y++)
-	int direction = (piece == WHITE_PAWN) ? -1 : 1;
-	if (dx == 1 && dy == direction) return true;
-
-	return false;
-}
-
-// Функция обработки хода со взятием (перескок через 1 фигуру)
-bool TForm3::canCaptureMove(int fromX, int fromY, int toX, int toY) {
-	if (!inBounds(fromX, fromY) || !inBounds(toX, toY)) return false;
-	if (!isEmpty(toX, toY)) return false;
-	if (!isDiagonal(fromX, fromY, toX, toY)) return false;
-
-	int dx = std::abs(toX - fromX);
-	int dyAbs = std::abs(toY - fromY);
-	if (dx != 2 || dyAbs != 2) return false; // прыжок через одну клетку
-
-	int midX = (fromX + toX) / 2;
-	int midY = (fromY + toY) / 2;
-	int piece = board[fromY][fromX];
-
-	if (isOpponentPiece(midX, midY, piece)) return true;
-	return false;
-}
-
-// Функция проверки: с данной клетки возможен ли любой прыжок
-bool TForm3::hasCapture(int x, int y) {
-	if (!inBounds(x,y)) return false;
-	int piece = board[y][x];
-	if (piece == EMPTY) return false;
-
-	// Проверяем 4 направлений на прыжок
-	const int dx[4] = { -2, 2, -2, 2 };
-	const int dy[4] = { -2, -2, 2, 2 };
-	for (int i = 0; i < 4; ++i) {
-		int nx = x + dx[i];
-		int ny = y + dy[i];
-		if (inBounds(nx, ny) && canCaptureMove(x,y,nx,ny)) return true;
-	}
-	return false;
-}
-
-// Функция проверки: есть ли у текущего игрока вообще возможность бить
-bool TForm3::playerHasAnyCapture(int playerPiece) {
-	for (int y = 0; y < SIZEBOARD; ++y)
-		for (int x = 0; x < SIZEBOARD; ++x) {
-			if (playerPiece == WHITE_PAWN) {
-				if (board[y][x] == WHITE_PAWN || board[y][x] == WHITE_KING) {
-					if (hasCapture(x,y)) return true;
-				}
-			} else {
-				if (board[y][x] == BLACK_PAWN || board[y][x] == BLACK_KING) {
-					if (hasCapture(x,y)) return true;
-				}
-			}
-		}
-	return false;
-}
-
-// Функция обработки хода шашки с (fromX, fromY) на (toX, toY)
-void TForm3::performMove(int fromX, int fromY, int toX, int toY) {
-	if (!inBounds(fromX, fromY) || !inBounds(toX, toY)) return;
-
-	int piece = board[fromY][fromX];
-
-	// Выполнение перемещения
-	board[toY][toX] = piece;
-	board[fromY][fromX] = EMPTY;
-
-	bool wasCapture = false;
-	// Если это прыжок — удаляем фигуру посредине
-	if (std::abs(toX - fromX) == 2) {
-		int midX = (fromX + toX) / 2;
-		int midY = (fromY + toY) / 2;
-		board[midY][midX] = EMPTY;
-		wasCapture = true;
-	}
-
-	// Проверка превращения в дамку
-	checkForKing(toX, toY);
-
-	// Если был прыжок — проверить, есть ли последующие прыжки с новой позиции
-	if (wasCapture && hasCapture(toX, toY)) {
-		// Оставляем пользователя выбирать дальнейший прыжок с той же шашки
-		selectedX = toX;
-		selectedY = toY;
-		isSelected = true;
-		DrawGrid1->Repaint();
-		return;
-	}
-
-	// Иначе — переход хода
-	isSelected = false;
-	switchPlayer();
-	DrawGrid1->Repaint();
-}
-
-// Функция обработки превращения шашки в дамку
-void TForm3::checkForKing(int x, int y) {
-	if (!inBounds(x,y)) return;
-	if (board[y][x] == WHITE_PAWN && y == 0) board[y][x] = WHITE_KING;
-	else if (board[y][x] == BLACK_PAWN && y == SIZEBOARD - 1) board[y][x] = BLACK_KING;
-}
-
-// Функция обработки смена игрока
-void TForm3::switchPlayer() {
-    if (currentPlayer == WHITE_PAWN)
-    {
-        currentPlayer = BLACK_PAWN;
-        StartBlackTimer();
-    }
-    else
-    {
-        currentPlayer = WHITE_PAWN;
-        StartWhiteTimer();
-    }
-}
 
 //---------------------------------------------------------------------------
 void __fastcall TForm3::N9Click(TObject *Sender)

@@ -45,6 +45,23 @@ void TForm3::InitBoard()
 	}
 }
 
+void TForm3::ResetGame()
+{
+	for (int y = 0; y < SIZEBOARD; y++)
+		for (int x = 0; x < SIZEBOARD; x++)
+			board[y][x] = EMPTY;
+
+	InitBoard();
+
+	currentPlayer = WHITE_PAWN;
+
+	isSelected = false;
+	selectedX = selectedY = -1;
+	currentPlayer = WHITE_PAWN;
+
+}
+
+
 // ------ Работа с таймером ------
 
 // Функция для обновление таймеров
@@ -382,6 +399,38 @@ void TForm3::performMove(int fromX, int fromY, int toX, int toY) {
 
 	// Иначе — переход хода
 	isSelected = false;
+    // --- Проверка победы по отсутствию фигур ---
+	int opponent = (currentPlayer == WHITE_PAWN ? BLACK_PAWN : WHITE_PAWN);
+
+	if (!playerHasPieces(opponent))
+	{
+		if (currentPlayer == WHITE_PAWN ) {
+			Application->MessageBox(L"Белые победили! У черных не осталось шашек.", L"", MB_OK);
+//			Application->ShowMassageW(L"Белые победили! У черных не осталось шашек.", L"", MB_OK);
+		}else{
+			Application->MessageBox(L"Черные победили! У белых не осталось шашек.", L"", MB_OK);
+//			Application->ShowMassageW(L"Черные победили! У белых не осталось шашек.", L"", MB_OK);
+		}
+		//ResetGame(); // если есть функция перезапуска
+		ResetGame();
+		Close();
+
+		//return;
+	}
+	// --- Проверка: может ли противник сделать ход ---
+	else if (!playerHasMoves(opponent))
+	{
+		if (currentPlayer == WHITE_PAWN) {
+			Application->MessageBox(L"Белые победили! У черных нет ходов.", L"", MB_OK);
+		}else{
+			Application->MessageBox(L"Черные победили! У белых нет ходов.", L"", MB_OK);
+		}
+		//Close();
+		ResetGame();
+		Close();
+		//		return;
+	}
+
 	switchPlayer();
 	DrawGrid1->Repaint();
 }
@@ -406,6 +455,100 @@ void TForm3::switchPlayer() {
         StartWhiteTimer();
     }
 }
+
+bool TForm3::playerHasPieces(int player)
+{
+    for (int y = 0; y < SIZEBOARD; y++)
+    {
+        for (int x = 0; x < SIZEBOARD; x++)
+        {
+            if (player == WHITE_PAWN)
+            {
+                if (board[y][x] == WHITE_PAWN || board[y][x] == WHITE_KING)
+                    return true;
+            }
+            else
+            {
+                if (board[y][x] == BLACK_PAWN || board[y][x] == BLACK_KING)
+                    return true;
+            }
+        }
+    }
+    return false;
+}
+
+bool TForm3::playerHasMoves(int player)
+{
+    for (int y = 0; y < SIZEBOARD; y++)
+    {
+        for (int x = 0; x < SIZEBOARD; x++)
+        {
+            int cell = board[y][x];
+
+            // Проверяем шашки игрока
+            if (player == WHITE_PAWN)
+            {
+                if (cell != WHITE_PAWN && cell != WHITE_KING) continue;
+            }
+            else
+            {
+                if (cell != BLACK_PAWN && cell != BLACK_KING) continue;
+            }
+
+            // Проверяем ВСЕ возможные ходы
+            // Для простых шашек
+            int dirs[4][2] = {
+                {1,  1},
+                {1, -1},
+                {-1, 1},
+                {-1, -1}
+            };
+
+            for (int i = 0; i < 4; i++)
+            {
+                int nx = x + dirs[i][1];
+                int ny = y + dirs[i][0];
+
+                if (nx >= 0 && nx < SIZEBOARD &&
+                    ny >= 0 && ny < SIZEBOARD)
+                {
+                    if (board[ny][nx] == EMPTY)
+                        return true; // простой ход есть
+                }
+
+                // Проверяем взятие
+                int jx = x + dirs[i][1] * 2;
+                int jy = y + dirs[i][0] * 2;
+
+                if (jx >= 0 && jx < SIZEBOARD &&
+                    jy >= 0 && jy < SIZEBOARD)
+                {
+                    int mx = x + dirs[i][1];
+                    int my = y + dirs[i][0];
+                    int mid = board[my][mx];
+
+                    if (board[jy][jx] == EMPTY)
+                    {
+                        // соперник между клетками
+                        if (player == WHITE_PAWN)
+                        {
+                            if (mid == BLACK_PAWN || mid == BLACK_KING)
+                                return true;
+                        }
+                        else
+                        {
+                            if (mid == WHITE_PAWN || mid == WHITE_KING)
+                                return true;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    return false;
+}
+
 
 //---------------------------------------------------------------------------
 void __fastcall TForm3::N9Click(TObject *Sender)

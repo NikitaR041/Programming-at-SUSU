@@ -85,7 +85,7 @@ private:	// User declarations
 
 	// Инициализация доски
 	void InitBoard();
-    // Перезапуск игры
+    //
 	void ResetGame();
 
 	// Запуск таймера для белых и черных

@@ -10,6 +10,7 @@
 #include <Vcl.Grids.hpp>
 #include <Vcl.Menus.hpp>
 #include <Vcl.ExtCtrls.hpp>
+#include "CheckersEngine.h"
 //---------------------------------------------------------------------------
 class TForm3 : public TForm
 {
@@ -46,53 +47,24 @@ private:	// User declarations
 	bool isSelected;           // Флаг выбора
 	int currentPlayer;         // Текущий игрок (WHITE_PAWN или BLACK_PAWN)
 
-	// Проверки координат
-	bool inBounds(int x, int y);
-	bool isEmpty(int x, int y);
-
-	// Проверка принадлежности шашки игроку
-	bool isValideChecker(int x, int y);
-
-	// Проверка шашки противника
-	bool isOpponentPiece(int x, int y, int myPiece);
-
-	// Геометрия хода
-	bool isDiagonal(int fromX, int fromY, int toX, int toY);
-
-	// Простой ход (без взятия)
-	bool canMoveSimple(int fromX, int fromY, int toX, int toY);
-
-	// Ход со взятием
-	bool canCaptureMove(int fromX, int fromY, int toX, int toY);
-
-	// Проверка возможности взятия для клетки
-	bool hasCapture(int x, int y);
-
-	// Проверка возможности взятия у текущего игрока
-	bool playerHasAnyCapture(int playerPiece);
-
-	// Выполнение хода
-	void performMove(int fromX, int fromY, int toX, int toY);
-
-	// Проверка превращения в дамку
-	void checkForKing(int x, int y);
-
-	// Смена игрока
-	void switchPlayer();
-
 	// Инициализация доски
 	void InitBoard();
+	// Перезапуск игры
+	void ResetGame();
 
-	// Работа таймеров
-    void StartWhiteTimer();
+	// Запуск таймера для белых и черных
+	void StartWhiteTimer();
 	void StartBlackTimer();
+	// Обновление метки с информацией о текущем ходе
 	void UpdateTimerLabel(int seconds);
+	// Обработка проигрыша по истечении времени
 	void LoseByTimeout(int whoLost);
+	// Обновление метки таймера в формате MM:SS
 	void UpdateTurnLabel();
 
-
 public:		// User declarations
-	__fastcall TForm3(TComponent* Owner);
+	CheckersEngine engine;
+	__fastcall TForm3(TComponent* Owner) : TForm(Owner), engine(SIZEBOARD);
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TForm3 *Form3;
