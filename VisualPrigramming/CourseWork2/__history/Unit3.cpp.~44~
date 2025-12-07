@@ -45,6 +45,23 @@ void TForm3::InitBoard()
 	}
 }
 
+void TForm3::ResetGame()
+{
+	for (int y = 0; y < SIZEBOARD; y++)
+		for (int x = 0; x < SIZEBOARD; x++)
+			board[y][x] = EMPTY;
+
+	InitBoard();
+
+	currentPlayer = WHITE_PAWN;
+
+	isSelected = false;
+	selectedX = selectedY = -1;
+	currentPlayer = WHITE_PAWN;
+
+}
+
+
 // ------ Работа с таймером ------
 
 // Функция для обновление таймеров
@@ -394,8 +411,10 @@ void TForm3::performMove(int fromX, int fromY, int toX, int toY) {
 			Application->MessageBox(L"Черные победили! У белых не осталось шашек.", L"", MB_OK);
 //			Application->ShowMassageW(L"Черные победили! У белых не осталось шашек.", L"", MB_OK);
 		}
-		//ResetGame(); // если есть функция перезапуска
+		ResetGame(); // если есть функция перезапуска
+
 		Close();
+
 		//return;
 	}
 
@@ -407,8 +426,8 @@ void TForm3::performMove(int fromX, int fromY, int toX, int toY) {
 		}else{
 			Application->MessageBox(L"Черные победили! У белых нет ходов.", L"", MB_OK);
 		}
-        Close();
-		//		ResetGame();
+		ResetGame();
+		Close();
 		//		return;
 	}
 
@@ -546,6 +565,12 @@ void __fastcall TForm3::N3Click(TObject *Sender)
 void __fastcall TForm3::N8Click(TObject *Sender)
 {
     Form4->ShowModal();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm3::N5Click(TObject *Sender)
+{
+    Form5->ShowModal();
 }
 //---------------------------------------------------------------------------
 

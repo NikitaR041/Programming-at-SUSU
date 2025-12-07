@@ -39,6 +39,7 @@ __published:	// IDE-managed Components
 	void __fastcall TimerBlackTimer(TObject *Sender);
 	void __fastcall N3Click(TObject *Sender);
 	void __fastcall N8Click(TObject *Sender);
+	void __fastcall N5Click(TObject *Sender);
 private:	// User declarations
 	int whiteTime;       // секунды для белых
 	int blackTime;       // секунды для чёрных
@@ -85,7 +86,7 @@ private:	// User declarations
 
 	// Инициализация доски
 	void InitBoard();
-    //
+    // Перезапуск игры
 	void ResetGame();
 
 	// Запуск таймера для белых и черных

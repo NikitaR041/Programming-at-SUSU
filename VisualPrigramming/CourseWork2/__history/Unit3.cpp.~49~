@@ -6,6 +6,7 @@
 #include "Unit3.h"
 #include "Unit2.h"
 #include "Unit4.h"
+#include "Unit5.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
@@ -411,8 +412,10 @@ void TForm3::performMove(int fromX, int fromY, int toX, int toY) {
 			Application->MessageBox(L"Черные победили! У белых не осталось шашек.", L"", MB_OK);
 //			Application->ShowMassageW(L"Черные победили! У белых не осталось шашек.", L"", MB_OK);
 		}
-		//ResetGame(); // если есть функция перезапуска
+		ResetGame(); // если есть функция перезапуска
+
 		Close();
+
 		//return;
 	}
 
@@ -424,8 +427,8 @@ void TForm3::performMove(int fromX, int fromY, int toX, int toY) {
 		}else{
 			Application->MessageBox(L"Черные победили! У белых нет ходов.", L"", MB_OK);
 		}
-        Close();
-		//		ResetGame();
+		ResetGame();
+		Close();
 		//		return;
 	}
 
@@ -563,6 +566,13 @@ void __fastcall TForm3::N3Click(TObject *Sender)
 void __fastcall TForm3::N8Click(TObject *Sender)
 {
     Form4->ShowModal();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm3::N5Click(TObject *Sender)
+{
+	Form5->ShowModal();
+    Form2->Close();
 }
 //---------------------------------------------------------------------------
 
