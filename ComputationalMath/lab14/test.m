@@ -5,52 +5,66 @@
 %xlabel('x'); ylabel('y');
 
 % === Табличные данные (вставь свои точки!!!) ===
-x = [-2.8, -2.2, 0, -1.0, -1.5, -0.5, 0.2, 1.3 2.4, 2.9];
-y = [30.7, 4.2, 0, 4.0, -3.94, 1.0, 3.2, 1.7, 20.0, 45.4];
+x = [-3, -3, -2, 0, 1, 2, 3];
+y = [12, 9, 2, 1, 2, 10, 13];
 
-n = 4;                % степень многочлена
-N = length(x);
+% --- Суммы ---
+S1 = sum(x);
+S2 = sum(x.^2);
+S3 = sum(x.^3);
+S4 = sum(x.^4);
+n  = length(x);
 
-% === Матрица Вандермонда V ===
-V = zeros(N, n+1);
-for i = 1:N
-    for j = 1:n+1
-        V(i,j) = x(i)^(n-j+1);
-    end
-end
+% --- Матрица T ---
+T = [S4, S3, S2;
+     S3, S2, S1;
+     S2, S1, n];
 
-% === Решение системы нормальных уравнений ===
-a = (V' * V) \ (V' * y');
+% --- Вектор D ---
+S_y   = sum(y);
+S_xy  = sum(x .* y);
+S_x2y = sum((x.^2) .* y);
 
-disp('Коэффициенты МНК:');
-disp(a');
-print_poly(a');
+D = [S_x2y; S_xy; S_y];
 
-% === Сравнение с polyfit ===
-a_pf = polyfit(x, y, n)';
-disp('Коэффициенты polyfit():');
-disp(a_pf);
+% --- Решение системы ---
+X = T \ D;
+a2 = X(1);
+a1 = X(2);
+a0 = X(3);
 
-% === Построение многочлена ===
-p = @(xx) polyval(a', xx);
+% --- Стандартная форма ---
+fprintf('\n=== Классический вид параболы ===\n');
+fprintf("f(x) = %.4f*x^2 + %.4f*x + %.4f\n", a2, a1, a0);
 
-% === Оценка точности ===
-res = y' - p(x);
-sko = norm(res) / sqrt(N - 1);
-[max_abs, idx] = max(abs(res));
+% --- Новый вид параболы ---
+A = a2;                   
+x0 = -a1 / (2*a2);        
+B = A*x0^2 + a1*x0 + a0;  
 
-fprintf("\nСреднеквадратичное отклонение: %.6f\n", sko);
-fprintf("Максимальное отклонение: %.6f в точке x = %.3f\n\n", ...
-        max_abs, x(idx));
+fprintf('\n=== Новый (вершинный) вид ===\n');
+fprintf("f(x) = %.4f * (x - %.4f)^2 + %.4f\n", A, x0, B);
 
-% === График ===
-xx = linspace(min(x), max(x), 500);
+% --- Значения модели ---
+f_x = a2*x.^2 + a1*x + a0;
 
-plot(x, y, 'ko', 'MarkerFaceColor','k'); hold on;
-plot(xx, p(xx), 'r-', 'LineWidth',2);
-plot(x(idx), y(idx), 'bp', 'MarkerSize', 14, 'MarkerFaceColor','b');
+% --- Ошибки ---
+err_sq  = abs(sum((y - f_x)));       % сумма квадратов ошибок
+
+fprintf('\n=== Ошибки ===\n');
+fprintf("|SUM( (y_i - f(x_i))|) = %.6f\n\n", err_sq);
+
+% --- График ---
+figure;
+plot(x, y, 'bo', 'MarkerSize', 8, 'LineWidth', 2); hold on;
+
+x_plot = linspace(min(x)-1, max(x)+1, 200);
+y_plot = a2*x_plot.^2 + a1*x_plot + a0;
+
+plot(x_plot, y_plot, 'r-', 'LineWidth', 2);
 grid on;
 
-title('Метод наименьших квадратов');
-legend('Табличные точки', 'Многочлен МНК', 'Макс. отклонение');
-xlabel('x'); ylabel('y');
+title('Аппроксимация параболой');
+xlabel('x');
+ylabel('y');
+legend('Исходные точки', 'Парабола', 'Location', 'best');
