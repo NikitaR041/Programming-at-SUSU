@@ -20,10 +20,6 @@ __published:	// IDE-managed Components
 	TMenuItem *N2;
 	TMenuItem *N3;
 	TMenuItem *N4;
-	TMenuItem *N5;
-	TMenuItem *N6;
-	TMenuItem *N7;
-	TMenuItem *N8;
 	TMenuItem *N9;
 	TLabel *LabelTurn;
 	TTimer *TimerWhite;
@@ -38,8 +34,7 @@ __published:	// IDE-managed Components
 	void __fastcall TimerWhiteTimer(TObject *Sender);
 	void __fastcall TimerBlackTimer(TObject *Sender);
 	void __fastcall N3Click(TObject *Sender);
-	void __fastcall N8Click(TObject *Sender);
-	void __fastcall N5Click(TObject *Sender);
+	void __fastcall N4Click(TObject *Sender);
 private:	// User declarations
 	int whiteTime;       // секунды для белых
 	int blackTime;       // секунды для чёрных

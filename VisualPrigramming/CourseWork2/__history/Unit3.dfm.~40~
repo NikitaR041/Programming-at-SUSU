@@ -30,12 +30,11 @@ object Form3: TForm3
     ParentFont = False
   end
   object LabelTimer: TLabel
-    Left = 128
+    Left = 136
     Top = 18
-    Width = 81
+    Width = 9
     Height = 45
     Alignment = taCenter
-    Caption = '05:00'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -32
@@ -69,7 +68,8 @@ object Form3: TForm3
         Caption = #1053#1086#1074#1072#1103' '#1080#1075#1088#1072
       end
       object N5: TMenuItem
-        Caption = #1055#1086#1084#1077#1085#1103#1090#1100' '#1094#1074#1077#1090' '#1096#1072#1096#1077#1082
+        Caption = #1048#1075#1088#1072' '#1089' '#1082#1086#1084#1087#1100#1102#1090#1077#1088#1086#1084
+        OnClick = N5Click
       end
       object N6: TMenuItem
         Caption = #1042#1099#1082#1083#1102#1095#1080#1090#1100' '#1079#1074#1091#1082
@@ -82,6 +82,7 @@ object Form3: TForm3
       Caption = #1057#1087#1088#1072#1074#1082#1072
       object N8: TMenuItem
         Caption = #1055#1088#1072#1074#1080#1083#1072' '#1080#1075#1088#1099
+        OnClick = N8Click
       end
       object N9: TMenuItem
         Caption = #1054#1073' '#1072#1074#1090#1086#1088#1077
@@ -90,6 +91,7 @@ object Form3: TForm3
     end
     object N3: TMenuItem
       Caption = #1042#1099#1093#1086#1076
+      OnClick = N3Click
     end
   end
   object TimerWhite: TTimer

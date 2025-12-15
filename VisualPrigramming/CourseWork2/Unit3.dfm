@@ -66,24 +66,11 @@ object Form3: TForm3
       Caption = #1048#1075#1088#1072
       object N4: TMenuItem
         Caption = #1053#1086#1074#1072#1103' '#1080#1075#1088#1072
-      end
-      object N5: TMenuItem
-        Caption = #1048#1075#1088#1072' '#1089' '#1082#1086#1084#1087#1100#1102#1090#1077#1088#1086#1084
-        OnClick = N5Click
-      end
-      object N6: TMenuItem
-        Caption = #1042#1099#1082#1083#1102#1095#1080#1090#1100' '#1079#1074#1091#1082
-      end
-      object N7: TMenuItem
-        Caption = #1054#1090#1095#1105#1090' '#1093#1086#1076#1086#1074
+        OnClick = N4Click
       end
     end
     object N2: TMenuItem
       Caption = #1057#1087#1088#1072#1074#1082#1072
-      object N8: TMenuItem
-        Caption = #1055#1088#1072#1074#1080#1083#1072' '#1080#1075#1088#1099
-        OnClick = N8Click
-      end
       object N9: TMenuItem
         Caption = #1054#1073' '#1072#1074#1090#1086#1088#1077
         OnClick = N9Click

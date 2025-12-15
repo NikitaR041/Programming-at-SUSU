@@ -1,39 +1,29 @@
 //---------------------------------------------------------------------------
 
-#ifndef Unit5H
-#define Unit5H
+#ifndef Unit4H
+#define Unit4H
 //---------------------------------------------------------------------------
 #include <System.Classes.hpp>
 #include <Vcl.Controls.hpp>
 #include <Vcl.StdCtrls.hpp>
 #include <Vcl.Forms.hpp>
-#include <Vcl.Grids.hpp>
+#include <Vcl.ComCtrls.hpp>
 #include <Vcl.ExtCtrls.hpp>
-#include <Vcl.Menus.hpp>
+#include <Vcl.Imaging.GIFImg.hpp>
 //---------------------------------------------------------------------------
-class TForm5 : public TForm
+class TForm4 : public TForm
 {
 __published:	// IDE-managed Components
-	TStringGrid *StringGrid1;
-	TMainMenu *MainMenu1;
-	TTimer *TimerPlayer;
-	TLabel *Label1;
-	TLabel *Label2;
-	TMenuItem *N1;
-	TMenuItem *N2;
-	TMenuItem *N3;
-	TMenuItem *N4;
-	TMenuItem *N5;
-	TMenuItem *N6;
-	TMenuItem *N7;
-	TMenuItem *N8;
-	TMenuItem *N9;
-	void __fastcall N3Click(TObject *Sender);
+	TPageControl *PageControl1;
+	TTabSheet *TabSheet1;
+	TTabSheet *TabSheet2;
+	TTabSheet *TabSheet3;
+	TImage *Image1;
 private:	// User declarations
 public:		// User declarations
-	__fastcall TForm5(TComponent* Owner);
+	__fastcall TForm4(TComponent* Owner);
 };
 //---------------------------------------------------------------------------
-extern PACKAGE TForm5 *Form5;
+extern PACKAGE TForm4 *Form4;
 //---------------------------------------------------------------------------
 #endif
