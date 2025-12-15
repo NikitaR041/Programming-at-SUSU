@@ -1,0 +1,98 @@
+//---------------------------------------------------------------------------
+
+#include <vcl.h>
+#pragma hdrstop
+
+#include "Unit1.h"
+#include "Unit2.h"
+//---------------------------------------------------------------------------
+#pragma package(smart_init)
+#pragma resource "*.dfm"
+TForm1 *Form1;
+//---------------------------------------------------------------------------
+__fastcall TForm1::TForm1(TComponent* Owner)
+	: TForm(Owner)
+{
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm1::N2Click(TObject *Sender)
+{
+    Close();
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm1::N1Click(TObject *Sender)
+{
+    Form2->ShowModal();
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm1::PaintBox1Paint(TObject *Sender)
+{
+    PaintBox1->Canvas->Brush->Color = clWhite;
+    PaintBox1->Canvas->FillRect(PaintBox1->ClientRect);
+
+	DrawHeptagon(PaintBox1->Canvas);
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm1::Timer1Timer(TObject *Sender)
+{
+	cx += dx;
+    cy += dy;
+
+    if (cx - R <= 0 || cx + R >= PaintBox1->Width)
+        dx = -dx;
+
+    if (cy - R <= 0 || cy + R >= PaintBox1->Height)
+        dy = -dy;
+
+	PaintBox1->Invalidate();
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm1::PaintBox1MouseDown(TObject *Sender, TMouseButton Button, TShiftState Shift,
+          int X, int Y)
+{
+	if (Button == mbLeft && IsInsideFigure(X, Y))
+    {
+        dx = -dx;
+        dy = -dy;
+	}
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm1::FormCreate(TObject *Sender)
+{
+    R = 40;
+	cx = R + 5;
+    cy = R + 5;
+
+    dx = 4;
+    dy = 3;
+
+    Timer1->Interval = 30;
+	Timer1->Enabled = true;
+}
+//---------------------------------------------------------------------------
+//Функция отображения правильного семиугольника
+void TForm1::DrawFigure(TCanvas *c)
+{
+    const int N = 7;
+    TPoint p[N];
+
+    for (int i = 0; i < N; i++)
+    {
+        double angle = -M_PI / 2 + i * 2 * M_PI / N;
+        p[i].x = cx + R * cos(angle);
+        p[i].y = cy + R * sin(angle);
+    }
+
+    c->Brush->Color = clSkyBlue;
+    c->Pen->Color = clBlue;
+    c->Pen->Width = 2;
+
+    c->Polygon(p, N - 1);
+}
+//Функция
+bool TForm1::HitTest(int x, int y)
+{
+    int dx0 = x - cx;
+    int dy0 = y - cy;
+    return (dx0 * dx0 + dy0 * dy0) <= R * R;
+}
