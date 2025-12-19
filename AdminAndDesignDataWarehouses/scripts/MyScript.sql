@@ -23,30 +23,30 @@ CREATE DOMAIN myQTY AS INTEGER DEFAULT 1 CHECK(VALUE >= 0);
 -- Производитель
 CREATE TABLE manufacture (
 	manufacture_id SERIAL PRIMARY KEY,
-	name_mt VARCHAR(30) NOT NULL,
-	country VARCHAR(30)
+	name_mt VARCHAR(100) NOT NULL,
+	country VARCHAR(100)
 );
 -- Фирма
 CREATE TABLE company (
 	company_id SERIAL PRIMARY KEY,
-	name_company VARCHAR(30) NOT NULL,
-	address VARCHAR(30) NOT NULL
+	name_company VARCHAR(100) NOT NULL,
+	address VARCHAR(100) NOT NULL
 );
 -- Комплектующие
 CREATE TABLE accessories (
 	accessories_id SERIAL PRIMARY KEY,
 	manufacture_id INTEGER NOT NULL REFERENCES manufacture(manufacture_id) ON DELETE RESTRICT,
 	company_id INTEGER NOT NULL REFERENCES company(company_id) ON DELETE RESTRICT,
-	name_item VARCHAR(30) NOT NULL,
+	name_item VARCHAR(100) NOT NULL,
 	price myPriceType NOT NULL,
-	type_item VARCHAR(30) NOT NULL
+	type_item VARCHAR(100) NOT NULL
 );
 
 -- Характеристика
 CREATE TABLE characteristic (
 	characteristic_id SERIAL PRIMARY KEY,
-	name_charact VARCHAR(30) NOT NULL UNIQUE,
-	unit_measure VARCHAR(30) NOT NULL 
+	name_charact VARCHAR(100) NOT NULL UNIQUE,
+	unit_measure VARCHAR(100) NOT NULL 
 );
 
 -- Значение характеристик
@@ -74,7 +74,7 @@ CREATE TABLE cheque (
 -- Компьютер
 CREATE TABLE computer (
 	computer_id SERIAL PRIMARY KEY,
-	name_comp VARCHAR(30) NOT NULL,
+	name_comp VARCHAR(100) NOT NULL,
 	price myPriceType NOT NULL,
 	warranty_months INTEGER NOT NULL CHECK (warranty_months > 0), -- Гарантия : количество месяцев для гарантиB
 	build_date DATE NOT NULL -- Дата изготовления 

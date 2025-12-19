@@ -15,36 +15,39 @@ def execute_query(sql_query, params=None, fetch_one=False, fetch_all=False, conf
     """Универсальная функция для выполнения SQL-запросов."""
     connection = None
     user = config.get("user", "UNKNOWN")
+    dbname = config.get("dbname", "UNKNOWN")
     
     try:
         connection = psycopg2.connect(**config)
         with connection.cursor() as cursor:
             # Логирование для визуализации работы
-            print(f"\n---[USER: {user}] Выполняется запрос ---")
+            # Выполняется запрос
+            print(f"\n---[USER: {user}] A request is being executed ---")
             print(f"   SQL: {sql_query.strip()}")
             if params:
-                print(f"Параметры: {params}")
+                print(f"Param: {params}")
 
             cursor.execute(sql_query, params)
             
             # Обработка результатов
             if fetch_one:
                 result = cursor.fetchone()
-                print(f"Получено 1 строка.")
+                print(f"Received 1 line.")
             elif fetch_all:
                 result = cursor.fetchall()
-                print(f"Получено {len(result)} строк.")
+                print(f"Received {len(result)} lines.")
             else:
                 connection.commit()
                 result = cursor.rowcount
-                print(f"Успешно изменено/добавлено {result} строк.")
+                print(f"Successfully modified/added {result} lines.")
 
             return result
 
     except psycopg2.Error as e:
         if connection:
             connection.rollback()
-        print(f"ОШИБКА БД для {user}: {e}")
+        print(f"Ошибка {user}: {e}")
+        print(f"ERROR DB {dbname}: {e}")
         return None
         
     finally:
