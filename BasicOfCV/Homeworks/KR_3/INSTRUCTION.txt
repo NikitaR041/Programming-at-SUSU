@@ -1,0 +1,16 @@
+Здесь хранится просто работа main.ipynb
+
+Все остальные файлы хранятся на gitHub или GoogleDisk
+
+Google Disk:
+https://drive.google.com/drive/folders/1-Ia8wseqBSkUWrARbUG3-6Mb0pc5CgJT?usp=sharing
+
+В нем хранятся 3 папки:
+videos - исходные видео, которые нужно было разметить
+
+predict_result - в нем хранятся размечанные видео
+
+MyDataset - датасет птиц
+
+Ссылка на GitHub:
+https://github.com/NikitaR041/Programming-at-SUSU/tree/5-semester/BasicOfCV/Homeworks/KR_3
