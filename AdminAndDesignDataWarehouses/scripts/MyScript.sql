@@ -39,7 +39,8 @@ CREATE TABLE accessories (
 	company_id INTEGER NOT NULL REFERENCES company(company_id) ON DELETE RESTRICT,
 	name_item VARCHAR(100) NOT NULL,
 	price myPriceType NOT NULL,
-	type_item VARCHAR(100) NOT NULL
+	type_item VARCHAR(100) NOT NULL,
+	count_item myQTY NOT NULL
 );
 
 -- Характеристика
@@ -77,7 +78,8 @@ CREATE TABLE computer (
 	name_comp VARCHAR(100) NOT NULL,
 	price myPriceType NOT NULL,
 	warranty_months INTEGER NOT NULL CHECK (warranty_months > 0), -- Гарантия : количество месяцев для гарантиB
-	build_date DATE NOT NULL -- Дата изготовления 
+	build_date DATE NOT NULL, -- Дата изготовления 
+	count_item myQTY NOT NULL
 );
 -- Состав конфигураций
 CREATE TABLE contant_config (
@@ -103,45 +105,84 @@ CREATE TABLE cheque_item (
     )
 );
 
--- Здесь создание триггеров и пользовательских функций
--- Триггерная функция
-CREATE OR REPLACE FUNCTION check_item_quantity()
-RETURNS TRIGGER AS $$
+-- Триггерная функция: списание товара со склада при продаже
+CREATE OR REPLACE FUNCTION sell_item_decrease_stock()
+RETURNS TRIGGER
+SECURITY DEFINER
+SET search_path = public
+AS $$
 DECLARE
-	-- Количество найденных строк
-    exists_count INTEGER;
+    current_qty INTEGER;
 BEGIN
-    -- Проверка для комплектующих
+    -- Продажа комплектующего
     IF NEW.product_kind = 'accessories' THEN
-        SELECT COUNT(*) INTO exists_count
+
+        SELECT count_item
+        INTO current_qty
         FROM accessories
+        WHERE accessories_id = NEW.accessories_id
+        FOR UPDATE;
+
+        IF current_qty IS NULL THEN
+            RAISE EXCEPTION 'Комплектующее (accessories_id=%) не найдено', NEW.accessories_id;
+        END IF;
+
+        IF NEW.count_sale_item <= 0 THEN
+            RAISE EXCEPTION 'Количество продажи должно быть > 0';
+        END IF;
+
+        IF current_qty < NEW.count_sale_item THEN
+            RAISE EXCEPTION 'Недостаточно комплектующих (id=%): на складе %, требуется %',
+                NEW.accessories_id, current_qty, NEW.count_sale_item;
+        END IF;
+
+        UPDATE accessories
+        SET count_item = count_item - NEW.count_sale_item
         WHERE accessories_id = NEW.accessories_id;
 
-        IF exists_count = 0 THEN
-            NEW.count_sale_item := 0;
-        END IF;
+        RETURN NEW;
     END IF;
 
-    -- Проверка для компьютеров
+    -- Продажа компьютера
     IF NEW.product_kind = 'computer' THEN
-        SELECT COUNT(*) INTO exists_count
+
+        SELECT count_item
+        INTO current_qty
         FROM computer
+        WHERE computer_id = NEW.computer_id
+        FOR UPDATE;
+
+        IF current_qty IS NULL THEN
+            RAISE EXCEPTION 'Компьютер (computer_id=%) не найден', NEW.computer_id;
+        END IF;
+
+        IF NEW.count_sale_item <= 0 THEN
+            RAISE EXCEPTION 'Количество продажи должно быть > 0';
+        END IF;
+
+        IF current_qty < NEW.count_sale_item THEN
+            RAISE EXCEPTION 'Недостаточно компьютеров (id=%): на складе %, требуется %',
+                NEW.computer_id, current_qty, NEW.count_sale_item;
+        END IF;
+
+        UPDATE computer
+        SET count_item = count_item - NEW.count_sale_item
         WHERE computer_id = NEW.computer_id;
 
-        IF exists_count = 0 THEN
-            NEW.count_sale_item := 0;
-        END IF;
+        RETURN NEW;
     END IF;
 
-    RETURN NEW;
+    -- На всякий случай (по идее сюда не попадём из-за CHECK XOR)
+    RAISE EXCEPTION 'Некорректный product_kind: %', NEW.product_kind;
 END;
 $$ LANGUAGE plpgsql;
 
--- Создание объекта триггерной функции
-CREATE TRIGGER trg_check_item_quantity
-BEFORE INSERT OR UPDATE ON cheque_item
+DROP TRIGGER IF EXISTS trg_sell_item_decrease_stock ON cheque_item;
+
+CREATE TRIGGER trg_sell_item_decrease_stock
+BEFORE INSERT ON cheque_item
 FOR EACH ROW
-EXECUTE FUNCTION check_item_quantity();
+EXECUTE FUNCTION sell_item_decrease_stock();
 
 -- Функция, возвращающее вычисленную сумму чека 
 -- Нет поля отдельного суммы 
