@@ -42,56 +42,67 @@ private:	// User declarations
 	bool isSelected;           // Флаг выбора
 	int currentPlayer;         // Текущий игрок (WHITE_PAWN или BLACK_PAWN)
 
-	// Проверки координат
+	//Функция проверки координат внутри игровой доски
 	bool inBounds(int x, int y);
+
+	//Функиця проверки клетки на пустоту
 	bool isEmpty(int x, int y);
 
-	// Проверка принадлежности шашки игроку
+	//Функция проверки принадлежности шашки игроку
 	bool isValideChecker(int x, int y);
 
-	// Проверка шашки противника
+	//Функция проверки шашки противника
 	bool isOpponentPiece(int x, int y, int myPiece);
 
-	// Геометрия хода
+	//Функция проверки хода диагональю
 	bool isDiagonal(int fromX, int fromY, int toX, int toY);
 
-	// Простой ход (без взятия)
+	//Функция проверки простого хода без взятия шашки
 	bool canMoveSimple(int fromX, int fromY, int toX, int toY);
 
-	// Ход со взятием
+	//Функция проверки хода со взятием шашки противника
 	bool canCaptureMove(int fromX, int fromY, int toX, int toY);
 
-	// Проверка возможности взятия для клетки
+	//Функиця проверки возможности захвата с указанной клетки
 	bool hasCapture(int x, int y);
 
-	// Проверка возможности взятия у текущего игрока
+	//Функция проверки у игрока хотя бы один возможный ход со взятием
 	bool playerHasAnyCapture(int playerPiece);
 
-	// Выполнение хода
+	//Функция выполняет ход шашки с учетом взятия шашки и правил игры
 	void performMove(int fromX, int fromY, int toX, int toY);
 
-	// Проверка превращения в дамку
+	//Функция проверки и выполнения превращение шашки в дамку
 	void checkForKing(int x, int y);
 
-	// Смена игрока
+	//Функция переключения на другого игрока и включение таймера
 	void switchPlayer();
 
+	//Фуникция проверки наличия шашек у игрока
 	bool playerHasPieces(int player);
-    bool playerHasMoves(int player);
 
-	// Инициализация доски
+	//Функция проверки наличия хотя бы одного допустимого хода у игрока
+	bool playerHasMoves(int player);
+
+	//Функция инициализации игровой доски и расставления шашек
 	void InitBoard();
-    // Перезапуск игры
+
+	//Функция перезапуска игры
 	void ResetGame();
 
-	// Запуск таймера для белых и черных
+	//Функция запуска таймера для белых шашек
 	void StartWhiteTimer();
+
+	//Функция запуска таймера для черных шашек
 	void StartBlackTimer();
-	// Обновление метки с информацией о текущем ходе
+
+	//Функция обновления отображения оставшегося времени хода
 	void UpdateTimerLabel(int seconds);
-	// Обработка проигрыша по истечении времени
+
+	//Функция обработки поражения игрока по истечении времени
 	void LoseByTimeout(int whoLost);
-	// Обновление метки таймера в формате MM:SS
+
+	//Функция обновление метки о текущем ходе
 	void UpdateTurnLabel();
 
 public:		// User declarations

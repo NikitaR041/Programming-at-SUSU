@@ -28,7 +28,8 @@ void __fastcall TForm3::FormCreate(TObject *Sender)
 	currentPlayer = WHITE_PAWN;
 }
 //---------------------------------------------------------------------------
-// Функция инициализации шахматной доски и шахмат/дамков
+
+//Функция инициализации игровой доски и расставления шашек
 void TForm3::InitBoard()
 {
 	for (int y = 0; y < SIZEBOARD; y++) {
@@ -44,6 +45,7 @@ void TForm3::InitBoard()
 	}
 }
 
+//Функция перезапуска игры
 void TForm3::ResetGame()
 {
 	for (int y = 0; y < SIZEBOARD; y++)
@@ -60,7 +62,7 @@ void TForm3::ResetGame()
 
 // ------ Работа с таймером ------
 
-// Функция для обновление таймеров
+//Функция обновления отображения оставшегося времени хода
 void TForm3::UpdateTimerLabel(int seconds)
 {
     int m = seconds / 60;
@@ -69,7 +71,7 @@ void TForm3::UpdateTimerLabel(int seconds)
 	LabelTimer->Caption = Format("%02d:%02d", ARRAYOFCONST((m, s)));
 }
 
-// Функция обработки таймера для белыш шашек
+//Функция запуска таймера для белых шашек
 void TForm3::StartWhiteTimer()
 {
     TimerBlack->Enabled = false;
@@ -81,7 +83,7 @@ void TForm3::StartWhiteTimer()
     TimerWhite->Enabled = true;
 }
 
-// Функция обработки таймера для черных шашек
+//Функция запуска таймера для черных шашек
 void TForm3::StartBlackTimer()
 {
     TimerWhite->Enabled = false;
@@ -123,7 +125,7 @@ void __fastcall TForm3::TimerBlackTimer(TObject *Sender)
 		LoseByTimeout(BLACK_PAWN);
 	}
 }
-// Функция проигрыша по времени
+//Функция обработки поражения игрока по истечении времени
 void TForm3::LoseByTimeout(int whoLost)
 {
 	if (whoLost == WHITE_PAWN)
@@ -251,18 +253,18 @@ void __fastcall TForm3::DrawGrid1MouseDown(TObject *Sender, TMouseButton Button,
 
 // ---- Движок ----
 
-//Функция, возвращающая логический тип - шашка на шахматной доске?
+//Функция проверки координат внутри игровой доски
 inline bool TForm3::inBounds(int x, int y) {
 	return x >= 0 && x < SIZEBOARD && y >= 0 && y < SIZEBOARD;
 }
 
-//Функция, возвращающая логический тип - выбранная ячейка пуста ли ?
+//Функиця проверки клетки на пустоту
 bool TForm3::isEmpty(int x, int y) {
 	if (!inBounds(x,y)) return false;
 	return board[y][x] == EMPTY;
 }
 
-//Проверка выбранной шашки - пустая ячейка или не пустая
+//Функция проверки принадлежности шашки игроку
 bool TForm3::isValideChecker(int x, int y){
 	if (!inBounds(x,y)) return false;
 	if (currentPlayer == WHITE_PAWN) {
@@ -272,7 +274,7 @@ bool TForm3::isValideChecker(int x, int y){
 	}
 }
 
-//Проверка на шашку противника
+//Функция проверки шашки противника
 bool TForm3::isOpponentPiece(int x, int y, int myPiece){
 	if (!inBounds(x,y)) return false;
 	if (myPiece == WHITE_PAWN || myPiece == WHITE_KING) {
@@ -282,11 +284,12 @@ bool TForm3::isOpponentPiece(int x, int y, int myPiece){
 	}
 }
 
+//Функция проверки хода диагональю
 bool TForm3::isDiagonal(int fromX, int fromY, int toX, int toY) {
 	return std::abs(toX - fromX) == std::abs(toY - fromY);
 }
 
-// Функция обработки простого хода (без взятия)
+//Функция проверки простого хода без взятия шашки
 bool TForm3::canMoveSimple(int fromX, int fromY, int toX, int toY) {
 	if (!inBounds(fromX, fromY) || !inBounds(toX, toY)) return false;
 	if (!isEmpty(toX, toY)) return false;
@@ -309,7 +312,7 @@ bool TForm3::canMoveSimple(int fromX, int fromY, int toX, int toY) {
 	return false;
 }
 
-// Функция обработки хода со взятием (перескок через 1 фигуру)
+//Функция проверки хода со взятием шашки противника
 bool TForm3::canCaptureMove(int fromX, int fromY, int toX, int toY) {
 	if (!inBounds(fromX, fromY) || !inBounds(toX, toY)) return false;
 	if (!isEmpty(toX, toY)) return false;
@@ -327,7 +330,7 @@ bool TForm3::canCaptureMove(int fromX, int fromY, int toX, int toY) {
 	return false;
 }
 
-// Функция проверки: с данной клетки возможен ли любой прыжок
+//Функиця проверки возможности захвата с указанной клетки
 bool TForm3::hasCapture(int x, int y) {
 	if (!inBounds(x,y)) return false;
 	int piece = board[y][x];
@@ -344,7 +347,7 @@ bool TForm3::hasCapture(int x, int y) {
 	return false;
 }
 
-// Функция проверки: есть ли у текущего игрока вообще возможность бить
+//Функция проверки у игрока хотя бы один возможный ход со взятием
 bool TForm3::playerHasAnyCapture(int playerPiece) {
 	for (int y = 0; y < SIZEBOARD; ++y)
 		for (int x = 0; x < SIZEBOARD; ++x) {
@@ -361,7 +364,7 @@ bool TForm3::playerHasAnyCapture(int playerPiece) {
 	return false;
 }
 
-// Функция обработки хода шашки с (fromX, fromY) на (toX, toY)
+//Функция выполняет ход шашки с учетом взятия шашки и правил игры
 void TForm3::performMove(int fromX, int fromY, int toX, int toY) {
 	if (!inBounds(fromX, fromY) || !inBounds(toX, toY)) return;
 
@@ -431,14 +434,14 @@ void TForm3::performMove(int fromX, int fromY, int toX, int toY) {
 	DrawGrid1->Repaint();
 }
 
-// Функция обработки превращения шашки в дамку
+//Функция проверки и выполнения превращение шашки в дамку
 void TForm3::checkForKing(int x, int y) {
 	if (!inBounds(x,y)) return;
 	if (board[y][x] == WHITE_PAWN && y == 0) board[y][x] = WHITE_KING;
 	else if (board[y][x] == BLACK_PAWN && y == SIZEBOARD - 1) board[y][x] = BLACK_KING;
 }
 
-// Функция обработки смена игрока
+//Функция переключения на другого игрока и включение таймера
 void TForm3::switchPlayer() {
     if (currentPlayer == WHITE_PAWN)
     {
@@ -452,6 +455,7 @@ void TForm3::switchPlayer() {
     }
 }
 
+//Фуникция проверки наличия шашек у игрока
 bool TForm3::playerHasPieces(int player)
 {
     for (int y = 0; y < SIZEBOARD; y++)
@@ -473,6 +477,7 @@ bool TForm3::playerHasPieces(int player)
     return false;
 }
 
+//Функция проверки наличия хотя бы одного допустимого хода у игрока
 bool TForm3::playerHasMoves(int player)
 {
     for (int y = 0; y < SIZEBOARD; y++)
