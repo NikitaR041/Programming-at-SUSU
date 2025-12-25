@@ -2,7 +2,7 @@ import psycopg2
 from psycopg2.extensions import connection
 
 DB_HOST = "localhost"
-DB_NAME = "MyCourseWork"  # поменяй на свою БД
+DB_NAME = "MyCourseWork"
 DB_PORT = 5432
 
 def get_connection(user: str, password: str) -> connection:

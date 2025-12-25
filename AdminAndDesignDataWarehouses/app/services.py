@@ -1,5 +1,4 @@
-# services.py
-
+#Функция получения списка аксессуаров и компьютеров
 def get_accessories(conn):
     with conn.cursor() as cur:
         cur.execute("""
@@ -9,7 +8,7 @@ def get_accessories(conn):
         """)
         return cur.fetchall()
 
-
+# Функция получения списка компьютеров
 def get_computers(conn):
     with conn.cursor() as cur:
         cur.execute("""
@@ -19,7 +18,7 @@ def get_computers(conn):
         """)
         return cur.fetchall()
 
-
+# Функция создания нового чека
 def create_cheque(conn, shopper_id: int):
     with conn.cursor() as cur:
         cur.execute("""
@@ -31,7 +30,7 @@ def create_cheque(conn, shopper_id: int):
     conn.commit()
     return cheque_id
 
-
+# Функция добавления аксессуара в чек
 def sell_accessory(conn, cheque_id: int, accessories_id: int, qty: int, price: float):
     with conn.cursor() as cur:
         cur.execute("""
@@ -41,7 +40,7 @@ def sell_accessory(conn, cheque_id: int, accessories_id: int, qty: int, price: f
         """, (cheque_id, accessories_id, qty, price))
     conn.commit()
 
-
+# Функция добавления компьютера в чек
 def sell_computer(conn, cheque_id: int, computer_id: int, qty: int, price: float):
     with conn.cursor() as cur:
         cur.execute("""
@@ -51,13 +50,13 @@ def sell_computer(conn, cheque_id: int, computer_id: int, qty: int, price: float
         """, (cheque_id, computer_id, qty, price))
     conn.commit()
 
-
+# Функция получения общей суммы чека
 def get_cheque_total(conn, cheque_id: int):
     with conn.cursor() as cur:
         cur.execute("SELECT get_cheque_total(%s);", (cheque_id,))
         return cur.fetchone()[0]
 
-
+# Функция получения позиций чека с названиями товаров
 def get_cheque_items(conn, cheque_id: int):
     """
     Возвращает позиции чека с названием товара (аксессуар/компьютер).
@@ -133,6 +132,7 @@ def get_accessories_full(conn):
 
 # Ниже расписана система CRUD для таблицы computer
 
+#Функция получения всех записей из таблицы computer с полным набором полей
 def get_computers_full(conn):
     with conn.cursor() as cur:
         cur.execute("""
@@ -142,7 +142,7 @@ def get_computers_full(conn):
         """)
         return cur.fetchall()
 
-
+#Функция обработки создания записи в таблице computer
 def create_computer(conn, name_comp: str, price, warranty_months: int, build_date, count_item: int):
     with conn.cursor() as cur:
         cur.execute("""
@@ -154,7 +154,7 @@ def create_computer(conn, name_comp: str, price, warranty_months: int, build_dat
     conn.commit()
     return new_id
 
-
+#Функция обработки обновления записи в таблице computer
 def update_computer(conn, computer_id: int, name_comp: str, price, warranty_months: int, build_date, count_item: int):
     with conn.cursor() as cur:
         cur.execute("""
@@ -168,7 +168,7 @@ def update_computer(conn, computer_id: int, name_comp: str, price, warranty_mont
         """, (name_comp, price, warranty_months, build_date, count_item, computer_id))
     conn.commit()
 
-
+#Функция обработки удаления записи в таблице computer
 def delete_computer(conn, computer_id: int):
     with conn.cursor() as cur:
         cur.execute("DELETE FROM computer WHERE computer_id=%s", (computer_id,))
