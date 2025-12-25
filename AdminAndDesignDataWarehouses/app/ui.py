@@ -7,7 +7,7 @@ from db import get_connection
 class LoginWindow(tk.Tk):
     def __init__(self):
         super().__init__()
-        self.title("Вход — Пульс цен")
+        self.title("Авторизация")
         self.geometry("360x200")
         self.resizable(False, False)
 
@@ -103,8 +103,8 @@ class MainWindow(tk.Toplevel):
         if current_user == "admin_role":
             ttk.Separator(self.menu).pack(fill="x", pady=8)
             ttk.Label(self.menu, text="Администрирование").pack(anchor="w", pady=(0, 6))
-            ttk.Button(self.menu, text="Комплектующие (CRUD)", command=self.open_accessories_crud).pack(fill="x", pady=3)
-            ttk.Button(self.menu, text="Компьютеры (CRUD)", command=self.open_computers_crud).pack(fill="x", pady=3)
+            ttk.Button(self.menu, text="Комплектующие", command=self.open_accessories_crud).pack(fill="x", pady=3)
+            ttk.Button(self.menu, text="Компьютеры", command=self.open_computers_crud).pack(fill="x", pady=3)
 
         ttk.Separator(self.menu).pack(fill="x", pady=10)
         ttk.Button(self.menu, text="Выйти", command=self.logout).pack(fill="x", pady=3)
@@ -414,7 +414,7 @@ class AccessoriesCrudScreen(ttk.Frame):
         top = ttk.Frame(self)
         top.pack(fill="x")
 
-        ttk.Label(top, text="Комплектующие (CRUD)", font=("Segoe UI", 12, "bold")).pack(side="left")
+        ttk.Label(top, text="Комплектующие", font=("Segoe UI", 12, "bold")).pack(side="left")
 
         btns = ttk.Frame(top)
         btns.pack(side="right")
@@ -626,7 +626,7 @@ class ComputersCrudScreen(ttk.Frame):
         top = ttk.Frame(self)
         top.pack(fill="x")
 
-        ttk.Label(top, text="Компьютеры (CRUD)", font=("Segoe UI", 12, "bold")).pack(side="left")
+        ttk.Label(top, text="Компьютеры", font=("Segoe UI", 12, "bold")).pack(side="left")
 
         btns = ttk.Frame(top)
         btns.pack(side="right")
