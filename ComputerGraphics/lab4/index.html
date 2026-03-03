@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Звёздчатые многоугольники {n/k}</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h2>Построение звёздчатых многоугольников {n/k}</h2>
+
+    <div class="controls">
+        <div class="control">
+            <label>Количество вершин (n): <span id="nVal">7</span></label>
+            <input type="range" id="n" min="3" max="20" value="7">
+        </div>
+
+        <div class="control">
+            <label>Шаг соединения (k): <span id="kVal">2</span></label>
+            <input type="range" id="k" min="1" max="10" value="2">
+        </div>
+
+        <div class="control">
+            <label>Толщина линии: <span id="thicknessVal">1</span></label>
+            <input type="range" id="thickness" min="1" max="5" 
+                    step="0.5" value="1">
+        </div>
+
+        <div class="control">
+            <label>Цвет линии:</label>
+            <input type="color" id="color" value="#000000">
+        </div>
+    </div>
+
+    <canvas id="canvas" width="600" height="600"></canvas>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+//---------------------------------------------------------------------------
+
+#include <vcl.h>
+#pragma hdrstop
+
+#include "Unit2.h"
+//---------------------------------------------------------------------------
+#pragma package(smart_init)
+#pragma resource "*.dfm"
+TForm2 *Form2;
+//---------------------------------------------------------------------------
+__fastcall TForm2::TForm2(TComponent* Owner)
+	: TForm(Owner)
+{
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm2::Button1Click(TObject *Sender)
+{
+    double sumDollars =
+        Edit5->Text.ToDouble() +
+        Edit6->Text.ToDouble() +
+        Edit7->Text.ToDouble();
+
+    // Если выбрана гарантия 3 года (вторая радиокнопка)
+    if (RadioGroup1->ItemIndex == 1)
+    {
+        sumDollars *= 1.10; // +10%
+	}
+	double result = Edit1->Text.ToDouble() * sumDollars;
+	Edit9->Text = FloatToStr(result);
+	Edit8->Text = FloatToStr(sumDollars);
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm2::Button2Click(TObject *Sender)
+{
+	double sumDollars =
+		Edit14->Text.ToDouble() +
+		Edit15->Text.ToDouble() +
+		Edit16->Text.ToDouble();
+
+	// Если выбрана гарантия 3 года (вторая радиокнопка)
+	if (CheckBox1->Checked == true)
+	{
+		sumDollars *= 1.10; // +10%
+	}
+
+	// Перемножаем на курс (Edit8) и выводим в Edit4
+	double result = Edit10->Text.ToDouble() * sumDollars;
+	Edit18->Text = FloatToStr(result);
+	Edit17->Text = FloatToStr(sumDollars);
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm2::Button3Click(TObject *Sender)
+{
+	double sumDollars =
+		Edit24->Text.ToDouble() +
+		Edit25->Text.ToDouble() +
+		Edit26->Text.ToDouble();
+
+	// Если выбрана гарантия 3 года (вторая радиокнопка)
+	if (CheckBox2->Checked == true)
+	{
+		sumDollars *= 1.10; // +10%
+	}
+
+	// Перемножаем на курс (Edit8) и выводим в Edit4
+	double result = Edit19->Text.ToDouble() * sumDollars;
+	Edit29->Text = FloatToStr(result);
+	Edit28->Text = FloatToStr(sumDollars);
+}
+//---------------------------------------------------------------------------

@@ -1,0 +1,32 @@
+object Form1: TForm1
+  Left = 0
+  Top = 0
+  Caption = #1055#1088#1086#1073#1085#1072#1103' '#1092#1086#1088#1084#1072
+  ClientHeight = 396
+  ClientWidth = 694
+  Color = clInfoBk
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -12
+  Font.Name = 'Segoe UI'
+  Font.Style = []
+  Position = poDesktopCenter
+  OnActivate = FormActivate
+  OnClose = FormClose
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  TextHeight = 15
+  object Label1: TLabel
+    Left = 96
+    Top = 152
+    Width = 520
+    Height = 80
+    Caption = 'Hello, World!'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = 16744576
+    Font.Height = -85
+    Font.Name = 'Terminal'
+    Font.Style = []
+    ParentFont = False
+  end
+end

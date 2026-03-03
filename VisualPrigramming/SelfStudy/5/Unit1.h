@@ -1,0 +1,44 @@
+//---------------------------------------------------------------------------
+
+#ifndef Unit1H
+#define Unit1H
+//---------------------------------------------------------------------------
+#include <System.Classes.hpp>
+#include <Vcl.Controls.hpp>
+#include <Vcl.StdCtrls.hpp>
+#include <Vcl.Forms.hpp>
+#include <Vcl.Menus.hpp>
+#include <Vcl.ExtCtrls.hpp>
+//---------------------------------------------------------------------------
+class TForm1 : public TForm
+{
+__published:	// IDE-managed Components
+	TMainMenu *MainMenu1;
+	TMenuItem *N1;
+	TMenuItem *N2;
+	TTimer *Timer1;
+	TPaintBox *PaintBox1;
+	void __fastcall N2Click(TObject *Sender);
+	void __fastcall N1Click(TObject *Sender);
+	void __fastcall PaintBox1Paint(TObject *Sender);
+	void __fastcall Timer1Timer(TObject *Sender);
+	void __fastcall PaintBox1MouseDown(TObject *Sender, TMouseButton Button, TShiftState Shift,
+          int X, int Y);
+	void __fastcall FormCreate(TObject *Sender);
+private:	// User declarations
+	//ПАраметры правильного семиугольника
+	int cx, cy;        // центр семиугольника
+    int R;             // радиус (40 px)
+	int dx, dy;        // скорость движения
+
+    //Функция отображения правильного семиугольника
+	void DrawFigure(TCanvas *c);
+    //Функция проверки клика указательной мышки на фигуру
+    bool isClickOnFigure(int x, int y);
+public:		// User declarations
+	__fastcall TForm1(TComponent* Owner);
+};
+//---------------------------------------------------------------------------
+extern PACKAGE TForm1 *Form1;
+//---------------------------------------------------------------------------
+#endif

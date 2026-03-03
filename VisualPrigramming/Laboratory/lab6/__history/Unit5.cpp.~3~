@@ -1,0 +1,45 @@
+//---------------------------------------------------------------------------
+
+#include <vcl.h>
+#pragma hdrstop
+
+#include "Unit5.h"
+#include "winsock.h"
+//---------------------------------------------------------------------------
+#pragma package(smart_init)
+#pragma resource "*.dfm"
+TForm5 *Form5;
+//---------------------------------------------------------------------------
+__fastcall TForm5::TForm5(TComponent* Owner)
+	: TForm(Owner)
+{
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm5::Button1Click(TObject *Sender)
+{
+	int rc;
+	WSADATA WSAData;
+	char name[80], *lpAddr;
+	PHOSTENT phe;
+	in_addr Addr;
+	rc = WSAStartup(0x0101, &WSAData);
+	if (rc != 0) {
+		Application->MessageBox(NULL, L"TCP/IP не установлен", :"", MB_OK);
+		return;
+	} // if
+	rc = gethostname(name, 80);
+	if (rc == -1) {
+		Application->MessageBox(NULL, L"Ошибка при определении имени компьютера", L"Ошибка", MB_OK);
+		return;
+	} // if
+	phe = gethostbyname(name);
+	if (phe == NULL) {
+		Application->MessageBox(NULL, L"Ошибка в имени компьютера", L"Ошибка", MB_OK);
+		return;
+	} // if
+	memcpy((char FAR *)&(Addr), phe->h_addr, phe->h_length);
+	lpAddr = inet_ntoa(Addr);
+	Edit1->Text = lpAddr;
+	Edit2->Text = name;
+}
+//---------------------------------------------------------------------------

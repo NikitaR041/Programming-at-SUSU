@@ -1,0 +1,37 @@
+//---------------------------------------------------------------------------
+
+#ifndef Unit1H
+#define Unit1H
+//---------------------------------------------------------------------------
+#include <System.Classes.hpp>
+#include <Vcl.Controls.hpp>
+#include <Vcl.StdCtrls.hpp>
+#include <Vcl.Forms.hpp>
+#include <Vcl.Menus.hpp>
+#include <Vcl.Grids.hpp>
+//---------------------------------------------------------------------------
+class TForm1 : public TForm
+{
+__published:	// IDE-managed Components
+	TMainMenu *MainMenu1;
+	TMenuItem *N1;
+	TMenuItem *N2;
+	TStringGrid *StringGrid1;
+	TListBox *ListBox1;
+	void __fastcall N1Click(TObject *Sender);
+	void __fastcall N2Click(TObject *Sender);
+	void __fastcall ListBox1Click(TObject *Sender);
+	void __fastcall StringGrid1MouseDown(TObject *Sender, TMouseButton Button, TShiftState Shift,
+          int X, int Y);
+	void __fastcall StringGrid1DrawCell(TObject *Sender, System::LongInt ACol, System::LongInt ARow,
+          TRect &Rect, TGridDrawState State);
+private:	// User declarations
+public:		// User declarations
+	__fastcall TForm1(TComponent* Owner);
+	TColor CurrentColor; //ƒл€ выбора цвета
+	TColor CellColors[10][10]; //ƒл€ хранени€ цветов каждой €чейки
+};
+//---------------------------------------------------------------------------
+extern PACKAGE TForm1 *Form1;
+//---------------------------------------------------------------------------
+#endif

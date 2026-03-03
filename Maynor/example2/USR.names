@@ -1,0 +1,12 @@
+Nominal_Water_Cut: ignore.
+Nominal_Mass_Flow: continuous.
+Reference_Water_Cut: continuousю
+Reference_Mass_Flow: continuous.
+Reference_Density: continuous.
+Reference_GVF: continuous.
+Coriolis_Mass_Flow: continuous.
+Coriolis_Density: continuous.
+Coriolis_Density_Drop: continuous.
+Error_Mass_Flow: continuous.
+Error_Density: continuous.
+Error_Density_Drop: continuous.

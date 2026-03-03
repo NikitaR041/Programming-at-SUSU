@@ -1,0 +1,35 @@
+body {
+  font-family: Arial, sans-serif;
+  /* text-align: center; */
+  padding: 20px;
+  background: #f5f5f5;
+}
+
+.models {
+    display: flex;
+    justify-content: space-around;
+    gap: 20px;
+}
+
+.model {
+  border: 1px solid #ccc;
+  padding: 20px;
+  margin: 15px auto;
+  width: 300px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 2px 2px 6px rgba(0,0,0,0.1);
+}
+
+label {
+  display: block;
+  margin: 5px 0;
+}
+
+.preview {
+  width: 80px;
+  height: 80px;
+  border-radius: 20%;
+  margin: 10px auto;
+  border: 1px solid #aaa;
+}

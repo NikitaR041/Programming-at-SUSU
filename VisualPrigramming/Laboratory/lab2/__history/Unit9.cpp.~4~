@@ -1,0 +1,45 @@
+//---------------------------------------------------------------------------
+
+#include <vcl.h>
+#pragma hdrstop
+
+#include "Unit9.h"
+//---------------------------------------------------------------------------
+#pragma package(smart_init)
+#pragma resource "*.dfm"
+TForm9 *Form9;
+//---------------------------------------------------------------------------
+__fastcall TForm9::TForm9(TComponent* Owner)
+	: TForm(Owner)
+{
+}
+//------------------------------------------------------------------------------------------------------------------------------------------------void __fastcall TForm9::ArialRBClick(TObject *Sender)
+{
+	if (ArialRB->Checked) Label1->Font->Name = “Arial”;
+	if (CourierRB->Checked) Label1->Font->Name = “Courier”;
+	if (TimesNewRomanRB->Checked) Label1->Font->Name=“Times New Roman”;
+}
+
+//---------------------------------------------------------------------------
+void __fastcall TForm9::Size8RBClick(TObject *Sender)
+{
+	if (Size8RB->Checked) Label1->Font->Size = 8;
+	if (Size10RB->Checked) Label1->Font->Size = 10;
+	if (Size12RB->Checked) Label1->Font->Size = 12;
+	if (Size16RB->Checked) Label1->Font->Size = 16;
+	if (Size20RB->Checked) Label1->Font->Size = 20;
+	if (Size24RB->Checked) Label1->Font->Size = 24;
+	if (Size32RB->Checked) Label1->Font->Size = 32;
+	if (Size64RB->Checked) Label1->Font->Size = 64;
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm9::BlackRBClick(TObject *Sender)
+{
+	if (BlackRB->Checked) Label1->Font->Color = clBlack;
+	if (WhiteRB->Checked) Label1->Font->Color = clWhite;
+	if (BlueRB->Checked) Label1->Font->Color = clBlue;
+	if (RedRB->Checked) Label1->Font->Color = clRed;
+	if (GreenRB->Checked) Label1->Font->Color = clGreen;
+	if (YellowRB->Checked) Label1->Font->Color = clYellow;
+}
+//---------------------------------------------------------------------------

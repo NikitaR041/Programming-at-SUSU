@@ -1,0 +1,274 @@
+//---------------------------------------------------------------------------
+
+#include <vcl.h>
+#pragma hdrstop
+
+#include "Unit3.h"
+#include "printers.hpp"
+//---------------------------------------------------------------------------
+#pragma package(smart_init)
+#pragma resource "*.dfm"
+TForm3 *Form3;
+//---------------------------------------------------------------------------
+__fastcall TForm3::TForm3(TComponent* Owner)
+	: TForm(Owner)
+{
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm3::N4Click(TObject *Sender)
+{
+// Ниже нааписан старый метод "Создания" файла
+	Memo1->Clear();
+// Ниже написан новый метод "Создания"
+	NewDocument(); // В функции пункта меню «Создать»
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm3::N5Click(TObject *Sender)
+{
+// Ниже написан старый метод сохранения
+//    Memo1->Lines->SaveToFile("document.txt");
+
+// Ниже приведен новый метод сохранеиня
+// Ну уже нет
+//	int Rc;
+//	Rc = SaveDialog1->Execute( );
+//	if (Rc) {
+//		Memo1->Lines->SaveToFile(SaveDialog1->FileName);
+//	} // if
+
+// Вот вызов функции, которая сохраняет файл
+	SaveDocument();// В функции пункта меню «Сохранить»
+}
+//---------------------------------------------------------------------------
+
+
+void __fastcall TForm3::N8Click(TObject *Sender)
+{
+	Memo1->Undo();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm3::N10Click(TObject *Sender)
+{
+	Memo1->CutToClipboard();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm3::N11Click(TObject *Sender)
+{
+	Memo1->CopyToClipboard();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm3::N12Click(TObject *Sender)
+{
+	Memo1->PasteFromClipboard();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm3::N13Click(TObject *Sender)
+{
+	Memo1->ClearSelection();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm3::N15Click(TObject *Sender)
+{
+	Memo1->SelectAll();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm3::N3Click(TObject *Sender)
+{
+	Application->MessageBoxW(L"Здесь можно написать о себе", L"Справка", MB_OK);
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm3::N6Click(TObject *Sender)
+{
+// Ниже приведен старый пример Создания файла
+//	int Rc;
+//	Rc = OpenDialog1->Execute();
+//	if (Rc) {
+//		Memo1->Lines->LoadFromFile(OpenDialog1->FileName);
+//	} // if
+
+// Новый метод создания файла
+	OpenDocument(); // В функции пункта меню «Создать»
+}
+//---------------------------------------------------------------------------
+
+
+void __fastcall TForm3::N7Click(TObject *Sender)
+{
+// Новый метод сохранения как
+	SaveAsDocument();// В функции пункта меню «Сохранить как»
+}
+//---------------------------------------------------------------------------
+
+//--------------------- НИЖЕ ПРИВЕДЕНЫ РЕАЛИЗАЦИИ МЕТОДОВ -------------------
+//----- NewDocument(), OpenDocument(), SaveDocument(), SaveAsDocument() -----
+void TForm3::NewDocument(void)
+{
+	int Rc;
+	if (Memo1->Modified) {
+		Rc = Application->MessageBox(
+			L"Текст был изменен\nСохранить изменение?",
+			L"Вопрос", MB_YESNOCANCEL | MB_ICONQUESTION);
+		if (Rc == IDCANCEL) return;
+		if (Rc == IDYES) {
+			SaveDocument( );
+		} // if
+	} // if
+	Memo1->Clear( );
+	FileName = "";
+} // NewDocument
+
+void TForm3::OpenDocument(void)
+{
+	int Rc;
+	if (Memo1->Modified) {
+		Rc = Application->MessageBox(
+			L"Текст был изменен\nСохранить изменение?",
+			L"Вопрос", MB_YESNOCANCEL | MB_ICONQUESTION);
+
+		if (Rc == IDCANCEL) return;
+		if (Rc == IDYES) {
+			SaveDocument( );
+		} // if
+	} // if
+	Rc = OpenDialog1->Execute( );
+	if (Rc) {
+		Memo1->Lines->LoadFromFile(OpenDialog1->FileName);
+		FileName = OpenDialog1->FileName;
+	} // if
+} // OpenDocument
+
+void TForm3::SaveDocument(void)
+{
+	if (FileName.IsEmpty( )) {
+		SaveAsDocument( );
+	} else {
+		Memo1->Lines->SaveToFile(FileName);
+	} // else
+    Memo1->Modified = false;
+} // SaveDocument
+
+void TForm3::SaveAsDocument(void)
+{
+	int Rc;
+	SaveDialog1->FileName = FileName;
+	Rc = SaveDialog1->Execute( );
+	if (Rc) {
+		Memo1->Lines->SaveToFile(SaveDialog1->FileName);
+		FileName = SaveDialog1->FileName;
+	} // if
+    Memo1->Modified = false;
+} // SaveAsDocument
+
+
+void __fastcall TForm3::N16Click(TObject *Sender)
+{
+    int Rc;
+	Rc = FontDialog1->Execute();
+	if (Rc)
+	{
+		Memo1->Font = FontDialog1->Font;
+	}
+}
+//---------------------------------------------------------------------------
+
+
+void __fastcall TForm3::N17Click(TObject *Sender)
+{
+	int Rc;
+	Rc = PrintDialog1->Execute( );
+	if (Rc) {
+		TPrinter *Prntr = Printer( );
+		Prntr->BeginDoc( );
+		Prntr->Canvas->TextOut(200, 200, Memo1->Lines->Text);
+		Prntr->EndDoc( );
+	} // if
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm3::N18Click(TObject *Sender)
+{
+    PrinterSetupDialog1->Execute( );
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm3::N19Click(TObject *Sender)
+{
+	FindDialog1-> Execute();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm3::N20Click(TObject *Sender)
+{
+	FindText();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm3::FindDialog1Find(TObject *Sender)
+{
+	FindText();
+}
+//---------------------------------------------------------------------------
+
+// ------------------------ Ниже реализована функция FindText() -------------
+void FindText(void)
+{
+	TPoint CaretPos;
+	int x, y, i, l;
+	AnsiString FindText, Str;
+	char *SStr, *SfindText;
+
+	CaretPos = Form1->Memo1->CaretPos;
+	x = CaretPos.x;
+	y = CaretPos.y;
+
+	FindText = Form1->FindDialog1->FindText;
+	if (FindText.IsEmpty()) return;
+
+	SfindText = FindText.c_str();
+	SStr = Form1->Memo1->Lines->Text.c_str();
+
+	// Вычисляем позицию курсора в общем тексте
+	l = x;
+	for (i = 0; i < y; i++)
+		l += Form1->Memo1->Lines->Strings[i].Length() + 2;
+
+	if (Form1->FindDialog1->Options.Contains(frDown))
+	{
+		// Поиск вниз
+		for (i = l + 1; i < Form1->Memo1->Lines->Text.Length(); i++)
+		{
+			if (strncmp(SStr + i, SfindText, FindText.Length()) == 0)
+			{
+				Form1->Memo1->SetFocus();
+				Form1->Memo1->SelStart = i;
+				Form1->Memo1->SelLength = FindText.Length();
+				return;
+			}
+		}
+	}
+	else
+	{
+		// Поиск вверх
+		for (i = l - 1 - FindText.Length(); i >= 0; i--)
+		{
+			if (strncmp(SStr + i, SfindText, FindText.Length()) == 0)
+			{
+				Form1->Memo1->SetFocus();
+				Form1->Memo1->SelStart = i;
+				Form1->Memo1->SelLength = FindText.Length();
+				return;
+			}
+		}
+	}
+
+	Application->MessageBoxW(L"Не найдено", L"Сообщение", MB_OK);
+}
+

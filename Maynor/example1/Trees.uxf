@@ -1,0 +1,1115 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0-XS">
+  <zoom_level>1</zoom_level>
+  <element>
+    <id>FCBlock</id>
+    <coordinates>
+      <x>425</x>
+      <y>401</y>
+      <w>20</w>
+      <h>6</h>
+    </coordinates>
+    <panel_attributes>type=()
+VitaminC_DV &lt;= 5</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>FCBlock</id>
+    <coordinates>
+      <x>327</x>
+      <y>415</y>
+      <w>20</w>
+      <h>6</h>
+    </coordinates>
+    <panel_attributes>type=()
+Total_Carbohydrates_g &lt;= 137</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>FCBlock</id>
+    <coordinates>
+      <x>562</x>
+      <y>411</y>
+      <w>20</w>
+      <h>6</h>
+    </coordinates>
+    <panel_attributes>type=()
+Dietary_Fibre_g &lt;= 5</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>340</x>
+      <y>404</y>
+      <w>87</w>
+      <h>13</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+True</panel_attributes>
+    <additional_attributes>10.0;110.0;850.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>444</x>
+      <y>403</y>
+      <w>121</w>
+      <h>10</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+False</panel_attributes>
+    <additional_attributes>1190.0;80.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>580</x>
+      <y>415</y>
+      <w>8</w>
+      <h>11</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+False</panel_attributes>
+    <additional_attributes>50.0;90.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>561</x>
+      <y>415</y>
+      <w>6</w>
+      <h>11</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+True</panel_attributes>
+    <additional_attributes>10.0;90.0;20.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>FCBlock</id>
+    <coordinates>
+      <x>546</x>
+      <y>424</y>
+      <w>20</w>
+      <h>6</h>
+    </coordinates>
+    <panel_attributes>type=()
+Total_Carbohygrates_g &lt;= 47</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>FCBlock</id>
+    <coordinates>
+      <x>579</x>
+      <y>424</y>
+      <w>20</w>
+      <h>6</h>
+    </coordinates>
+    <panel_attributes>type=()
+Smoothies
+Values = 9</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>543</x>
+      <y>428</y>
+      <w>7</w>
+      <h>11</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+True</panel_attributes>
+    <additional_attributes>10.0;90.0;40.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>564</x>
+      <y>428</y>
+      <w>8</w>
+      <h>11</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+False</panel_attributes>
+    <additional_attributes>50.0;90.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>FCBlock</id>
+    <coordinates>
+      <x>564</x>
+      <y>437</y>
+      <w>20</w>
+      <h>6</h>
+    </coordinates>
+    <panel_attributes>type=()
+Caffeine_mg &lt;= 12</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>FCBlock</id>
+    <coordinates>
+      <x>528</x>
+      <y>437</y>
+      <w>20</w>
+      <h>6</h>
+    </coordinates>
+    <panel_attributes>type=()
+Shaken Iced Beverages
+Values = 9</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>582</x>
+      <y>441</y>
+      <w>8</w>
+      <h>11</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+False</panel_attributes>
+    <additional_attributes>50.0;90.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>561</x>
+      <y>441</y>
+      <w>7</w>
+      <h>11</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+True</panel_attributes>
+    <additional_attributes>10.0;90.0;40.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>FCBlock</id>
+    <coordinates>
+      <x>583</x>
+      <y>450</y>
+      <w>20</w>
+      <h>6</h>
+    </coordinates>
+    <panel_attributes>type=()
+Frappuccino Blended Creme
+Values = 9</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>FCBlock</id>
+    <coordinates>
+      <x>545</x>
+      <y>450</y>
+      <w>20</w>
+      <h>6</h>
+    </coordinates>
+    <panel_attributes>type=()
+Tazo Tea Drinks
+Values = 10</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>345</x>
+      <y>419</y>
+      <w>85</w>
+      <h>7</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+False</panel_attributes>
+    <additional_attributes>830.0;50.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>251</x>
+      <y>419</y>
+      <w>79</w>
+      <h>13</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+True</panel_attributes>
+    <additional_attributes>10.0;110.0;770.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>FCBlock</id>
+    <coordinates>
+      <x>235</x>
+      <y>430</y>
+      <w>20</w>
+      <h>6</h>
+    </coordinates>
+    <panel_attributes>type=()
+Sugar_g &lt;= 14</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>FCBlock</id>
+    <coordinates>
+      <x>426</x>
+      <y>424</y>
+      <w>20</w>
+      <h>6</h>
+    </coordinates>
+    <panel_attributes>type=()
+Calcium_DV &lt;= 25</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>165</x>
+      <y>434</y>
+      <w>73</w>
+      <h>11</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+True</panel_attributes>
+    <additional_attributes>10.0;90.0;710.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>253</x>
+      <y>434</y>
+      <w>18</w>
+      <h>9</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+False</panel_attributes>
+    <additional_attributes>160.0;70.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>FCBlock</id>
+    <coordinates>
+      <x>149</x>
+      <y>443</y>
+      <w>20</w>
+      <h>6</h>
+    </coordinates>
+    <panel_attributes>type=()
+Cholesterol_mg &lt;= 0</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>FCBlock</id>
+    <coordinates>
+      <x>266</x>
+      <y>441</y>
+      <w>20</w>
+      <h>6</h>
+    </coordinates>
+    <panel_attributes>type=()
+VitaninA_DV &lt;= 5</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>167</x>
+      <y>447</y>
+      <w>8</w>
+      <h>11</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+False</panel_attributes>
+    <additional_attributes>50.0;90.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>144</x>
+      <y>447</y>
+      <w>8</w>
+      <h>11</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+True</panel_attributes>
+    <additional_attributes>10.0;90.0;60.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>FCBlock</id>
+    <coordinates>
+      <x>169</x>
+      <y>456</y>
+      <w>20</w>
+      <h>7</h>
+    </coordinates>
+    <panel_attributes>type=()
+Classic Espresso Drinks
+Values = [32; 3]
+True = 3
+False = 32</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>FCBlock</id>
+    <coordinates>
+      <x>130</x>
+      <y>456</y>
+      <w>20</w>
+      <h>6</h>
+    </coordinates>
+    <panel_attributes>type=()
+Total_Fag_g &lt;= 0</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>148</x>
+      <y>460</y>
+      <w>8</w>
+      <h>11</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+False</panel_attributes>
+    <additional_attributes>50.0;90.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>125</x>
+      <y>460</y>
+      <w>8</w>
+      <h>11</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+True</panel_attributes>
+    <additional_attributes>10.0;90.0;60.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>FCBlock</id>
+    <coordinates>
+      <x>111</x>
+      <y>469</y>
+      <w>20</w>
+      <h>6</h>
+    </coordinates>
+    <panel_attributes>type=()
+Tazo Tea Drinks
+Values = 4</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>FCBlock</id>
+    <coordinates>
+      <x>149</x>
+      <y>469</y>
+      <w>20</w>
+      <h>6</h>
+    </coordinates>
+    <panel_attributes>type=()
+Coffee
+Values = 4</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>284</x>
+      <y>445</y>
+      <w>19</w>
+      <h>14</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+False</panel_attributes>
+    <additional_attributes>170.0;120.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>234</x>
+      <y>444</y>
+      <w>34</w>
+      <h>14</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+True</panel_attributes>
+    <additional_attributes>10.0;120.0;320.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>FCBlock</id>
+    <coordinates>
+      <x>218</x>
+      <y>456</y>
+      <w>20</w>
+      <h>6</h>
+    </coordinates>
+    <panel_attributes>type=()
+Cholesterol_mg &lt;= 34</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>FCBlock</id>
+    <coordinates>
+      <x>298</x>
+      <y>457</y>
+      <w>20</w>
+      <h>6</h>
+    </coordinates>
+    <panel_attributes>type=()
+Calcium_DV &lt;= 12</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>215</x>
+      <y>460</y>
+      <w>7</w>
+      <h>11</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+True</panel_attributes>
+    <additional_attributes>10.0;90.0;40.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>236</x>
+      <y>460</y>
+      <w>8</w>
+      <h>11</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+False</panel_attributes>
+    <additional_attributes>40.0;90.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>FCBlock</id>
+    <coordinates>
+      <x>237</x>
+      <y>469</y>
+      <w>20</w>
+      <h>6</h>
+    </coordinates>
+    <panel_attributes>type=()
+Signature Esqpresso Drinks
+Values = 4</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>FCBlock</id>
+    <coordinates>
+      <x>201</x>
+      <y>469</y>
+      <w>20</w>
+      <h>7</h>
+    </coordinates>
+    <panel_attributes>type=()
+Shaken Iced Beverages
+Values = [14; 1]
+True = 14
+False = 1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>295</x>
+      <y>461</y>
+      <w>7</w>
+      <h>11</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+True</panel_attributes>
+    <additional_attributes>10.0;90.0;40.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>316</x>
+      <y>461</y>
+      <w>24</w>
+      <h>13</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+False</panel_attributes>
+    <additional_attributes>220.0;110.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>FCBlock</id>
+    <coordinates>
+      <x>279</x>
+      <y>470</y>
+      <w>20</w>
+      <h>6</h>
+    </coordinates>
+    <panel_attributes>type=()
+Sugars_g &lt;= 28</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>FCBlock</id>
+    <coordinates>
+      <x>334</x>
+      <y>472</y>
+      <w>20</w>
+      <h>6</h>
+    </coordinates>
+    <panel_attributes>type=()
+Trans_Fat_g &lt;= 0.4</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>261</x>
+      <y>474</y>
+      <w>21</w>
+      <h>12</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+True</panel_attributes>
+    <additional_attributes>10.0;100.0;190.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>292</x>
+      <y>474</y>
+      <w>9</w>
+      <h>14</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+False</panel_attributes>
+    <additional_attributes>10.0;120.0;60.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>FCBlock</id>
+    <coordinates>
+      <x>246</x>
+      <y>484</y>
+      <w>20</w>
+      <h>7</h>
+    </coordinates>
+    <panel_attributes>type=()
+Tazo Tea Drinks
+Values = 6</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>FCBlock</id>
+    <coordinates>
+      <x>290</x>
+      <y>486</y>
+      <w>20</w>
+      <h>6</h>
+    </coordinates>
+    <panel_attributes>type=()
+Shaken Iced Beverages
+Values = 2</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>339</x>
+      <y>489</y>
+      <w>16</w>
+      <h>11</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+True</panel_attributes>
+    <additional_attributes>10.0;90.0;140.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>352</x>
+      <y>476</y>
+      <w>8</w>
+      <h>11</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+False</panel_attributes>
+    <additional_attributes>40.0;90.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>FCBlock</id>
+    <coordinates>
+      <x>317</x>
+      <y>486</y>
+      <w>20</w>
+      <h>7</h>
+    </coordinates>
+    <panel_attributes>type=()
+Tazo Tea Drinks
+Values = [19; 2]
+True = 19
+False = 2</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>FCBlock</id>
+    <coordinates>
+      <x>352</x>
+      <y>485</y>
+      <w>20</w>
+      <h>6</h>
+    </coordinates>
+    <panel_attributes>type=()
+Caffeine_mg &lt;= 5</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>370</x>
+      <y>489</y>
+      <w>8</w>
+      <h>11</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+False</panel_attributes>
+    <additional_attributes>40.0;90.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>331</x>
+      <y>476</y>
+      <w>7</w>
+      <h>12</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+True</panel_attributes>
+    <additional_attributes>10.0;100.0;40.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>FCBlock</id>
+    <coordinates>
+      <x>324</x>
+      <y>498</y>
+      <w>20</w>
+      <h>6</h>
+    </coordinates>
+    <panel_attributes>type=()
+Tazo Tea Drinks
+Values = 4.5</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>FCBlock</id>
+    <coordinates>
+      <x>369</x>
+      <y>498</y>
+      <w>20</w>
+      <h>6</h>
+    </coordinates>
+    <panel_attributes>type=()
+Sugars_g &lt;= 29</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>387</x>
+      <y>502</y>
+      <w>8</w>
+      <h>11</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+False</panel_attributes>
+    <additional_attributes>40.0;90.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>338</x>
+      <y>502</y>
+      <w>34</w>
+      <h>11</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+True</panel_attributes>
+    <additional_attributes>10.0;90.0;320.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>FCBlock</id>
+    <coordinates>
+      <x>326</x>
+      <y>511</y>
+      <w>20</w>
+      <h>6</h>
+    </coordinates>
+    <panel_attributes>type=()
+Caffeine_mg &lt;= 80</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>FCBlock</id>
+    <coordinates>
+      <x>386</x>
+      <y>511</y>
+      <w>20</w>
+      <h>6</h>
+    </coordinates>
+    <panel_attributes>type=()
+Proteing_g &lt;= 9</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>382</x>
+      <y>515</y>
+      <w>8</w>
+      <h>10</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+True</panel_attributes>
+    <additional_attributes>10.0;80.0;50.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>344</x>
+      <y>515</y>
+      <w>8</w>
+      <h>10</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+False</panel_attributes>
+    <additional_attributes>50.0;80.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>FCBlock</id>
+    <coordinates>
+      <x>307</x>
+      <y>523</y>
+      <w>20</w>
+      <h>7</h>
+    </coordinates>
+    <panel_attributes>type=()
+Signature Espresso Dinks 
+Values = [15,6; 3.6]
+True = 15.6
+False = 3.6</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>FCBlock</id>
+    <coordinates>
+      <x>344</x>
+      <y>523</y>
+      <w>20</w>
+      <h>7</h>
+    </coordinates>
+    <panel_attributes>type=()
+Classic Espresso Drinks
+Values = [8.3; 1.3]
+True = 1.3
+False = 8.3</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>404</x>
+      <y>515</y>
+      <w>8</w>
+      <h>10</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+False</panel_attributes>
+    <additional_attributes>50.0;80.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>322</x>
+      <y>515</y>
+      <w>8</w>
+      <h>10</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+True</panel_attributes>
+    <additional_attributes>10.0;80.0;50.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>FCBlock</id>
+    <coordinates>
+      <x>370</x>
+      <y>523</y>
+      <w>20</w>
+      <h>7</h>
+    </coordinates>
+    <panel_attributes>type=()
+Tazo Tea Drinks
+Values = 5.7</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>FCBlock</id>
+    <coordinates>
+      <x>403</x>
+      <y>523</y>
+      <w>20</w>
+      <h>7</h>
+    </coordinates>
+    <panel_attributes>type=()
+Signature Espresso Drinks
+Values = [5; 1]
+True = 1
+False = 5</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>FCBlock</id>
+    <coordinates>
+      <x>395</x>
+      <y>437</y>
+      <w>20</w>
+      <h>6</h>
+    </coordinates>
+    <panel_attributes>type=()
+Caffeine_mg &lt;= 32</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>410</x>
+      <y>428</y>
+      <w>19</w>
+      <h>11</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+True</panel_attributes>
+    <additional_attributes>10.0;90.0;170.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>413</x>
+      <y>441</y>
+      <w>8</w>
+      <h>12</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+False</panel_attributes>
+    <additional_attributes>40.0;100.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>FCBlock</id>
+    <coordinates>
+      <x>462</x>
+      <y>436</y>
+      <w>20</w>
+      <h>6</h>
+    </coordinates>
+    <panel_attributes>type=()
+Caffeine_mg &lt;= 135</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>399</x>
+      <y>455</y>
+      <w>16</w>
+      <h>11</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+True</panel_attributes>
+    <additional_attributes>10.0;90.0;140.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>444</x>
+      <y>428</y>
+      <w>23</w>
+      <h>10</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+False</panel_attributes>
+    <additional_attributes>210.0;80.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>FCBlock</id>
+    <coordinates>
+      <x>377</x>
+      <y>451</y>
+      <w>20</w>
+      <h>8</h>
+    </coordinates>
+    <panel_attributes>type=()
+Frappuccino Blended Creme
+Values = [5;1]
+True = 5
+False = 1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>FCBlock</id>
+    <coordinates>
+      <x>412</x>
+      <y>451</y>
+      <w>20</w>
+      <h>6</h>
+    </coordinates>
+    <panel_attributes>type=()
+Cholesterol_mg &lt;= 34</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>430</x>
+      <y>455</y>
+      <w>9</w>
+      <h>9</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+False</panel_attributes>
+    <additional_attributes>70.0;70.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>392</x>
+      <y>442</y>
+      <w>8</w>
+      <h>11</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+True</panel_attributes>
+    <additional_attributes>10.0;90.0;60.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>FCBlock</id>
+    <coordinates>
+      <x>433</x>
+      <y>462</y>
+      <w>20</w>
+      <h>8</h>
+    </coordinates>
+    <panel_attributes>type=()
+Frappuccino Blended Coffee
+Values = [39; 4]
+True = 4
+False = 39</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>FCBlock</id>
+    <coordinates>
+      <x>385</x>
+      <y>464</y>
+      <w>20</w>
+      <h>6</h>
+    </coordinates>
+    <panel_attributes>type=()
+Frappuccino Light Coffee
+Values = 8</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>480</x>
+      <y>440</y>
+      <w>9</w>
+      <h>9</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+False</panel_attributes>
+    <additional_attributes>70.0;70.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>458</x>
+      <y>440</y>
+      <w>8</w>
+      <h>9</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+True</panel_attributes>
+    <additional_attributes>10.0;70.0;50.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>FCBlock</id>
+    <coordinates>
+      <x>443</x>
+      <y>447</y>
+      <w>20</w>
+      <h>8</h>
+    </coordinates>
+    <panel_attributes>type=()
+Signature Espresso Drinks
+Values = [9; 1]
+True = 9
+False = 1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>FCBlock</id>
+    <coordinates>
+      <x>482</x>
+      <y>447</y>
+      <w>20</w>
+      <h>6</h>
+    </coordinates>
+    <panel_attributes>type=()
+Sugars_g &lt;= 48</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>500</x>
+      <y>451</y>
+      <w>9</w>
+      <h>9</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+False</panel_attributes>
+    <additional_attributes>70.0;70.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>478</x>
+      <y>451</y>
+      <w>8</w>
+      <h>9</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+True</panel_attributes>
+    <additional_attributes>10.0;70.0;50.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>FCBlock</id>
+    <coordinates>
+      <x>467</x>
+      <y>458</y>
+      <w>20</w>
+      <h>7</h>
+    </coordinates>
+    <panel_attributes>type=()
+Classic Espresso Drinks 
+Values = [20; 4]
+True = 20
+False = 4</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>FCBlock</id>
+    <coordinates>
+      <x>502</x>
+      <y>458</y>
+      <w>20</w>
+      <h>6</h>
+    </coordinates>
+    <panel_attributes>type=()
+Signature Espresso Drinks
+Values = 6</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>

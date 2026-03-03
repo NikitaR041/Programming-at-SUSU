@@ -1,0 +1,77 @@
+//---------------------------------------------------------------------------
+
+#include <vcl.h>
+#pragma hdrstop
+
+#include "Unit1.h"
+#include "Unit2.h"
+//---------------------------------------------------------------------------
+#pragma package(smart_init)
+#pragma resource "*.dfm"
+TForm1 *Form1;
+//---------------------------------------------------------------------------
+__fastcall TForm1::TForm1(TComponent* Owner)
+	: TForm(Owner)
+{
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm1::Edit1Change(TObject *Sender)
+{
+	int n, i;
+	n = Edit1->Text.ToInt( );
+	StringGrid1->RowCount = n+1;
+	StringGrid3->RowCount = n+1;
+	for (i=1; i<n+1; i++) {
+		StringGrid1->Cells[0][i] = i;
+		StringGrid3->Cells[0][i] = i;
+	} // for
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm1::Edit2Change(TObject *Sender)
+{
+	int m, i;
+	m = Edit2->Text.ToInt( );
+	StringGrid1->ColCount = m+1;
+	StringGrid2->RowCount = m+1;
+	for (i=1; i<m+1; i++) {
+		StringGrid1->Cells[i][0] = i;
+		StringGrid2->Cells[0][i] = i;
+	} // for
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm1::Edit3Change(TObject *Sender)
+{
+	int l, i;
+	l = Edit3->Text.ToInt( );
+	StringGrid2->ColCount = l+1;
+	StringGrid3->ColCount = l+1;
+	for (i=1; i<l+1; i++) {
+		StringGrid2->Cells[i][0] = i;
+		StringGrid3->Cells[i][0] = i;
+	} // for
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm1::BitBtn1Click(TObject *Sender)
+{
+	int n, m, l, i, j, k;
+	double a;
+	n = Edit1->Text.ToInt( );
+	m = Edit2->Text.ToInt( );
+	l = Edit3->Text.ToInt( );
+	for (i = 1; i <= n; i++) {
+		for (j = 1; j <= l; j++) {
+		a = 0;
+		for (k = 1; k <= m; k++) {
+			a += StringGrid1->Cells[k][i].ToDouble( ) *StringGrid2->Cells[j][k].ToDouble( );
+			} // for k
+			StringGrid3->Cells[j][i] = a;
+		} // for j
+	} // for i
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm1::N11Click(TObject *Sender)
+{
+	Form2->ShowModal();
+}
+//---------------------------------------------------------------------------
+

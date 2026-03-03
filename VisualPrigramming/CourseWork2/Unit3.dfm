@@ -1,0 +1,95 @@
+object Form3: TForm3
+  Left = 0
+  Top = 0
+  BorderStyle = bsToolWindow
+  Caption = 'GameCheckers'
+  ClientHeight = 761
+  ClientWidth = 884
+  Color = 15267833
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -12
+  Font.Name = 'Segoe UI'
+  Font.Style = []
+  Menu = MainMenu1
+  Position = poScreenCenter
+  OnCreate = FormCreate
+  TextHeight = 15
+  object LabelTurn: TLabel
+    Left = 607
+    Top = 18
+    Width = 156
+    Height = 45
+    Alignment = taCenter
+    Caption = #1061#1086#1076' '#1073#1077#1083#1099#1093
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -32
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentFont = False
+  end
+  object LabelTimer: TLabel
+    Left = 136
+    Top = 18
+    Width = 9
+    Height = 45
+    Alignment = taCenter
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -32
+    Font.Name = 'Segoe UI'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object DrawGrid1: TDrawGrid
+    Left = 128
+    Top = 69
+    Width = 651
+    Height = 651
+    ColCount = 8
+    DefaultColWidth = 80
+    DefaultRowHeight = 80
+    DefaultDrawing = False
+    FixedCols = 0
+    RowCount = 8
+    FixedRows = 0
+    ScrollBars = ssNone
+    TabOrder = 0
+    OnDrawCell = DrawGrid1DrawCell
+    OnMouseDown = DrawGrid1MouseDown
+  end
+  object MainMenu1: TMainMenu
+    Left = 832
+    Top = 352
+    object N1: TMenuItem
+      Caption = #1048#1075#1088#1072
+      object N4: TMenuItem
+        Caption = #1053#1086#1074#1072#1103' '#1080#1075#1088#1072
+        OnClick = N4Click
+      end
+    end
+    object N2: TMenuItem
+      Caption = #1057#1087#1088#1072#1074#1082#1072
+      object N9: TMenuItem
+        Caption = #1054#1073' '#1072#1074#1090#1086#1088#1077
+        OnClick = N9Click
+      end
+    end
+    object N3: TMenuItem
+      Caption = #1042#1099#1093#1086#1076
+      OnClick = N3Click
+    end
+  end
+  object TimerWhite: TTimer
+    OnTimer = TimerWhiteTimer
+    Left = 824
+    Top = 128
+  end
+  object TimerBlack: TTimer
+    Enabled = False
+    OnTimer = TimerBlackTimer
+    Left = 824
+    Top = 208
+  end
+end

@@ -1,0 +1,58 @@
+//---------------------------------------------------------------------------
+
+#include <vcl.h>
+#pragma hdrstop
+
+#include "Unit1.h"
+#include "Unit2.h"
+//---------------------------------------------------------------------------
+#pragma package(smart_init)
+#pragma resource "*.dfm"
+TForm1 *Form1;
+//---------------------------------------------------------------------------
+__fastcall TForm1::TForm1(TComponent* Owner)
+	: TForm(Owner)
+{
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm1::N1Click(TObject *Sender)
+{
+    Form2->ShowModal();
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm1::N2Click(TObject *Sender)
+{
+    Close();
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm1::ListBox1Click(TObject *Sender)
+{
+    switch (ListBox1->ItemIndex)
+    {
+        case 0: CurrentColor = clRed; break;
+        case 1: CurrentColor = (TColor)0x00FFA500; break; // Оранжевый
+        case 2: CurrentColor = clYellow; break;
+        case 3: CurrentColor = clLime; break;  // Зеленый
+        case 4: CurrentColor = clAqua; break;  // Голубой
+        case 5: CurrentColor = clBlue; break;
+        case 6: CurrentColor = (TColor)0x00800080; break; // Фиолетовый
+	}
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm1::StringGrid1MouseDown(TObject *Sender, TMouseButton Button,
+          TShiftState Shift, int X, int Y)
+{
+	if (Button == mbLeft)
+	{
+		int ACol, ARow;
+		StringGrid1->MouseToCell(X, Y, ACol, ARow);
+
+		// Проверяем, что ячейка не закрашена
+		if (StringGrid1->Cells[ACol][ARow] == "") {
+			StringGrid1->Cells[ACol][ARow] = " "; // чтобы ячейка стала "занятой"
+			StringGrid1->Canvas->Brush->Color = CurrentColor;
+			StringGrid1->Canvas->FillRect(StringGrid1->CellRect(ACol, ARow));
+		}
+	}
+}
+//---------------------------------------------------------------------------

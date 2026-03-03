@@ -1,0 +1,35 @@
+object Form4: TForm4
+  Left = 0
+  Top = 0
+  Caption = 'GameRules'
+  ClientHeight = 441
+  ClientWidth = 624
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -12
+  Font.Name = 'Segoe UI'
+  Font.Style = []
+  Position = poScreenCenter
+  TextHeight = 15
+  object PageControl1: TPageControl
+    Left = 0
+    Top = 0
+    Width = 624
+    Height = 441
+    ActivePage = TabSheet1
+    Align = alClient
+    TabOrder = 0
+    object TabSheet1: TTabSheet
+      Caption = #1054#1089#1085#1086#1074#1085#1099#1077' '#1087#1088#1072#1074#1080#1083#1072
+    end
+    object TabSheet2: TTabSheet
+      Caption = #1055#1088#1080#1084#1077#1088#1099' '#1093#1086#1076#1086#1074
+      ImageIndex = 1
+    end
+    object TabSheet3: TTabSheet
+      Caption = #1044#1072#1084#1082#1080
+      ImageIndex = 2
+    end
+  end
+end

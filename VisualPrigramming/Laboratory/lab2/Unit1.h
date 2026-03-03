@@ -1,0 +1,72 @@
+	//---------------------------------------------------------------------------
+
+	#ifndef Unit1H
+	#define Unit1H
+	//---------------------------------------------------------------------------
+	#include <System.Classes.hpp>
+	#include <Vcl.Controls.hpp>
+	#include <Vcl.StdCtrls.hpp>
+	#include <Vcl.Forms.hpp>
+	#include <Vcl.Menus.hpp>
+	//---------------------------------------------------------------------------
+	class TForm1 : public TForm
+	{
+	__published:	// IDE-managed Components
+		TMainMenu *MainMenu1;
+		TMenuItem *asdasdasd1;
+		TMenuItem *N21;
+		TMenuItem *N1;
+		TMenuItem *N111;
+		TMenuItem *N2;
+		TMenuItem *N3;
+		TEdit *Edit1;
+		TEdit *Edit2;
+		TLabel *Label1;
+		TButton *Button1;
+		TLabel *Label3;
+		TEdit *Edit3;
+		TLabel *Label2;
+		TMenuItem *N4;
+		TMenuItem *N11;
+		TMenuItem *N5;
+		TMenuItem *N22;
+		TMenuItem *N6;
+		TMenuItem *N31;
+		TMenuItem *N7;
+		TMenuItem *N41;
+		TMenuItem *N8;
+		TMenuItem *N51;
+		TMenuItem *N9;
+		TMenuItem *N61;
+		TMenuItem *N10;
+		TMenuItem *N71;
+		TMenuItem *N12;
+		TMenuItem *N81;
+		TMenuItem *N13;
+		TMenuItem *N91;
+		TMenuItem *N14;
+		TMenuItem *N101;
+		void __fastcall N111Click(TObject *Sender);
+		void __fastcall N3Click(TObject *Sender);
+		void __fastcall N21Click(TObject *Sender);
+		void __fastcall N1Click(TObject *Sender);
+		void __fastcall Button1Click(TObject *Sender);
+		void __fastcall N11Click(TObject *Sender);
+		void __fastcall N22Click(TObject *Sender);
+		void __fastcall N31Click(TObject *Sender);
+		void __fastcall N41Click(TObject *Sender);
+		void __fastcall N51Click(TObject *Sender);
+		void __fastcall N61Click(TObject *Sender);
+		void __fastcall N71Click(TObject *Sender);
+		void __fastcall N12Click(TObject *Sender);
+		void __fastcall N81Click(TObject *Sender);
+		void __fastcall N91Click(TObject *Sender);
+		void __fastcall N101Click(TObject *Sender);
+	private:	// User declarations
+	public:		// User declarations
+		__fastcall TForm1(TComponent* Owner);
+	};
+	//---------------------------------------------------------------------------
+	extern PACKAGE TForm1 *Form1;
+	//---------------------------------------------------------------------------
+	#endif

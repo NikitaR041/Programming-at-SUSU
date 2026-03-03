@@ -1,0 +1,41 @@
+Beverage_category.
+
+Beverage_category:
+Coffee, Classic Espresso Drinks, Signature Espresso Drinks,
+Frappuccino Blended Coffee, Frappuccino Light Blended Coffee, Shaken Iced Beverages,
+Smoothies, Tazo Tea Drinks, Hot Chocolate,
+Frappuccino Blended Creme, Protein Blended Beverages.
+
+Beverage: ignore.
+
+Beverage_prep: ignore.
+
+Calories: continuous.
+
+Total_Fat_g: continuous.
+
+Trans_Fat_g: continuous.
+
+Saturated_Fat_g: continuous.
+
+Sodium_mg: continuous.
+
+Total_Carbohydrates_g: continuous.
+
+Cholesterol_mg: continuous.
+
+Dietary_Fibre_g: continuous.
+
+Sugars_g: continuous.
+
+Protein_g: continuous.
+
+VitaminA_DV: continuous.
+
+VitaminC_DV: continuous.
+
+Calcium_DV: continuous.
+
+Iron_DV: continuous.
+
+Caffeine_mg: continuous.
