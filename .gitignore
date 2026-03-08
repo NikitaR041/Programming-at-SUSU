@@ -16,6 +16,8 @@ temp/
 bin/
 obj/
 venv/
+OpenGL/
+
 
 # Игнорировать все файлы .suo и .user
 *.suo
@@ -88,3 +90,4 @@ venv/
 /Generator/*.pptx
 /Generator/*.ppt
 /Generator/*.odp
+
