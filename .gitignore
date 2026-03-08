@@ -17,6 +17,7 @@ bin/
 obj/
 venv/
 OpenGL/
+flide/
 
 
 # Игнорировать все файлы .suo и .user
