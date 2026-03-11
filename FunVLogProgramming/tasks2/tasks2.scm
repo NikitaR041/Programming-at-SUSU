@@ -1,13 +1,12 @@
 (define (replace f x a)
-  (cond 
-    ((null? x) '())
-    ((f (car x))
-     (cons a (replace f (cdr x) a)))
-    (else 
-     (cons (car x) (replace f (cdr x) a)
-     )
+   (if (null? x) '()
+      (let ((t (replace f (cdr x) a)))
+         (if (f (car x))
+            (cons a t)
+            (cons (car x) t)
+         )
+      )
    )
-  )
 )
-     
+
 (replace (lambda (x) (not (pair? x))) '((A) B (C) D E (F)) 'Z)
