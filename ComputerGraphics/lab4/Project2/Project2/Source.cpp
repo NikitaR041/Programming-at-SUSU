@@ -8,35 +8,40 @@
 
 using namespace std;
 
-// Глобальные переменные для хранения состояния мыши
+// Глобальные переменные для состояния мыши
 static int lastMouseX = 0;
 static int lastMouseY = 0;
 
 // Идентификатор текстуры 
 GLuint textureID;
 
-// --- Параметры освещения (Задание 3 + Доп. требование) ---
+// --- Параметры освещения ---
 // Источник 1: Направленный (w=0.0)
 GLfloat light0_pos[4] = { -2.0f, 2.0f, 0.0f, 0.0f };
 GLfloat light0_ambient[4] = { 0.2f, 0.2f, 0.2f, 1.0f };
 GLfloat light0_diffuse[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
 GLfloat light0_specular[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
 
-// Источник 2: Точечный (w=1.0) (Дополнительный источник)
+// Источник 2: Точечный (w=1.0) с затуханием
 GLfloat light1_pos[4] = { 2.0f, 0.0f, 2.0f, 1.0f };
-GLfloat light1_diffuse[4] = { 0.0f, 0.5f, 1.0f, 1.0f }; // Голубоватый свет
+GLfloat light1_diffuse[4] = { 0.0f, 0.5f, 1.0f, 1.0f }; // Голубоватый
+GLfloat light1_specular[4] = { 0.8f, 0.8f, 1.0f, 1.0f };
+// Параметры затухания (constant, linear, quadratic)
+GLfloat light1_attenuation[3] = { 1.0f, 0.1f, 0.05f };
 
-// --- Параметры материала (Задание 4) ---
+bool light1_enabled = true; // Флаг включения/выключения второго источника
+
+// --- Параметры материала ---
 GLfloat mat_ambient[4] = { 0.3f, 0.3f, 0.3f, 1.0f };
 GLfloat mat_diffuse[4] = { 0.8f, 0.5f, 0.2f, 1.0f };
 GLfloat mat_specular[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
 GLfloat shininess = 32.0f;
 
-// Углы вращения и позиция камеры 
+// Углы вращения и позиция камеры
 float angleX = 0.0f, angleY = 0.0f;
 float cameraZ = -6.0f;
 
-// Функция загрузки текстуры 
+// Загрузка текстуры
 void loadTexture(const char* filename) {
     int w, h, c;
     unsigned char* data = stbi_load(filename, &w, &h, &c, 4);
@@ -52,7 +57,7 @@ void loadTexture(const char* filename) {
     stbi_image_free(data);
 }
 
-// Функция ручной отрисовки куба с нормалями и текстурными координатами
+// Ручная отрисовка куба с нормалями и текстурными координатами
 void drawTexturedCube(float size) {
     float s = size / 2.0f;
     glBegin(GL_QUADS);
@@ -68,7 +73,6 @@ void drawTexturedCube(float size) {
     glTexCoord2f(1, 1); glVertex3f(-s, s, -s);
     glTexCoord2f(0, 1); glVertex3f(s, s, -s);
     glTexCoord2f(0, 0); glVertex3f(s, -s, -s);
-    // Остальные грани
     // Верх
     glNormal3f(0, 1, 0);
     glTexCoord2f(0, 1); glVertex3f(-s, s, -s);
@@ -84,12 +88,12 @@ void drawTexturedCube(float size) {
     glEnd();
 }
 
-// Инициализация освещения и доп. параметров
+// Инициализация освещения и текстур
 void initLighting() {
-    glewInit(); // Инициализация GLEW для корректной работы расширений
+    glewInit();
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
-    glEnable(GL_LIGHT1); // Включаем второй свет
+    if (light1_enabled) glEnable(GL_LIGHT1);
     glEnable(GL_NORMALIZE);
     glEnable(GL_TEXTURE_2D);
     glEnable(GL_DEPTH_TEST);
@@ -101,8 +105,13 @@ void initLighting() {
 
     // Настройка источника №2
     glLightfv(GL_LIGHT1, GL_DIFFUSE, light1_diffuse);
+    glLightfv(GL_LIGHT1, GL_SPECULAR, light1_specular);
+    // Затухание для точечного источника
+    glLightf(GL_LIGHT1, GL_CONSTANT_ATTENUATION, light1_attenuation[0]);
+    glLightf(GL_LIGHT1, GL_LINEAR_ATTENUATION, light1_attenuation[1]);
+    glLightf(GL_LIGHT1, GL_QUADRATIC_ATTENUATION, light1_attenuation[2]);
 
-    // Режим взаимодействия текстуры и света
+    // Режим смешивания текстуры и света
     glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     loadTexture("texture.jpg");
 }
@@ -111,29 +120,29 @@ void display() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
 
-    // Настройка камеры (из базового кода)
+    // Камера
     gluLookAt(0.0, 0.0, -cameraZ, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
     glRotatef(angleX, 1.0f, 0.0f, 0.0f);
     glRotatef(angleY, 0.0f, 1.0f, 0.0f);
 
-    // Обновление позиций ламп
+    // Установка позиций источников
     glLightfv(GL_LIGHT0, GL_POSITION, light0_pos);
     glLightfv(GL_LIGHT1, GL_POSITION, light1_pos);
 
-    // Применяем свойства материала
+    // Материал
     glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
     glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_diffuse);
     glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
     glMaterialf(GL_FRONT, GL_SHININESS, shininess);
 
-    // Объект 1: Куб (с текстурой)
+    // Объект 1: Куб с текстурой
     glPushMatrix();
     glTranslatef(-1.5f, 0.0f, 0.0f);
     glBindTexture(GL_TEXTURE_2D, textureID);
     drawTexturedCube(1.5f);
     glPopMatrix();
 
-    // Объект 2: Сфера (без текстуры, чтобы видеть чистый свет)
+    // Объект 2: Сфера без текстуры (чистый свет)
     glDisable(GL_TEXTURE_2D);
     glPushMatrix();
     glTranslatef(1.5f, 0.0f, 0.0f);
@@ -141,21 +150,32 @@ void display() {
     glPopMatrix();
     glEnable(GL_TEXTURE_2D);
 
-    // Отрисовка текста 
+    // --- Отрисовка текстовой информации (без освещения) ---
     glDisable(GL_LIGHTING);
     glDisable(GL_TEXTURE_2D);
     glColor3f(1.0f, 1.0f, 1.0f);
 
     char buffer[256];
-    sprintf(buffer, "Light 0 Pos: (%.1f, %.1f, %.1f)", light0_pos[0], light0_pos[1], light0_pos[2]);
-    glRasterPos2f(-0.9f, 0.9f);
-    for (int i = 0; buffer[i] != '\0'; i++)
-        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, buffer[i]);
+    // Позиция LIGHT0
+    sprintf(buffer, "Light0 (dir): (%.1f, %.1f, %.1f)", light0_pos[0], light0_pos[1], light0_pos[2]);
+    glRasterPos2f(-0.95f, 0.95f);
+    for (int i = 0; buffer[i] != '\0'; i++) glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, buffer[i]);
 
-    sprintf(buffer, "Shininess: %.0f | Colors: 1,2,3", shininess);
-    glRasterPos2f(-0.9f, 0.82f);
-    for (int i = 0; buffer[i] != '\0'; i++)
-        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, buffer[i]);
+    // Позиция LIGHT1
+    sprintf(buffer, "Light1 (point): (%.1f, %.1f, %.1f) [%s]", light1_pos[0], light1_pos[1], light1_pos[2],
+        light1_enabled ? "ON" : "OFF");
+    glRasterPos2f(-0.95f, 0.88f);
+    for (int i = 0; buffer[i] != '\0'; i++) glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, buffer[i]);
+
+    // Блеск и цвет
+    sprintf(buffer, "Shininess: %.0f | Color: R=%.1f G=%.1f B=%.1f", shininess, mat_diffuse[0], mat_diffuse[1], mat_diffuse[2]);
+    glRasterPos2f(-0.95f, 0.81f);
+    for (int i = 0; buffer[i] != '\0'; i++) glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, buffer[i]);
+
+    // Подсказки по управлению
+    glRasterPos2f(-0.95f, -0.9f);
+    const char* help = "W/A/S/D/Q/E - Light0 | T/G/F/H/R/Y - Light1 | 0 - toggle Light1 | +/- shininess | 1/2/3 color";
+    for (int i = 0; help[i] != '\0'; i++) glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, help[i]);
 
     glEnable(GL_LIGHTING);
     glEnable(GL_TEXTURE_2D);
@@ -173,7 +193,7 @@ void reshape(int width, int height) {
 
 void keyboard(unsigned char key, int x, int y) {
     switch (key) {
-        // Управление основным светом
+        // Управление направленным светом (Light0)
     case 'w': light0_pos[1] += 0.2f; break;
     case 's': light0_pos[1] -= 0.2f; break;
     case 'a': light0_pos[0] -= 0.2f; break;
@@ -181,17 +201,32 @@ void keyboard(unsigned char key, int x, int y) {
     case 'q': light0_pos[2] -= 0.2f; break;
     case 'e': light0_pos[2] += 0.2f; break;
 
-        // Переключение цветов материала
-    case '1': mat_diffuse[0] = 1; mat_diffuse[1] = 0; mat_diffuse[2] = 0; break; // Красный
-    case '2': mat_diffuse[0] = 0; mat_diffuse[1] = 1; mat_diffuse[2] = 0; break; // Зеленый
-    case '3': mat_diffuse[0] = 0; mat_diffuse[1] = 0; mat_diffuse[2] = 1; break; // Синий
+        // Управление точечным светом (Light1) — дополнительное освещение
+    case 't': light1_pos[1] += 0.2f; break;
+    case 'g': light1_pos[1] -= 0.2f; break;
+    case 'f': light1_pos[0] -= 0.2f; break;
+    case 'h': light1_pos[0] += 0.2f; break;
+    case 'r': light1_pos[2] -= 0.2f; break;
+    case 'y': light1_pos[2] += 0.2f; break;
 
-        // Блеск и выход
+        // Включение/выключение второго источника
+    case '0':
+        light1_enabled = !light1_enabled;
+        if (light1_enabled) glEnable(GL_LIGHT1);
+        else glDisable(GL_LIGHT1);
+        break;
+
+        // Смена цвета материала
+    case '1': mat_diffuse[0] = 1.0f; mat_diffuse[1] = 0.0f; mat_diffuse[2] = 0.0f; break;
+    case '2': mat_diffuse[0] = 0.0f; mat_diffuse[1] = 1.0f; mat_diffuse[2] = 0.0f; break;
+    case '3': mat_diffuse[0] = 0.0f; mat_diffuse[1] = 0.0f; mat_diffuse[2] = 1.0f; break;
+
+        // Блеск
     case '+': if (shininess < 128.0f) shininess += 4.0f; break;
     case '-': if (shininess > 4.0f) shininess -= 4.0f; break;
+
     case 27: exit(0); break;
     }
-
     glutPostRedisplay();
 }
 
@@ -214,18 +249,23 @@ int main(int argc, char** argv) {
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
     glutInitWindowSize(800, 600);
-    glutCreateWindow("OpenGL 2.0 Phong Lighting - Texture & 2 Lights");
+    glutCreateWindow("OpenGL - Two Lights with Attenuation");
 
-    initLighting(); // Объединенная инициализация
+    initLighting();
 
-    // Регистрация всех функций
     glutDisplayFunc(display);
     glutReshapeFunc(reshape);
     glutKeyboardFunc(keyboard);
     glutMouseFunc(mouse);
-    glutMotionFunc(mouseMotion); // Важно для вращения!
+    glutMotionFunc(mouseMotion);
 
-    printf("Controls:\nW/A/S/D/Q/E - Move Light 0\n1/2/3 - Change Material Color\n+/- - Shininess\nMouse - Rotate Scene\n");
+    printf("=== UPGRADED LIGHTING ===\n");
+    printf("Light0 (dir): W/A/S/D/Q/E\n");
+    printf("Light1 (point): T/G/F/H/R/Y\n");
+    printf("0 - toggle Light1\n");
+    printf("1/2/3 - change material color\n");
+    printf("+/- - change shininess\n");
+    printf("Mouse - rotate scene\n");
 
     glutMainLoop();
     return 0;
