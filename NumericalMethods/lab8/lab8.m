@@ -23,20 +23,11 @@ grid on; xlabel('x'); ylabel('y');
 title('Фазовая траектория (x0=2, y0=0.6)');
 
 %Семейство траекторий
-% Условие 1: x0 от -2 до 2, y0 = 0
-% Условие 2: x0 = 2, y0 от -1.5 до 1
-
-x_list = [-2 -1.5 -1 -0.5 0 0.5 1 1.5 2]; y0 = 0;
-y_list = [-1.5 -1 -0.5 0 0.5 1]; x0 = 2;
+y_list = [0.3 0.5 0.6 0.8 1.0 1.2 1.4]; x0 = 2;
 
 figure; hold on; grid on;
-for x0_elem = x_list
-    [~, X_loop] = ode45(@f, t, [x0_elem y0]); % Короткое время 0.4
-    plot(X_loop(:,1), X_loop(:,2), 'Color', [47 79 79]/255); 
-end
-
 for y0_elem = y_list
-    [~, X_loop] = ode45(@f, t, [x0 y0_elem]); % Короткое время 0.4
+    [~, X_loop] = ode45(@f, t, [x0 y0_elem]);
     plot(X_loop(:,1), X_loop(:,2), 'Color', [205 145 158]/255); 
 end
 
