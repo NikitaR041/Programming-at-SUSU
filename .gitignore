@@ -20,7 +20,6 @@ OpenGL/
 flide/
 AiVNn/Project/
 
-
 # Игнорировать все файлы .suo и .user
 *.suo
 *.user
