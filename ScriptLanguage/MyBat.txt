@@ -5,9 +5,7 @@ for /d %%i in (*) do (
     set /a size_files=0
     pushd "%%i"
     for /r %%j in (*) do (
-        if exist "%%j" (
             set /a size_files=!size_files!+%%~zj
-        )
     )
     popd
     echo Dir: %%i - Size: !size_files! byte
