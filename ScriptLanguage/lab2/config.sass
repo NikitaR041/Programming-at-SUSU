@@ -1,0 +1,21 @@
+$host: 127.0.0.1
+$port: 8080
+$is_debug: true
+$price_tag: 100$$
+
+@mixin NetworkSettings
+  timeout: 30
+  max_retries: 3
+
+Database
+  host: $host
+  port: $port
+  price: $price_tag
+  @if is_debug
+    log_level: verbose
+  @else
+    log_level: quiet
+
+Server
+  @include NetworkSettings
+  max_connections: 1000
